@@ -3,11 +3,10 @@ const app = express()
 const dotenv = require('dotenv')
 const mongoose = require('mongoose')
 dotenv.config()
-//7Y2XdJtpsmwmE2Be
-//mongodb+srv://dhanushsai1467:<db_password>@maincluster.uu0jc.mongodb.net/?retryWrites=true&w=majority&appName=MainCluster
 
 const port = process.env.PORT || 3000;
 const authRoutes = require('./routes/auth')
+const matchRoutes = require('./routes/matches')
 
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
@@ -18,6 +17,7 @@ mongoose.connect(process.env.MONGO_URI, {
 
 app.use(express.json())
 app.use('/auth', authRoutes)
+app.use('/matches', matchRoutes)
 app.get('/', (req, res) => {
     res.send('Hello World!')
 })
