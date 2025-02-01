@@ -1,0 +1,189 @@
+/* === Sign-Up Container === */
+::selection {
+    background: var(--main); /* Change this to your desired color */
+    color: var(--darkest); /* Change text color if needed */
+}
+.SignUp {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8%;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+/* === Branding Section === */
+.brandingDiv {
+    text-align: center;
+    color: var(--light);
+    max-width: 400px;
+}
+
+.signupLogo {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.signupLogo:hover {
+    transform: scale(1.05) rotate(-5deg);
+}
+
+.signUpH1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--main);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+}
+
+.motto {
+    font-size: 1.1rem;
+    color: var(--main-1);
+    line-height: 1.5;
+}
+
+/* === Form Section === */
+.signupFormDiv {
+    background-color: var(--darkest);
+    border: 2px solid var(--main-50p);
+    border-radius: 16px;
+    padding: 2.5rem;
+    width: 35%;
+    min-width: 350px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: border-color 0.3s ease;
+}
+
+.signupFormDiv:hover {
+    border-color: var(--main);
+}
+
+/* Form Heading */
+.signupFormDiv h2 {
+    color: var(--light);
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
+}
+
+.signupFormDiv h2::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: var(--main);
+    margin: 1rem auto;
+    border-radius: 2px;
+}
+
+/* === Input Fields === */
+.inputGroup {
+    width: 100%;
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.inputEle {
+    height: 45px;
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    border: none;
+    background: transparent;
+    border-bottom: 2px solid var(--main-50p);
+    color: var(--light);
+    transition: border-color 0.3s ease;
+}
+
+.inputEle:focus {
+    outline: none;
+    border-bottom-color: var(--main);
+}
+
+/* Floating Labels */
+.signupFormDiv label {
+    color: var(--main-1);
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.inputEle:focus + label,
+.inputEle:not(:placeholder-shown) + label {
+    transform: translateY(-28px);
+    font-size: 0.9rem;
+    color: var(--main);
+}
+
+/* === Submit Button === */
+button {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    background-color: var(--main);
+    color: var(--darkest);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+button:hover {
+    background-color: var(--main-1);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px var(--main-50p);
+}
+
+/* === Responsive Design === */
+
+/* Tablets */
+@media (max-width: 768px) {
+    .SignUp {
+        flex-direction: column;
+        gap: 40px;
+        padding: 40px 20px;
+    }
+    
+    .signupFormDiv {
+        width: 90%;
+        min-width: unset;
+        padding: 2rem;
+    }
+    
+    .signUpH1 {
+        font-size: 2rem;
+    }
+    
+    .motto {
+        font-size: 1rem;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .signupLogo {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .signupFormDiv h2 {
+        font-size: 1.75rem;
+    }
+    
+    button {
+        padding: 0.875rem;
+    }
+}

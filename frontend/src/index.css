@@ -12,7 +12,7 @@ body {
     font-family: "Poppins", serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: url("./images/neon.jpg") no-repeat center center/cover;
+    background: url("./images/neon.jpg")  center center/cover;
     color: #d5bcf5;
 }
 
