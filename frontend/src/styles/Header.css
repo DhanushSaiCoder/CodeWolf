@@ -1,0 +1,18 @@
+:root {
+    --div: #300e5d;
+
+    --darkest: #0D0218;
+    --darker: #300E5D;
+    --dark: #5519A4;
+    --main-2: #7B2EE0;
+    --main-1: #A875EA;
+    --main: #D5BCF5;
+  }
+  
+#Header{
+    width: 100%;
+    height: auto;
+    padding: 15px 20px;
+    background-color: #300e5d36;
+    border-bottom: 1px solid var(--div);
+}

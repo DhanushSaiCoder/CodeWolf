@@ -1,7 +1,15 @@
 import React from 'react';
 import '../styles/Home.css'
+import Header from '../components/Header';
 const Home = () => {
-    return (<h1>hello</h1>  );
+    return (
+        <>
+            <Header />
+            <div id='Home'>
+                <h1>Welcome to the MERN Skeleton home page</h1>
+            </div>
+        </>
+    );
 }
- 
+
 export default Home;
