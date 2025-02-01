@@ -5,7 +5,7 @@ const Home = () => {
     return (
         <>
             <Header />
-            <div id='Home'>
+            <div id='homeContent'>
                 <h1>Welcome to the MERN Skeleton home page</h1>
             </div>
         </>

@@ -1,18 +1,33 @@
 :root {
     --div: #300e5d;
 
-    --darkest: #0D0218;
-    --darker: #300E5D;
-    --dark: #5519A4;
-    --main-2: #7B2EE0;
-    --main-1: #A875EA;
-    --main: #D5BCF5;
-  }
-  
-#Header{
+    --darkest: #0d0218;
+    --darker: #300e5d;
+    --dark: #5519a4;
+    --main-2: #7b2ee0;
+    --main-1: #a875ea;
+    --main: #d5bcf5;
+}
+
+.header {
     width: 100%;
     height: auto;
     padding: 15px 20px;
     background-color: #300e5d36;
     border-bottom: 1px solid var(--div);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+.headerH1{
+    cursor: pointer;
 }
