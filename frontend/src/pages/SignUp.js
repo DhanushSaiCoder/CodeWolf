@@ -198,7 +198,7 @@ const SignUp = () => {
                             Already have an account? <a className="loginLink" href="/auth/login">Login</a>
                         </p>
                     </i>
-                    <button type="submit" disabled={isLoading}>
+                    <button className='signUpBtn' type="submit" disabled={isLoading}>
                         {isLoading ? (
                             "Signing Up..."
                         ) : (

@@ -1,0 +1,28 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.NavButton{
+    width: 100%;
+    height: 70px;
+    border: none;
+    background-color: rgba(48, 14, 93, 0.2);
+    color: var(--main);
+    font-size: large;
+    cursor: pointer;
+}
+.NavButton:hover{
+    background-color: rgba(48, 14, 93, 0.432);
+
+
+}
+.activeBtn{
+    background-color: var(--main);
+    color: var(--darkest);
+    font-weight: bold;
+    cursor: default;
+}
+.activeBtn:hover{
+    background-color: var(--main);
+}

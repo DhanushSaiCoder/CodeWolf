@@ -19,7 +19,13 @@ const Header = () => {
                 src={codeWolf}
                 alt="logo"
             />
-            <h1 className='headerH1' onClick={handleNavigation}>Code Wolfs</h1>
+            <h1 className='headerH1' onClick={handleNavigation}>Code Wolf</h1>
+            <div className='headerLinks'>
+                <button className='logoutBtn' onClick={() => {
+                    window.localStorage.removeItem('token')
+                    navigate('/auth/login')
+                }}>LOG OUT</button>
+            </div>
         </div>
     );
 };
