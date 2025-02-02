@@ -8,5 +8,5 @@ h1{
 }
 .homeContent{
     width: 100%;
-    height: calc(100vh - 85px);
+    height: calc(100vh - 75px);
 }
