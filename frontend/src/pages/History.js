@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/Home.css';
+import '../styles/History.css';
 import Header from '../components/Header';
 import Nav from '../components/Nav';
 
-const Home = () => {
+const History = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -17,10 +17,10 @@ const Home = () => {
         <div className='Home'>
             <Header />
             <div className='homeContent'>
-                <Nav currPage="home" />
+                <Nav currPage="history" />
             </div>
         </div>
     );
 }
 
-export default Home;
+export default History;

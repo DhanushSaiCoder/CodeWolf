@@ -6,6 +6,10 @@ import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
+import Friends from './pages/Friends';
+import Leaderboard from './pages/Leaderboard';
+import Settings from './pages/Settings';
+import History from './pages/History';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -14,6 +18,10 @@ root.render(
       <Route path="/" element={<Home />} />
       <Route path="/auth/login" element={<Login />} />
       <Route path="/auth/signup" element={<SignUp />} />
+      <Route path="/friends" element={<Friends />} />
+      <Route path="/leaderboard" element={<Leaderboard />} />
+      <Route path="/settings" element={<Settings />} />
+      <Route path="/history" element={<History />} />
     </Routes>
   </BrowserRouter>
 );

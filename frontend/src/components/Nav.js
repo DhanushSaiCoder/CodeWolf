@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import "../styles/Nav.css"
 
-const Nav = () => {
+const Nav = (props) => {
+    const {currPage} = props
     return (
-        <div className="Nav">Nav bar</div>
+        <div className="Nav">{currPage}</div>
 
     );
 }
