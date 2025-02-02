@@ -16,32 +16,33 @@ router.get('/login', (req, res) => {
 // Register
 router.post('/signup', async (req, res) => {
     // **Data Validation**
-    const { error } = validateUser(req.body)
-    if (error) return res.status(400).send(error.details[0].message)
-
-    // **Email Uniqueness Check**
-    const emailExists = await User.findOne({ email: req.body.email })
-    if (emailExists) return res.status(400).send({message:'Email already exists'})
-
-    // **Password Hashing and User Creation**
-    const salt = await bcrypt.genSalt(10)
-    const hashedPassword = await bcrypt.hash(req.body.password, salt)
-
-    const user = new User({
-        username: req.body.username,
-        email: req.body.email,
-        password: hashedPassword,
-        role: req.body.role
-    })
+    const { error } = validateUser(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
 
     try {
+        // **Email Uniqueness Check**
+        const emailExists = await User.findOne({ email: req.body.email });
+        if (emailExists) return res.status(400).send({message: 'Email already exists'});
+
+        // **Password Hashing and User Creation**
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+
+        const user = new User({
+            username: req.body.username,
+            email: req.body.email,
+            password: hashedPassword,
+            role: req.body.role,
+        });
+
         // **Saving User to Database**
-        const savedUser = await user.save()
-        res.status(200).send(savedUser)
+        const savedUser = await user.save();
+        res.status(200).send(savedUser);
     } catch (err) {
-        res.status(400).send(err)
+        console.error('Error during signup:', err);
+        res.status(500).send('An unexpected error occurred. Please try again later.');
     }
-})
+});
 
 
 // Login
