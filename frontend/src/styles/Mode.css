@@ -1,18 +1,93 @@
-
-.mode{
+.mode {
     width: 30vw;
-    height: 40vh;
+    height: auto;
     min-height: 350px;
     background-color: rgba(var(--divBg));
     border-radius: 10px;
     margin: 20px 0 0 0;
+    padding: 20px 0;
 
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     flex-direction: column;
     gap: 10px;
 }
-.mode h2{
+.mode h2 {
     width: 100%;
+    text-align: center;
+    text-decoration: underline dashed;
+}
+
+.imgsDiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.imgLeft {
+    transform: scaleX(-1); /* Inverts the image along the x-axis */
+    /* width: 33%; */
+    /* height: auto; */
+}
+
+.imgLeft,
+.imgRight,
+.imgCenter {
+    width: 30%;
+    height: auto;
+}
+.imgCenter {
+    background-color: transparent;
+}
+.modeBtnsDiv {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.modeBtns {
+    width: 43%;
+    height: 100%;
+    border-radius: 5px;
+    background-color: var(--main-1);
+    color: var(--darkest);
+    font-weight: normal;
+    font-size: medium;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease-in-out cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.inviteFriendBtn {
+    background: transparent;
+    border: 2.5px solid var(--main-1);
+    color: var(--main);
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out,
+        box-shadow 0.3s ease-in-out;
+}
+
+.inviteFriendBtn:hover {
+    background-color: #d5bcf516;
+    transform: translateY(-5px); /* Move the button upwards */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.quickMatchBtn {
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out,
+        box-shadow 0.3s ease-in-out;
+}
+
+.quickMatchBtn:hover {
+    background-color: #d0b4f4;
+    transform: translateY(-5px); /* Move the button upwards */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modeDescriptionDiv {
+    width: 100%;
+    padding: 10px 20px;
+}
+.modeDescriptionText {
+    color: #d5bcf59f;
 }
