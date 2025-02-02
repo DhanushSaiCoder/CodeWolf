@@ -13,8 +13,8 @@ export const Mode = (props) => {
                 <img className='imgRight' src={modeImg} alt="modeImg" />
             </div>
             <div className='modeBtnsDiv'>
-                <button className='modeBtns inviteFriendBtn'><b>INVITE FRIEND</b></button>
                 <button className='modeBtns quickMatchBtn'><b>QUICK MATCH</b></button>
+                <button className='modeBtns inviteFriendBtn'><b>INVITE FRIEND</b></button>
             </div>
             <div className='modeDescriptionDiv'>
                 <p className='modeDescriptionText'><i>{modeDescription}</i></p>
