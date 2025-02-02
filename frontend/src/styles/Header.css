@@ -1,6 +1,5 @@
 :root {
     --div: #300e5d;
-
     --darkest: #0d0218;
     --darker: #300e5d;
     --dark: #5519a4;
@@ -8,6 +7,8 @@
     --main-1: #a875ea;
     --main: #d5bcf5;
     --main-50p: #d5bcf52e;
+
+    --divBg: 48, 14, 93, 0.2;
 }
 
 .header {
@@ -58,5 +59,4 @@
 }
 .logoutBtn:hover {
     background-color: rgba(93, 14, 55, 0.42);
-
 }
