@@ -99,3 +99,8 @@
     color: rgba(213, 188, 245, 0.9);
     font-size: 1.1rem;
 }
+.imgsDiv h3{
+    width: 30%;
+    text-align: center;
+    font-size: 2rem;
+}   

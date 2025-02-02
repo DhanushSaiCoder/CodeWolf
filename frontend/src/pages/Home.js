@@ -5,6 +5,7 @@ import Header from '../components/Header';
 import Nav from '../components/Nav';
 import { Mode } from '../components/Mode';
 import coder from '../images/coder.png';
+import coder2 from '../images/coder2.png';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -23,8 +24,9 @@ const Home = () => {
                 <div className='modesContainer'>
 
                     <Mode
-                        modeName="QUICK DEBUG"
+                        modeName="QUICK DEBUG MODE"
                         modeImg={coder}
+                        modeImg2={coder2}
                         modeDescription="Resolve all errors in the provided code faster than your opponent within the allocated time."
                     />
                    
