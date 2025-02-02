@@ -1,0 +1,106 @@
+.mode {
+    width: 30vw;
+    height: auto;
+    min-height: 350px;
+    background-color: rgba(var(--divBg));
+    border-radius: 15px;
+    margin: 20px 0;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.mode h2 {
+    width: 100%;
+    text-align: center;
+    text-decoration: underline dashed;
+    color: var(--main);
+    font-size: 1.5rem;
+}
+
+.imgsDiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.imgLeft {
+    transform: scaleX(-1); /* Inverts the image along the x-axis */
+}
+
+.imgLeft,
+.imgRight,
+.imgCenter {
+    width: 25%;
+    height: auto;
+}
+
+.imgCenter {
+    background-color: transparent;
+}
+
+.modeBtnsDiv {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+.modeBtns {
+    width: 45%;
+    height: 100%;
+    border-radius: 5px;
+    background-color: var(--main-1);
+    color: var(--darkest);
+    font-weight: normal;
+    font-size: medium;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease-in-out cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.inviteFriendBtn {
+    background: transparent;
+    border: 2px solid var(--main-1);
+    color: var(--main);
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.inviteFriendBtn:hover {
+    background-color: rgba(213, 188, 245, 0.09);
+    transform: translateY(-3px); /* Move the button upwards */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.quickMatchBtn {
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.quickMatchBtn:hover {
+    background-color: #d0b4f4;
+    transform: translateY(-3px); /* Move the button upwards */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modeDescriptionDiv {
+    width: 100%;
+    padding: 10px 20px;
+}
+
+.modeDescriptionText {
+    color: rgba(213, 188, 245, 0.9);
+    font-size: 1.1rem;
+}
+.imgsDiv h3{
+    width: 30%;
+    text-align: center;
+    font-size: 2rem;
+}   

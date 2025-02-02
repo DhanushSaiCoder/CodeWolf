@@ -1,12 +1,37 @@
-.Home{
+.Home {
     width: 100vw;
     height: calc(100vh - 85px);
 }
-h1{
-    width: 100%;
-    height: 100%;
-}
-.homeContent{
+
+.homeContent {
     width: 100%;
     height: calc(100vh - 75px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.modesContainer {
+    width: auto;
+    height: auto;
+    max-height: 90vh;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    
+    
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--main-50p) transparent;
+    scroll-behavior: smooth;
+}
+.modesContainer::-webkit-scrollbar-thumb {
+    background-color: rgba(63, 101, 134, 0.5);
+    border-radius: 10px;
 }
