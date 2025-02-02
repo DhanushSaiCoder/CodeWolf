@@ -6,22 +6,22 @@ const { validateUser, User } = require('../models/User')
 
 router.get('/users', async (req, res) => {
     try {
-        // Fetch all users, selecting only 'username' and 'rating', and sort by rating in descending order
+        // Fetch top 10 users, selecting only 'username' and 'rating', and sort by rating in descending order
         const users = await User.find({}, '_id username rating')
             .sort({ rating: -1 }) // Sort by rating in descending order
+            .limit(10) // Limit the results to the top 10 users
             .lean();
 
         if (users.length === 0) {
             return res.status(404).json({ message: 'No users found.' });
         }
 
-        res.status(200).json(users); // Send the sorted list of users
+        res.status(200).json(users); // Send the sorted list of top 10 users
     } catch (err) {
         console.error('Error fetching users:', err);
         res.status(500).json({ message: 'An unexpected error occurred.' });
     }
 });
-
 
 router.get('/signup', (req, res) => {
     res.send('signup page');
