@@ -161,6 +161,25 @@ button:hover {
     color: var(--main-1);
 
 }
+/* SignUp.css */
+
+.error {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+  }
+  
+  .inputError {
+    border-color: red;
+  }
+  
+  .server-error {
+    background-color: #ffe6e6;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+  
 
 /* === Responsive Design === */
 @media (max-width: 768px) {
