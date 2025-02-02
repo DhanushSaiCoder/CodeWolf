@@ -110,6 +110,7 @@ const SignUp = () => {
             } else {
                 // **Successful Registration**
                 console.log(data);
+                localStorage.setItem('token', data.token)
                 window.location.href = '/';
             }
         } catch (error) {

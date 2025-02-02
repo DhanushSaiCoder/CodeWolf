@@ -14,6 +14,7 @@ router.get('/login', (req, res) => {
 });
 
 // Register
+
 router.post('/signup', async (req, res) => {
     // **Data Validation**
     const { error } = validateUser(req.body);
@@ -37,7 +38,13 @@ router.post('/signup', async (req, res) => {
 
         // **Saving User to Database**
         const savedUser = await user.save();
-        res.status(200).send({newUser: savedUser});
+        
+        // **Generating Token**
+        const token = jwt.sign({ _id: savedUser._id }, process.env.TOKEN_SECRET);
+        res.header('auth-token', token).send({
+            newUser: savedUser,
+            token: token,
+        });
     } catch (err) {
         console.error('Error during signup:', err);
         res.status(500).send({message: 'An unexpected error occurred. Please try again later.'});

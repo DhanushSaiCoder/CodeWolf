@@ -101,7 +101,7 @@ const Login = () => {
                 console.log('Login successful:', data);
 
                 // Store the token, e.g., in localStorage
-                localStorage.setItem('authToken', data.token);
+                localStorage.setItem('token', data.token);
 
                 // Redirect the user
                 window.location.href = '/'; // Adjust the redirect as needed
