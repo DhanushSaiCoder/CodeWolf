@@ -19,7 +19,7 @@ export const HomeLeaderBoard = () => {
                 return response.json();
             })
             .then(result => {
-                console.log('data: ',result)
+                console.log('data: ', result);
                 setData(result); // Backend already sorts the data
             })
             .catch(error => {
@@ -39,7 +39,9 @@ export const HomeLeaderBoard = () => {
                     <h2>Leaderboard</h2>
                 </div>
                 {loading ? (
-                    <p>Loading...</p>
+                    <div className="spinner-container">
+                        <div className="spinner"></div>
+                    </div>
                 ) : error ? (
                     <p>{error}</p>
                 ) : (
@@ -56,9 +58,12 @@ export const HomeLeaderBoard = () => {
                         ))}
                     </ol>
                 )}
-                <button className='showMoreBtn' onClick={() => navigate('/leaderboard')}>
-                    Show More
-                </button>
+                {!loading && (
+                    <button className='showMoreBtn' onClick={() => navigate('/leaderboard')}>
+                        Show More
+                    </button>
+                )
+                }
             </div>
         </div>
     );
