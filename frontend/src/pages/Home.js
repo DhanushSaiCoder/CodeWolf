@@ -1,17 +1,18 @@
 import React, { useEffect } from 'react';
 import '../styles/Home.css'
 import Header from '../components/Header';
+import Nav from '../components/Nav';
 const Home = () => {
     useEffect(() => {
         if(!localStorage.getItem('token')) window.location.href = '/auth/login'
     }, [])
     return (
-        <>
+        <div className='Home'>
             <Header />
-            <div id='homeContent'>
-                <h1>Welcome to the MERN Skeleton home page</h1>
+            <div className='homeContent'>
+                <Nav/>
             </div>
-        </>
+        </div>
     );
 }
 
