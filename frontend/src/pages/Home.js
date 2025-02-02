@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../styles/Home.css'
 import Header from '../components/Header';
 const Home = () => {
+    useEffect(() => {
+        if(!localStorage.getItem('token')) window.location.href = '/auth/login'
+    }, [])
     return (
         <>
             <Header />
