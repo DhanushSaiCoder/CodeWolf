@@ -99,7 +99,7 @@
 
 /* Spinner */
 .spinner {
-    border: 4px solid rgba(255, 255, 255, 0.3); /* Light outer border */
+    border: 4px solid rgba(255, 255, 255, 0.3); /* Light outer b order */
     border-top: 4px solid var(--main); /* Main color for the spinning part */
     border-radius: 50%;
     width: 40px;
