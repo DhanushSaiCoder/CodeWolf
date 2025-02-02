@@ -161,7 +161,7 @@ const Login = () => {
                             Don't have an account? <a className="signupLink" href="/auth/signup">Sign Up</a>
                         </p>
                     </i>
-                    <button type="submit" disabled={isLoading}>
+                    <button className='logInBtn' type="submit" disabled={isLoading}>
                         {isLoading ? (
                             "Logging In..."
                         ) : (

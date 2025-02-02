@@ -132,8 +132,8 @@
     color: var(--main);
 }
 
-/* === Submit Button === */
-button {
+/* === Submit .logInBtn === */
+.logInBtn {
     width: 100%;
     padding: 1rem;
     font-size: 1.1rem;
@@ -150,7 +150,7 @@ button {
     box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
 }
 
-button:hover {
+.logInBtn:hover {
     background-color: var(--main-1);
     transform: translateY(-3px);
     box-shadow: 0 5px 20px var(--main-50p);
@@ -209,7 +209,7 @@ button:hover {
     .loginFormDiv h2 {
         font-size: 1.8rem;
     }
-    button {
+    .logInBtn {
         padding: 0.875rem;
     }
 }

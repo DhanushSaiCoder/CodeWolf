@@ -1,6 +1,14 @@
 
 .Nav{
     width: 20vw;
+    padding: 30px 20px;
     height: 100%;
     background: rgba(48, 14, 93, 0.2);
+}
+
+.firstBtn{
+    border-radius: 5px 5px 0 0 ;
+}
+.lastBtn{
+    border-radius: 0 0 10px 10px;
 }

@@ -123,7 +123,7 @@
     pointer-events: none;
     transition: all 0.3s ease-in-out;
 }
-
+    
 .inputEle:focus + label,
 .inputEle:not(:placeholder-shown) + label {
     transform: translateY(-28px);
@@ -131,8 +131,8 @@
     color: var(--main);
 }
 
-/* === Submit Button === */
-button {
+/* === Submit .signUpBtn === */
+.signUpBtn {
     width: 100%;
     padding: 1rem;
     font-size: 1.1rem;
@@ -149,7 +149,7 @@ button {
     box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
 }
 
-button:hover {
+.signUpBtn:hover {
     background-color: var(--main-1);
     transform: translateY(-3px);
     box-shadow: 0 5px 20px var(--main-50p);
@@ -208,7 +208,7 @@ button:hover {
     .signupFormDiv h2 {
         font-size: 1.8rem;
     }
-    button {
+    .signUpBtn {
         padding: 0.875rem;
     }
 }
