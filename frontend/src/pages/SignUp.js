@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import "../styles/SignUp.css";
 import codeWolf from '../images/codeWolf.jpg';
-import Spinner from 'react-bootstrap/Spinner';
 
 const SignUp = () => {
     const [formData, setFormData] = useState({
@@ -200,7 +199,7 @@ const SignUp = () => {
                     </i>
                     <button type="submit" disabled={isLoading}>
                         {isLoading ? (
-                            <Spinner animation="border"/>
+                            "Signing Up..."
                         ) : (
                             'Become a Wolf'
                         )}
