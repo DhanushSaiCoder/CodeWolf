@@ -1,6 +1,7 @@
 import React from 'react';
 import "../styles/SignUp.css";
 import codeWolf from '../images/codeWolf.jpg';
+import Login from './Login';
 
 const SignUp = () => {
     return (
@@ -12,7 +13,7 @@ const SignUp = () => {
             </div>
 
             <div className='signupFormDiv'>
-                <h2>Join the Pack</h2>
+                <h2>SIGN UP</h2>
                 <form>
                     <div className="inputGroup">
                         <input
@@ -60,7 +61,7 @@ const SignUp = () => {
                         />
                         <label htmlFor="confirmPassword">Confirm Password</label>
                     </div>
-
+                    <i><p className='loginText'>Already had an account? <a className="loginLink" href="/auth/login">Login</a></p></i>
                     <button type="submit">Become a Wolf</button>
                 </form>
             </div>

@@ -33,7 +33,7 @@
 
 .signupLogo:hover {
     transform: scale(1.08) rotate(-5deg);
-    box-shadow: 0 0 30px rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 0;
     border: 2px solid var(--main);
 }
 
@@ -153,6 +153,13 @@ button:hover {
     background-color: var(--main-1);
     transform: translateY(-3px);
     box-shadow: 0 5px 20px var(--main-50p);
+}
+.loginText{
+    opacity: 0.8;
+}
+.loginLink{
+    color: var(--main-1);
+
 }
 
 /* === Responsive Design === */
