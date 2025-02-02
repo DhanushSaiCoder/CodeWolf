@@ -6,6 +6,7 @@ import Nav from '../components/Nav';
 import { Mode } from '../components/Mode';
 import coder from '../images/coder.png';
 import coder2 from '../images/coder2.png';
+import { HomeLeaderBoard } from './../components/HomeLeaderBoard';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -30,6 +31,9 @@ const Home = () => {
                         modeDescription="Resolve all errors in the provided code faster than your opponent within the allocated time."
                     />
                    
+                </div>
+                <div className='homeLeaderBoardContainer'>
+                    <HomeLeaderBoard/>
                 </div>
             </div>
         </div>
