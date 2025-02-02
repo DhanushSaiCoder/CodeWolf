@@ -7,8 +7,8 @@
 }
 
 .firstBtn{
-    border-radius: 5px 5px 0 0 ;
+    border-radius: 6px 6px 0 0 ;
 }
 .lastBtn{
-    border-radius: 0 0 10px 10px;
+    border-radius: 0 0 6px 6px;
 }

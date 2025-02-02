@@ -20,6 +20,12 @@ const Header = () => {
                 alt="logo"
             />
             <h1 className='headerH1' onClick={handleNavigation}>Code Wolfs</h1>
+            <div className='headerLinks'>
+                <button className='logoutBtn' onClick={() => {
+                    window.localStorage.removeItem('token')
+                    navigate('/auth/login')
+                }}>LOG OUT</button>
+            </div>
         </div>
     );
 };

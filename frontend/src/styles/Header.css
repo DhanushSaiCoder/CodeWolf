@@ -21,6 +21,8 @@
     align-items: center;
     justify-content: flex-start;
     gap: 20px;
+
+    position: relative;
 }
 
 .logo {
@@ -29,16 +31,32 @@
     border-radius: 25px;
     cursor: pointer;
 }
-.headerH1{
+.headerH1 {
     cursor: pointer;
     width: auto;
     height: auto;
 }
 
-.inputEle{
+.inputEle {
     width: 80%;
     height: 40px;
     background: transparent;
     border: none;
     border-bottom: 2px solid var(--main-50p);
+}
+.headerLinks {
+    position: absolute;
+    right: 20px;
+}
+.logoutBtn {
+    padding: 10px 20px;
+    border: none;
+    background-color: rgba(93, 14, 55, 0.2);
+    border-radius: 6px;
+    color: red;
+    cursor: pointer;
+}
+.logoutBtn:hover {
+    background-color: rgba(93, 14, 55, 0.42);
+
 }
