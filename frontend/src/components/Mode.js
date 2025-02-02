@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import "../styles/Mode.css"
-import hands from "../images/hands.png"
+import React from 'react';
+import "../styles/Mode.css";
+import hands from "../images/hands.png";
 
 export const Mode = (props) => {
-    const {modeName, modeImg, modeDescription, } = props
+    const { modeName, modeImg, modeDescription } = props;
     return (
         <div className='mode'>
             <h2>{modeName}</h2>
@@ -21,4 +21,4 @@ export const Mode = (props) => {
             </div>
         </div>
     );
-}
+};
