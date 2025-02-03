@@ -26,6 +26,8 @@
     background-color: rgba(var(--divBg));
     border-radius: 10px 10px 0 0;
 }
+
+
 .inputDiv * {
     background-color: transparent;
     border: none;
@@ -101,4 +103,28 @@
     color: white; /* Color of the checkmark */
     font-size: 14px; /* Adjust font size as needed */
     line-height: 20px; /* Center the checkmark vertically */
+}
+.inviteBtn{
+    width: auto;
+    height: 50px;
+    border-radius: 10px;
+    background-color: #4bc95c3a;
+    color: #4ecb5d;
+    font-size: large;
+    cursor: pointer;
+    padding: 0 20px;
+    border: none;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    border: 1px solid #bdf5bc39;
+    font-weight: bold;
+    transition: background-color 0.123s ease, color 0.123s ease;
+}
+.inviteBtn:hover{
+    background-color: #4bc95c5f;
+    color: #64ff76;
 }
