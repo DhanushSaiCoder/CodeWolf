@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/Friends.css';
 import Header from '../components/Header';
 import Nav from '../components/Nav';
+import { FriendList } from './../components/FriendList';
 
 const Friends = () => {
     const navigate = useNavigate();
@@ -14,10 +15,13 @@ const Friends = () => {
     }, [navigate]);
 
     return (
-        <div className='Home'>
+        <div className='Friends'>
             <Header />
-            <div className='homeContent'>
+            <div className='friendsContent'>
                 <Nav currPage="friends" />
+                <div className='friendListDiv'>
+                    <FriendList />
+                </div>
             </div>
         </div>
     );

@@ -1,0 +1,27 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.Friends{
+    width: 100vw;
+    height: 100vh;
+}
+.friendsContent{
+    width: 100%;
+    height: calc(100vh - 75px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap:nowrap;
+}
+.friendListDiv{
+    width: 80vw;
+    height: calc(100vh - 75px);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 20px;
+    border: 1px solid var(--main-50p);
+}
