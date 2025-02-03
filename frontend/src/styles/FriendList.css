@@ -25,6 +25,7 @@
     padding: 0 20px;
     background-color: rgba(var(--divBg));
     border-radius: 10px 10px 0 0;
+    border-bottom: 1px solid #d5bcf50c ;
 }
 
 
@@ -67,11 +68,16 @@
     -webkit-appearance: none; /* Disable default appearance */
 }
 .checkBoxLabel{
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
     cursor: pointer;
+    border-left: 1px solid #d5bcf52e;
+
+    padding-left: 30px;
+    border-radius: 10px 0 0 10px;
 }
 
 /* Style the checkbox */
@@ -108,8 +114,8 @@
     width: auto;
     height: 50px;
     border-radius: 10px;
-    background-color: #4bc95c3a;
-    color: #4ecb5d;
+    background-color: #4bc95c28;
+    color: #4ecb5dd0;
     font-size: large;
     cursor: pointer;
     padding: 0 20px;
@@ -125,6 +131,7 @@
     transition: background-color 0.123s ease, color 0.123s ease;
 }
 .inviteBtn:hover{
-    background-color: #4bc95c5f;
+    background-color: #4bc95c49;
+
     color: #64ff76;
 }
