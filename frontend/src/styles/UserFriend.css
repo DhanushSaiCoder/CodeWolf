@@ -1,0 +1,29 @@
+
+.UserFriend{
+    width: 48%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+.data{
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    
+}
+.data h4{
+    text-align: left;
+    width: 100%;
+}
+.UserFriend__container{
+    border: 1px solid var(--main-50p);
+    width: 100%;
+    height: 80px;
+    border-radius: 10px;
+    background-color: rgba(var(--divBg));
+}

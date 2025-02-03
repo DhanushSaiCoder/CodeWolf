@@ -141,12 +141,21 @@
     height: calc(100% - 75px);
 
     padding: 20px 0;
-
     border-radius: 0 0 10px 10px;
 
     display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    flex-direction: row;
+    flex-wrap: nowrap;
     gap: 20px;
+
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--main-50p) transparent;
+    scroll-behavior: smooth;
+
 }
+/* .friendListContent *{
+    border: 1px solid #d5bcf535;
+} */
