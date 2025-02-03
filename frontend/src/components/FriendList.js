@@ -1,6 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import "../styles/FriendList.css";
 
 export const FriendList = (props) => {
-    return ( <div>FriendList</div> );
+    return (
+        <div className='FriendList'>
+            FriendList
+        </div>
+    );
 }

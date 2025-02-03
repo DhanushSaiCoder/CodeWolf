@@ -20,8 +20,7 @@
     height: calc(100vh - 75px);
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     flex-direction: column;
     gap: 20px;
-    border: 1px solid var(--main-50p);
 }
