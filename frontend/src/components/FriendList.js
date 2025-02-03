@@ -6,6 +6,10 @@ import { NotUserFriend } from './NotUserFriend';
 
 
 export const FriendList = (props) => {
+    const handleInviteClick = () => {
+        const message = `Hey! I'd love for you to join me on this cool new web app where we can challenge each other in coding 1v1 debug matches! Test your skills and have some fun! Check it out: https://www.placeholderlink.com`;
+        window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+    };
     return (
         <div className='FriendList'>
 
@@ -18,7 +22,7 @@ export const FriendList = (props) => {
                     </label>
                 </div>
 
-                <button className='inviteBtn'>Invite Friend
+                <button className='inviteBtn' onClick={handleInviteClick}>Invite Friend
                     <img className='whatsappLogo' src={whatsappLogo} alt='whatsappLogo' width="30px" height="30px" />
                 </button>
             </div>
