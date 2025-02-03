@@ -18,9 +18,10 @@
 .mode h2 {
     width: 100%;
     text-align: center;
-    text-decoration: underline dashed;
     color: var(--main);
     font-size: 1.5rem;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(213, 188, 245, 0.29)
 }
 
 .imgsDiv {
@@ -70,7 +71,7 @@
 .inviteFriendBtn {
     background: transparent;
     border: 2px solid var(--main-1);
-    color: var(--main);
+    color: var(--main-1);
     transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 

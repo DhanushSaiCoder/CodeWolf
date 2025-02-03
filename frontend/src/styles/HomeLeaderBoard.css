@@ -87,7 +87,7 @@
     cursor: pointer;
 }
 .showMoreBtn:hover{
-    background-color: white;
+    background-color: var(--main);
 }
 /* Spinner Container */
 .spinner-container {
