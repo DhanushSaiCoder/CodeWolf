@@ -1,10 +1,14 @@
 import React from 'react';
 import "../styles/FriendList.css";
 import whatsappLogo from "../images/whatsapp.png"
+import { UserFriend } from './UserFriend';
+import { NotUserFriend } from './NotUserFriend';
+
 
 export const FriendList = (props) => {
     return (
         <div className='FriendList'>
+
             <div className='friendListHeader'>
                 <h2>FRIENDS</h2>
                 <div className='inputDiv'>
@@ -17,6 +21,11 @@ export const FriendList = (props) => {
                 <button className='inviteBtn'>Invite Friend
                     <img className='whatsappLogo' src={whatsappLogo} alt='whatsappLogo' width="30px" height="30px" />
                 </button>
+            </div>
+
+            <div className='friendListContent'>
+                <UserFriend />
+                <NotUserFriend />
             </div>
         </div>
     );

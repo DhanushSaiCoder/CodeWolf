@@ -12,7 +12,6 @@
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
-    gap: 20px;
     background-color: rgba(var(--divBg));
 }
 
@@ -134,4 +133,20 @@
     background-color: #4bc95c49;
 
     color: #64ff76;
+}
+.friendListContent{
+
+    width: 100%;
+    height: max-content;
+    height: calc(100% - 75px);
+
+    padding: 20px 0;
+
+    border-radius: 0 0 10px 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 20px;
 }
