@@ -28,3 +28,6 @@
 .NotUserFriend__userDetails{
     width: 45%;
 }
+.NotUserFriend__rating{
+    font-size: 20px;
+}
