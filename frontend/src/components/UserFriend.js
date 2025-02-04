@@ -91,11 +91,14 @@ export const UserFriend = () => {
             <div className='data'>
                 <h4>FRIENDS</h4>
 
-                {userFriendsData.map((userFriend) => {
+                {userFriendsData.map((userFriend, index) => {
                     return (
                         <div className='UserFriend__container' key={userFriend.id}>
-                            <div className='UserFriend__username'>{userFriend.username}</div>
-                            <div className='UserFriend__rating'>{userFriend.rating}</div>
+                            <p>{index + 1}</p>
+                            <h3 className='UserFriend__username'>{userFriend.username}</h3>
+                            <p><span className='userFriend__rating'>&#8902; </span>{userFriend.rating}</p>
+                            <button className='modeBtns quickMatchBtn UserFriendQuichMatchBtn'><b>QUICK MATCH</b></button>
+
                         </div>
                     );
                 })}

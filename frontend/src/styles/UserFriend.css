@@ -26,4 +26,16 @@
     height: 80px;
     border-radius: 10px;
     background-color: rgba(var(--divBg));
+
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly
+
+}
+.UserFriendQuichMatchBtn{
+    width: auto;
+    height: auto;
+    padding: 5px 10px;
+    font-size: small;
+
 }
