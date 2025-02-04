@@ -21,7 +21,7 @@
     width: 100%;
 }
 .UserFriend__container{
-    width: 100%;
+        width: 100%;
     height: 80px;
     border-radius: 10px;
     background-color: rgba(var(--divBg));
