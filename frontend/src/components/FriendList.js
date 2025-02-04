@@ -14,7 +14,7 @@ export const FriendList = (props) => {
     const handleOnlineOnly = () => {
         setOnlineOnly(!onlineOnly);
     }
-        
+
     return (
         <div className='FriendList'>
 
