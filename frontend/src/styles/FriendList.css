@@ -1,0 +1,163 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.FriendList {
+    width: 80%;
+    height: calc(100% - 40px);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    background-color: rgba(var(--divBg));
+}
+
+.friendListHeader {
+    width: 100%;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 0 20px;
+    background-color: rgba(var(--divBg));
+    border-radius: 10px 10px 0 0;
+    border-bottom: 1px solid #d5bcf50c ;
+}
+
+
+.inputDiv * {
+    background-color: transparent;
+    border: none;
+}
+.inputDiv{
+    width: 70%;
+    height: 50px;
+    border-radius: 10px;
+    border: 1px solid #d5bcf52e;
+    background-color: #1a0731;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+
+    padding-right: 20px;
+
+    font-size: large;
+}
+.searchInp{
+    width: 80%;
+    height: 100%;
+    color: #d5bcf5a4;
+    padding: 0 20px;
+    font-size: medium;
+
+}
+.searchInp:focus {
+    outline: none; /* Remove default focus outline */
+}
+.searchInp::placeholder{
+    color: #d5bcf5a4;
+
+}
+.searchInp::-webkit-search-cancel-button {
+    -webkit-appearance: none; /* Disable default appearance */
+}
+.checkBoxLabel{
+    height: 100%;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    border-left: 1px solid #d5bcf52e;
+    font-size: 0.87rem;
+    word-wrap: nowrap;
+    padding-left: 10px;
+    border-radius: 10px 0 0 10px;
+}
+
+/* Style the checkbox */
+.onlineCheckBox {
+    height: 25px;
+    width: 25px;
+    border-radius: 5px; /* Slightly rounded corners */
+    cursor: pointer;
+    background-color: #1a0731; /* Initial background color */
+    border: 1px solid #aaaaaa36; /* Border color */
+    transition: background-color 0.123s ease, border-color 0.123s ease; /* Smooth transition */
+    -webkit-appearance: none; /* Remove default checkbox styling for webkit browsers */
+    appearance: none; /* Remove default checkbox styling */
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.onlineCheckBox:checked {
+    background-color: var(--main-1); /* Background color when checked */
+    border-color: var(--darkest); /* Border color when checked */
+}
+
+.onlineCheckBox:checked::before {
+    content: '✔'; /* Add checkmark when checked */
+    display: block;
+    text-align: center;
+    color: white; /* Color of the checkmark */
+    font-size: 14px; /* Adjust font size as needed */
+    line-height: 20px; /* Center the checkmark vertically */
+}
+.inviteBtn{
+    width: auto;
+    height: 50px;
+    border-radius: 10px;
+    background-color: #4bc95c28;
+    color: #4ecb5dd0;
+    font-size: large;
+    cursor: pointer;
+    padding: 0 20px;
+    border: none;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    border: 1px solid #bdf5bc39;
+    font-weight: bold;
+    transition: background-color 0.123s ease, color 0.123s ease;
+}
+.inviteBtn:hover{
+    background-color: #4bc95c49;
+
+    color: #64ff76;
+}
+.friendListContent{
+
+    width: 100%;
+    height: max-content;
+    height: calc(100% - 75px);
+
+    padding: 20px 0;
+    border-radius: 0 0 10px 10px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 20px;
+
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--main-50p) transparent;
+    scroll-behavior: smooth;
+
+}
+/* .friendListContent *{
+    border: 1px solid #d5bcf535;
+} */

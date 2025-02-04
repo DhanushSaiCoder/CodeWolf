@@ -1,0 +1,30 @@
+.NotUserFriend{
+    width: 48%;
+    
+}
+.NUF_data{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    gap: 10px;
+}
+.NotUserFriendQuickMatchBtn img{
+    width: auto;
+    height: 20px;
+}
+.NotUserFriendQuickMatchBtn{
+    width: auto;
+    height: 30px;
+    background-color: var(--main);
+    padding: 5px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border:none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.NotUserFriend__userDetails{
+    width: 45%;
+}
