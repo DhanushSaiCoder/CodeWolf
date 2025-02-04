@@ -21,7 +21,6 @@
     width: 100%;
 }
 .UserFriend__container{
-    border: 1px solid var(--main-50p);
     width: 100%;
     height: 80px;
     border-radius: 10px;
