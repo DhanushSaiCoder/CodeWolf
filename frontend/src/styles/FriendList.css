@@ -5,7 +5,7 @@
 }
 
 .FriendList {
-    width: calc(100% - 40px);
+    width: 80%;
     height: calc(100% - 40px);
     border-radius: 10px;
     display: flex;
@@ -68,14 +68,16 @@
 }
 .checkBoxLabel{
     height: 100%;
+    width: auto;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
     cursor: pointer;
     border-left: 1px solid #d5bcf52e;
-
-    padding-left: 30px;
+    font-size: 0.87rem;
+    word-wrap: nowrap;
+    padding-left: 10px;
     border-radius: 10px 0 0 10px;
 }
 
