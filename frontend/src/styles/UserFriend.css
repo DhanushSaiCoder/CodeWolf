@@ -32,10 +32,57 @@
     justify-content: space-evenly
 
 }
-.UserFriendQuichMatchBtn{
+.UserFriendQuickMatchBtn{
     width: auto;
     height: auto;
     padding: 5px 10px;
     font-size: small;
 
+}
+.UserFriend__userDetails{
+    width: 45%;
+    max-width: 45%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+
+
+}
+.UserFriend__onlineBadge,.UserFriend__offlineBadge{
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgb(32, 224, 32);
+}
+.UserFriend__onlineBadgeDiv,.UserFriend__offlineBadgeDiv{
+    width: auto;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+.UserFriend__offlineBadgeDiv p{
+    opacity: 0.5;
+}
+.UserFriend__offlineBadge{
+    background-color: rgb(66, 66, 66);
+}
+.UserFriendQuickMatchBtn:disabled{
+    background-color: var(--main-50p);
+    color: var(--main-50p);
+    cursor: not-allowed;
+    transition: none;
+}
+.UserFriendQuickMatchBtn:disabled:hover{
+    background-color: var(--main-50p);
+    color: var(--main-50p);
+    cursor: not-allowed;
+    transition: none;
+    transform: none;
+    
+}
+.offlineUF{
+    opacity: 0.5;
 }
