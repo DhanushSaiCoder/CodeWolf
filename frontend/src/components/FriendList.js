@@ -6,10 +6,15 @@ import { NotUserFriend } from './NotUserFriend';
 
 
 export const FriendList = (props) => {
+    const [onlineOnly, setOnlineOnly] = React.useState(false);
     const handleInviteClick = () => {
         const message = `Hey! I'd love for you to join me on this cool new web app where we can challenge each other in coding 1v1 debug matches! Test your skills and have some fun! Check it out: https://www.placeholderlink.com`;
         window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
     };
+    const handleOnlineOnly = () => {
+        setOnlineOnly(!onlineOnly);
+    }
+        
     return (
         <div className='FriendList'>
 
@@ -18,7 +23,7 @@ export const FriendList = (props) => {
                 <div className='inputDiv'>
                     <input className='searchInp' type='search' placeholder='Search by username...' />
                     <label className='checkBoxLabel' htmlFor='onlineCheckBox'>
-                        <input id='onlineCheckBox' className='onlineCheckBox' type="checkbox" />Online only
+                        <input onChange={handleOnlineOnly} id='onlineCheckBox' className='onlineCheckBox' type="checkbox" />Online only
                     </label>
                 </div>
 
@@ -28,7 +33,7 @@ export const FriendList = (props) => {
             </div>
 
             <div className='friendListContent'>
-                <UserFriend />
+                <UserFriend onlineOnly={onlineOnly} />
                 <NotUserFriend />
             </div>
         </div>
