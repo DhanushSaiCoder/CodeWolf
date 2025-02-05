@@ -1,32 +1,48 @@
 const mongoose = require("mongoose");
 const joi = require("joi");
 
+const friendSchema = new mongoose.Schema({
+    id: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
+    },
+    username: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    rating: {
+        type: Number,
+        required: true,
+        min: 0
+    }
+});
+
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
-        trim: true,  // Automatically trims leading/trailing spaces
-        minlength: 3,  // Minimum length for username (optional)
-        maxlength: 50  // Maximum length for username (optional)
+        trim: true,
+        minlength: 3,
+        maxlength: 50
     },
     email: {
         type: String,
         required: true,
         unique: true,
-        lowercase: true,  // Ensures email is stored in lowercase
-        match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, "Please provide a valid email address"] // Email format validation
+        lowercase: true,
+        match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, "Please provide a valid email address"]
     },
     password: {
         type: String,
         required: true
     },
     friends: {
-        type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+        type: [friendSchema],
         default: []
     },
     role: {
         type: String,
-        required: false,
         default: 'user',
         enum: ['user', 'admin']
     },
@@ -35,7 +51,7 @@ const userSchema = new mongoose.Schema({
         default: 1000,
         min: 0
     },
-    status:{
+    status: {
         type: String,
         default: 'offline',
         enum: ['online', 'offline', 'inMatch']

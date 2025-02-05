@@ -19,7 +19,7 @@ export const UserFriend = (props) => {
             .then(response => response.json())
             .then(data => {
                 data.friends.sort((a, b) => b.online - a.online);
-                // setUserFriendsData(data.friends);
+                setUserFriendsData(data.friends);
                 console.log(data)
                 setLoading(false);
             })
