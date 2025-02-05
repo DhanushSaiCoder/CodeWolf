@@ -52,7 +52,7 @@ router.post('/signup', async (req, res) => {
             username: req.body.username,
             email: req.body.email,
             password: hashedPassword,
-            role: req.body.role,
+            role: req.body.role
         });
 
         // **Saving User to Database**
