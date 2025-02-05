@@ -2,32 +2,9 @@ import React, { useEffect, useState } from 'react';
 import "../styles/NotUserFriend.css";
 import addFriend from "../images/add-friend.png";
 
-export const NotUserFriend = () => {
-    const [notUserFriendsData, setNotUserFriendsData] = useState([]);
-    const [loading, setLoading] = useState(false);
-
-    const fetchNonFriendsData = () => {
-        fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/nonfriends`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-        })
-        .then(response => response.text())  // Read the response as text
-        .then(text => {
-            try {
-                const data = JSON.parse(text);  // Try to parse the text as JSON
-                setNotUserFriendsData(data);
-            } catch (error) {
-                console.error('Error parsing JSON:', error);
-                console.error('Response text:', text);  // Log the raw response text
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching users:', error.message);
-        });
-    };
+export const NotUserFriend = (props) => {
+    const {notUserFriendsData,setLoading,fetchNonFriendsData} = props
+    
 
     useEffect(() => {
         // Fetch data when component mounts

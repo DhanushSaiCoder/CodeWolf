@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import "../styles/FriendList.css";
 import whatsappLogo from "../images/whatsapp.png"
 import { UserFriend } from './UserFriend';
@@ -14,6 +14,32 @@ export const FriendList = (props) => {
     const handleOnlineOnly = () => {
         setOnlineOnly(!onlineOnly);
     }
+//notUSerFriends: 
+    const [notUserFriendsData, setNotUserFriendsData] = useState([]);
+        const [loading, setLoading] = useState(false);
+    
+        const fetchNonFriendsData = () => {
+            fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/nonfriends`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            .then(response => response.text())  // Read the response as text
+            .then(text => {
+                try {
+                    const data = JSON.parse(text);  // Try to parse the text as JSON
+                    setNotUserFriendsData(data);
+                } catch (error) {
+                    console.error('Error parsing JSON:', error);
+                    console.error('Response text:', text);  // Log the raw response text
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching users:', error.message);
+            });
+        };
 
     return (
         <div className='FriendList'>
@@ -34,7 +60,7 @@ export const FriendList = (props) => {
 
             <div className='friendListContent'>
                 <UserFriend onlineOnly={onlineOnly} />
-                <NotUserFriend />
+                <NotUserFriend  notUserFriendsData={notUserFriendsData} setLoading={setLoading} fetchNonFriendsData={fetchNonFriendsData}    />
             </div>
         </div>
     );
