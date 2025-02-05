@@ -40,6 +40,38 @@ export const FriendList = (props) => {
                 console.error('Error fetching users:', error.message);
             });
     };
+    const handleAddFriend = (id, username, rating) => {
+            setLoading(true);
+    
+            fetch(`${process.env.REACT_APP_BACKEND_URL}/friends`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({
+                    id: id,
+                    username: username, // Use the actual username
+                    rating: rating, // Use the actual rating
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                setLoading(false);
+                // Handle the response data
+                console.log('Friend added:', data);
+                // Refetch non-friends data after adding a friend
+                fetchNonFriendsData();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                setLoading(false);
+            })
+            .finally(()=> {
+                fetchUserFriend()
+            })
+        };
+    
 
     //userFriends: 
     const [userFriendsData, setUserFriendsData] = useState([]);
@@ -93,7 +125,7 @@ export const FriendList = (props) => {
 
             <div className='friendListContent'>
                 <UserFriend fetchUserFriend={fetchUserFriend} userFriendsData={userFriendsData} UFloading={UFloading} setUFLoading={setUFLoading} onlineOnly={onlineOnly} />
-                <NotUserFriend notUserFriendsData={notUserFriendsData} setLoading={setLoading} fetchNonFriendsData={fetchNonFriendsData} />
+                <NotUserFriend handleAddFriend={handleAddFriend} notUserFriendsData={notUserFriendsData} setLoading={setLoading} fetchNonFriendsData={fetchNonFriendsData} />
             </div>
         </div>
     );
