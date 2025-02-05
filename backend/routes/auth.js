@@ -3,6 +3,18 @@ const router = express.Router()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const { validateUser, User } = require('../models/User')
+const authenticateToken = require('../middleware/authenticateToken')
+
+//getLogged in user document
+router.get('/me',authenticateToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id).select('-password');
+        res.json(user);
+    } catch (err) {
+        console.error('Error fetching user:', err);
+        res.status(500).json({ message: 'An unexpected error occurred.' });
+    }
+})
 
 router.get('/users', async (req, res) => {
     try {
