@@ -16,6 +16,20 @@ router.get('/me',authenticateToken, async (req, res) => {
     }
 })
 
+// Get all users except one's friends and himself
+router.get('/nonfriends', authenticateToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        const friends = user.friends.map(friend => friend.id);
+        friends.push(req.user._id);
+        const users = await User.find({ _id: { $nin: friends } }, '_id username rating status').lean();
+        res.status(200).json(users);
+    } catch (err) {
+        console.error('Error fetching users:', err);
+        res.status(500).json({ message: 'An unexpected error occurred.' });
+    }
+});
+
 router.get('/users', async (req, res) => {
     try {
         // Fetch top 10 users, selecting only 'username' and 'rating', and sort by rating in descending order

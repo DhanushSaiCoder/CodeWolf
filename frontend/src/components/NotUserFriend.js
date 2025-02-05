@@ -1,24 +1,44 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import "../styles/NotUserFriend.css";
 import addFriend from "../images/add-friend.png"
 export const NotUserFriend = () => {
-    const notUserFriendsData = [
-        { id: 1, username: 'John Doe', rating: 1321, online: true },
-        { id: 2, username: 'Jane Doe', rating: 1234, online: false },
-        { id: 3, username: 'John Smith', rating: 1000, online: true },
-        { id: 4, username: 'Jane Smith', rating: 900, online: false },
-        { id: 5, username: 'John Johnson', rating: 800, online: true },
-        { id: 6, username: 'Jane Johnson', rating: 700, online: false },
-        { id: 7, username: 'John Brown', rating: 600, online: true },
-        { id: 8, username: 'Jane Brown', rating: 500, online: false },
-        { id: 9, username: 'John White', rating: 400, online: true },
-        { id: 10, username: 'Jane White', rating: 300, online: false }
-    ];
+    const [notUserFriendsData, setNotUserFriendsData] = React.useState([])
+
+    useEffect(() => {
+        // Fetch data from the API
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/nonfriends`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+            .then(response => {
+                console.log('Response status:', response.status);
+                return response.text();  // Read the response as text
+            })
+            .then(text => {
+                try {
+                    const data = JSON.parse(text);  // Try to parse the text as JSON
+                    console.log(data);
+                    // setNotUserFriendsData(data);
+                } catch (error) {
+                    console.error('Error parsing JSON:', error);
+                    console.error('Response text:', text);  // Log the raw response text
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching users:', error.message);
+            });
+    }, []);
+
+
+
     return (<div className='NotUserFriend'>
-        <h4 style={{marginBottom: "10px"}}>OTHER USERS</h4>
+        <h4 style={{ marginBottom: "10px" }}>OTHER USERS</h4>
         <div className='NUF_data'>
             {notUserFriendsData.map((notUserFriend, index) => {
-                return(<div className="UserFriend__container" key={notUserFriend.id}>
+                return (<div className="UserFriend__container" key={notUserFriend.id}>
                     <p>{index + 1}</p>
                     <div className='NotUserFriend__userDetails'>
                         <div>
@@ -26,7 +46,7 @@ export const NotUserFriend = () => {
                             <p><span className='NotUserFriend__rating'>&#8902; </span>{notUserFriend.rating}</p>
                         </div>
                     </div>
-                   
+
                     <button
                         className='inviteFriendBtn quickMatchBtn NotUserFriendQuickMatchBtn'
                         disabled={!notUserFriend.online}
