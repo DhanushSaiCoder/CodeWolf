@@ -56,7 +56,8 @@
 
 /* === Form Section === */
 .signupFormDiv {
-    background-color: var(--darkest);
+    background-color: #1f053a27;
+
     border: 2px solid var(--main-50p);
     border-radius: 20px;
     padding: 3rem;
