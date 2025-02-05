@@ -1,0 +1,23 @@
+.SettingsContainer{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    gap: 20px;
+    height: calc(100vh - 75px);
+
+
+
+}
+.settingsNavDiv{
+    height: calc(100vh - 75px);
+
+}
+
+.settingsContent{
+    width: calc(80vw - 40px);
+    height: calc(100% - 40px);
+    display: flex;
+    border-radius: 10px;
+    background:rgba(var(--divBg));
+}

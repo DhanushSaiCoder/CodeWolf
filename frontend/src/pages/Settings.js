@@ -14,10 +14,16 @@ const Settings = () => {
     }, [navigate]);
 
     return (
-        <div className='Home'>
+        <div className='Settings'>
             <Header />
-            <div className='homeContent'>
-                <Nav currPage="settings" />
+            <div className='SettingsContainer'>
+
+                <div className='settingsNavDiv'>
+                    <Nav currPage="settings" />
+                </div>
+                <div className='settingsContent'>
+                    <p>this is settings, section</p>
+                </div>
             </div>
         </div>
     );
