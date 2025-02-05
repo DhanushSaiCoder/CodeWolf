@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import "../styles/FriendList.css";
 import whatsappLogo from "../images/whatsapp.png"
 import { UserFriend } from './UserFriend';
@@ -14,18 +14,18 @@ export const FriendList = (props) => {
     const handleOnlineOnly = () => {
         setOnlineOnly(!onlineOnly);
     }
-//notUSerFriends: 
+    //notUSerFriends: 
     const [notUserFriendsData, setNotUserFriendsData] = useState([]);
-        const [loading, setLoading] = useState(false);
-    
-        const fetchNonFriendsData = () => {
-            fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/nonfriends`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            })
+    const [loading, setLoading] = useState(false);
+
+    const fetchNonFriendsData = () => {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/nonfriends`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
             .then(response => response.text())  // Read the response as text
             .then(text => {
                 try {
@@ -39,7 +39,40 @@ export const FriendList = (props) => {
             .catch(error => {
                 console.error('Error fetching users:', error.message);
             });
-        };
+    };
+
+    //userFriends: 
+    const [userFriendsData, setUserFriendsData] = useState([]);
+
+    const [UFloading, setUFLoading] = useState(true);
+
+    const fetchUserFriend = () => {
+        setUFLoading(true); // Ensure loading state is set at the start
+
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/me`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                data.friends.sort((a, b) => b.online - a.online);
+                setUserFriendsData(data.friends);
+                console.log(data);
+                setUFLoading(false);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                setUFLoading(false);
+            });
+    };
+
+
+    useEffect(() => {
+        fetchUserFriend()
+    }, [])
 
     return (
         <div className='FriendList'>
@@ -59,8 +92,8 @@ export const FriendList = (props) => {
             </div>
 
             <div className='friendListContent'>
-                <UserFriend onlineOnly={onlineOnly} />
-                <NotUserFriend  notUserFriendsData={notUserFriendsData} setLoading={setLoading} fetchNonFriendsData={fetchNonFriendsData}    />
+                <UserFriend fetchUserFriend={fetchUserFriend} userFriendsData={userFriendsData} UFloading={UFloading} setUFLoading={setUFLoading} onlineOnly={onlineOnly} />
+                <NotUserFriend notUserFriendsData={notUserFriendsData} setLoading={setLoading} fetchNonFriendsData={fetchNonFriendsData} />
             </div>
         </div>
     );

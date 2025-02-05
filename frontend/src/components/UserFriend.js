@@ -4,30 +4,11 @@ import { NotUserFriend } from './NotUserFriend';
 
 export const UserFriend = (props) => {
 
-    const [userFriendsData, setUserFriendsData] = useState([]);
-    
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/me`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                data.friends.sort((a, b) => b.online - a.online);
-                setUserFriendsData(data.friends);
-                console.log(data)
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                setLoading(false);
-            });
-    }, []);
+    const {
+        userFriendsData,
+        UFloading: loading,
+        setUFLoading: setLoading,
+    } = props
 
     return (
         <div className='UserFriend'>
