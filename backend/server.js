@@ -32,16 +32,33 @@ app.get('/', (req, res) => {
 const server = http.createServer(app); // Create an HTTP server
 const io = new Server(server, {
     cors: {
-        origin: "*", // Update this with your frontend URL
+        origin: "http://localhost:3000", // Update this with your frontend URL
         methods: ["GET", "POST"]
     }
 });
 
+const onlineUser = (id) => {
+    console.log('user making online: ', id);
+}
+const offlineUser = (id) => {
+    console.log('user making online: ', id);
+    console.log('user making offline: ', id);
+
+} 
 io.on('connection', (socket) => {
     console.log('A user connected');
 
+    let token; // Variable to store the user's token
+
+    // Listen for token from client
+    socket.on('sendToken', (receivedToken) => {
+        token = receivedToken; // Store the token
+        onlineUser(token);
+    });
+
     socket.on('disconnect', () => {
         console.log('User disconnected');
+        offlineUser(token); // Use the stored token
     });
 
     // Example event

@@ -16,8 +16,12 @@ const Home = () => {
     useEffect(() => {
         if (!localStorage.getItem('token')) {
             navigate('/auth/login');
+        } else if (socket) {  // Only emit if socket is not null
+            const token = localStorage.getItem('token');
+            socket.emit('sendToken', token);
         }
-    }, [navigate]);
+    }, [navigate, socket]);
+    
 
     useEffect(() => {
         if (socket) {
