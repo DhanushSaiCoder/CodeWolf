@@ -15,6 +15,11 @@ const friendSchema = new mongoose.Schema({
         type: Number,
         required: true,
         min: 0
+    },
+    status: {
+        type: String,
+        default: 'offline',
+        enum: ['online', 'offline', 'inMatch']
     }
 });
 

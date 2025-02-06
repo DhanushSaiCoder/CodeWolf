@@ -92,7 +92,7 @@ export const FriendList = (props) => {
             .then(data => {
                 data.friends.sort((a, b) => b.online - a.online);
                 setUserFriendsData(data.friends);
-                console.log(data);
+                console.log("userFriendData:" , data);
                 setUFLoading(false);
             })
             .catch(error => {
