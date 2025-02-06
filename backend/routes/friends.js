@@ -44,7 +44,7 @@ router.post('/', authenticateToken, async (req, res) => {
             id: id,
             username: username,
             rating: rating,
-            status: otherUser.status
+            status: otherUser.status 
         };
 
         console.log('friend: ', friend)
