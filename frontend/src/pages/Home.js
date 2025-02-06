@@ -7,9 +7,11 @@ import { Mode } from '../components/Mode';
 import coder from '../images/coder.png';
 import coder2 from '../images/coder2.png';
 import { HomeLeaderBoard } from './../components/HomeLeaderBoard';
+import { useSocket } from '../SocketContext'; // Import useSocket
 
 const Home = () => {
     const navigate = useNavigate();
+    const socket = useSocket(); // Access the socket
 
     useEffect(() => {
         if (!localStorage.getItem('token')) {
@@ -17,23 +19,35 @@ const Home = () => {
         }
     }, [navigate]);
 
+    useEffect(() => {
+        if (socket) {
+            // Listen for events from the server
+            socket.on('exampleEventResponse', (data) => {
+                console.log(data);
+            });
+
+            // Cleanup on component unmount
+            return () => {
+                socket.off('exampleEventResponse');
+            };
+        }
+    }, [socket]);
+
     return (
         <div className='Home'>
             <Header />
             <div className='homeContent'>
                 <Nav currPage="home" />
                 <div className='modesContainer'>
-
                     <Mode
                         modeName="QUICK DEBUG MODE"
                         modeImg={coder}
                         modeImg2={coder2}
                         modeDescription="Resolve all errors in the provided code faster than your opponent within the allocated time."
                     />
-                   
                 </div>
                 <div className='homeLeaderBoardContainer'>
-                    <HomeLeaderBoard/>
+                    <HomeLeaderBoard />
                 </div>
             </div>
         </div>
