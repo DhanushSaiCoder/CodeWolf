@@ -26,8 +26,7 @@ router.post('/', authenticateToken, async (req, res) => {
         // Get the logged-in user's document
         const user = await User.findOne({ _id: req.user._id });
 
-        const otherUser = await User.findOne({ _id: id }).select('status');
-        console.log('Other user status:', otherUser); // Log other user
+        const otherUser = await User.findOne({ _id: id })
 
         if (!user) return res.status(404).send("User not found");
 
@@ -45,12 +44,21 @@ router.post('/', authenticateToken, async (req, res) => {
             id: id,
             username: username,
             rating: rating,
-            status: otherUser.status
+            status: otherUser.status.status
         };
+
 
         user.friends.push(friend);
         await user.save();
 
+        otherUser.friends.push({
+            id: user.id,
+            username: user.username,
+            rating:user.rating,
+            status: user.status
+        })
+        await otherUser.save()
+        
         res.send(user);
     } catch (err) {
         console.error(err); // Log the error
