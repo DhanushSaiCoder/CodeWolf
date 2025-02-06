@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import "../styles/UserFriend.css";
 import { NotUserFriend } from './NotUserFriend';
 
@@ -17,7 +17,7 @@ export const UserFriend = (props) => {
                 {loading ? <p>Loading...</p> : (
                     userFriendsData.length ? userFriendsData.map((userFriend, index) => {
                         return !props.onlineOnly ? (
-                            <div className={userFriend.status == "online" ? "UserFriend__container onlineUF" : "UserFriend__container offlineUF"} key={userFriend.id}>
+                            <div className={userFriend.status === "online" ? "UserFriend__container onlineUF" : "UserFriend__container offlineUF"} key={userFriend.id}>
                                 <p>{index + 1}</p>
                                 <div className='UserFriend__userDetails'>
                                     <div>
@@ -26,7 +26,7 @@ export const UserFriend = (props) => {
                                     </div>
                                 </div>
                                 {
-                                    userFriend.status == "online" ? (
+                                    userFriend.status === "online" ? (
                                         <div className='UserFriend__onlineBadgeDiv'>
                                             <div className='UserFriend__onlineBadge'></div>
                                             <p>Online</p>
@@ -40,12 +40,12 @@ export const UserFriend = (props) => {
                                 }
                                 <button
                                     className='modeBtns quickMatchBtn UserFriendQuickMatchBtn'
-                                    disabled={!userFriend.status == "online"}
+                                    disabled={userFriend.status !== "online"}
                                 >
                                     <b>QUICK MATCH</b>
                                 </button>
                             </div>
-                        ) : userFriend.status == "online" ? (
+                        ) : userFriend.status === "online" ? (
                             <div className="UserFriend__container onlineUF" key={userFriend.id}>
                                 <p>{index + 1}</p>
                                 <div className='UserFriend__userDetails'>
@@ -55,7 +55,7 @@ export const UserFriend = (props) => {
                                     </div>
                                 </div>
                                 {
-                                    userFriend.status == "online" ? (
+                                    userFriend.status === "online" ? (
                                         <div className='UserFriend__onlineBadgeDiv'>
                                             <div className='UserFriend__onlineBadge'></div>
                                             <p>Online</p>
@@ -69,7 +69,7 @@ export const UserFriend = (props) => {
                                 }
                                 <button
                                     className='modeBtns quickMatchBtn UserFriendQuickMatchBtn'
-                                    disabled={!userFriend.status == "online"}
+                                    disabled={userFriend.status !== "online"}
                                 >
                                     <b>QUICK MATCH</b>
                                 </button>
