@@ -44,9 +44,10 @@ router.post('/', authenticateToken, async (req, res) => {
             id: id,
             username: username,
             rating: rating,
-            status: otherUser.status.status
+            status: otherUser.status
         };
 
+        console.log('friend: ', friend)
 
         user.friends.push(friend);
         await user.save();
