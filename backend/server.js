@@ -5,7 +5,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const http = require('http');
 const { Server } = require('socket.io');
-
+const { User } = require('./models/User'); // Corrected path for User model
+const jwt = require('jsonwebtoken');
 dotenv.config();
 
 const port = process.env.PORT || 3000;
@@ -37,14 +38,40 @@ const io = new Server(server, {
     }
 });
 
-const onlineUser = (id) => {
-    console.log('user making online: ', id);
-}
-const offlineUser = (id) => {
-    console.log('user making online: ', id);
-    console.log('user making offline: ', id);
+const onlineUser = async (token) => {
+    try {
+        console.log('User making online:', token);
+        const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+        const user = await User.findById(decoded._id);
+        if (user) {
+            user.status = 'online';
+            const result = await user.save();
+            console.log('online result', result)
+        } else {
+            console.log('User not found');
+        }
+    } catch (err) {
+        console.log('Invalid token:', err.message);
+    }
+};
 
-} 
+const offlineUser = async (token) => {
+    try {
+        console.log('User making offline:', token);
+        const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+        const user = await User.findById(decoded._id);
+        if (user) {
+            user.status = 'offline';
+            const result = await user.save();
+            console.log('Offline result:', result);
+        } else {
+            console.log('User not found');
+        }
+    } catch (err) {
+        console.log('Invalid token:', err.message);
+    }
+};
+
 io.on('connection', (socket) => {
     console.log('A user connected');
 
