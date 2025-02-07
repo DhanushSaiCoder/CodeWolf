@@ -46,7 +46,7 @@ const onlineUser = async (token) => {
         if (user) {
             user.status = 'online';
             const result = await user.save();
-            console.log('online result', result)
+            console.log('online result', result.username,result.status)
         } else {
             console.log('User not found');
         }
@@ -63,7 +63,7 @@ const offlineUser = async (token) => {
         if (user) {
             user.status = 'offline';
             const result = await user.save();
-            console.log('Offline result:', result);
+            console.log('Offline result:', result.username);
         } else {
             console.log('User not found');
         }
