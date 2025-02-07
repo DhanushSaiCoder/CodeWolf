@@ -38,6 +38,7 @@ const io = new Server(server, {
     }
 });
 
+
 const onlineUser = async (token) => {
     try {
         console.log('User making online:', token);
@@ -47,6 +48,8 @@ const onlineUser = async (token) => {
             user.status = 'online';
             const result = await user.save();
             console.log('online result', result.username,result.status)
+            //
+
         } else {
             console.log('User not found');
         }
@@ -54,6 +57,7 @@ const onlineUser = async (token) => {
         console.log('Invalid token:', err.message);
     }
 };
+
 
 const offlineUser = async (token) => {
     try {
