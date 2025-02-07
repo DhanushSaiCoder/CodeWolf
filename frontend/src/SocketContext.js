@@ -12,7 +12,7 @@ export const SocketProvider = ({ children }) => {
     const [socket, setSocket] = useState(null);
 
     useEffect(() => {
-        const newSocket = io('http://localhost:3000'); // Update this URL if needed
+        const newSocket = io('http://localhost:5000'); // Update this URL if needed
         setSocket(newSocket);
 
         return () => newSocket.close();
