@@ -92,17 +92,6 @@ const Home = () => {
           <HomeLeaderBoard />
         </div>
 
-        {/* Display friends list with real-time status */}
-        <div className='friendsList'>
-          <h3>Your Friends</h3>
-          <ul>
-            {friends.map((friend) => (
-              <li key={friend.id}>
-                {friend.username} - <strong>{friend.status}</strong>
-              </li>
-            ))}
-          </ul>
-        </div>
       </div>
     </div>
   );
