@@ -48,7 +48,7 @@ const onlineUser = async (token) => {
             user.status = 'online';
             const result = await user.save();
             console.log('online result', result.username,result.status)
-            //
+            socket.emit('onlineUser', result.username)
 
         } else {
             console.log('User not found');

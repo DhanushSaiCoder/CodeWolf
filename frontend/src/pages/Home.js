@@ -7,32 +7,45 @@ import { Mode } from '../components/Mode';
 import coder from '../images/coder.png';
 import coder2 from '../images/coder2.png';
 import { HomeLeaderBoard } from './../components/HomeLeaderBoard';
-import { useSocket } from '../SocketContext'; // Import useSocket
+import { useSocket } from '../SocketContext';
 
 const Home = () => {
     const navigate = useNavigate();
-    const socket = useSocket(); // Access the socket
+    const socket = useSocket();
 
     useEffect(() => {
         if (!localStorage.getItem('token')) {
             navigate('/auth/login');
-        } else if (socket) {  // Only emit if socket is not null
-            const token = localStorage.getItem('token');
-            socket.emit('sendToken', token);
+            return;
+        }
+
+        if (socket) {
+            const handleConnect = () => {
+                const token = localStorage.getItem('token');
+                socket.emit('sendToken', token);
+            };
+
+            // Send token on connect and if already connected
+            socket.on('connect', handleConnect);
+            if (socket.connected) handleConnect();
+
+            return () => {
+                socket.off('connect', handleConnect);
+            };
         }
     }, [navigate, socket]);
-    
 
     useEffect(() => {
         if (socket) {
-            // Listen for events from the server
-            socket.on('exampleEventResponse', (data) => {
-                console.log(data);
-            });
+            const handleOnlineUser = (username) => {
+                console.log("user online: ", username);
+                alert(`user online: ${username}`);
+            };
 
-            // Cleanup on component unmount
+            socket.on('onlineUser', handleOnlineUser);
+
             return () => {
-                socket.off('exampleEventResponse');
+                socket.off('onlineUser', handleOnlineUser);
             };
         }
     }, [socket]);
