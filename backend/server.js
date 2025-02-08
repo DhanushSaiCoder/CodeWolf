@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const http = require('http');
 const { Server } = require('socket.io');
-const { User } = require('./models/User'); // Corrected path for User model
+const { User } = require('./models/User');
 const jwt = require('jsonwebtoken');
 
 dotenv.config();
@@ -33,7 +33,8 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-const server = http.createServer(app); // Create an HTTP server
+// Create an HTTP server
+const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: 'http://localhost:3000', // Frontend URL
@@ -41,39 +42,34 @@ const io = new Server(server, {
   },
 });
 
-// Functions to handle online and offline users
-const onlineUser = async (token, socket) => {
+// Unified function to handle online and offline status updates
+const updateUserStatus = async (token, status) => {
   try {
-    console.log('User making online:', token);
+    console.log(`Updating user status to ${status} for token:`, token);
     const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
-    const user = await User.findById(decoded._id);
+    const userId = decoded._id;
+
+    // Update the user's own status
+    const user = await User.findById(userId);
     if (user) {
-      user.status = 'online';
-      const result = await user.save();
-      console.log('Online result:', result.username, result.status);
+      user.status = status;
+      await user.save();
 
-      // Broadcast to all clients that a user is online
-      io.emit('onlineUser', result.username);
-    } else {
-      console.log('User not found');
-    }
-  } catch (err) {
-    console.log('Invalid token:', err.message);
-  }
-};
+      // Update the status in the friends arrays of other users
+      await User.updateMany(
+        {
+          'friends.id': userId, // Users who have this user in their friends array
+        },
+        {
+          $set: { 'friends.$[elem].status': status }, // Update the status field of the matching friend
+        },
+        {
+          arrayFilters: [{ 'elem.id': userId }], // Filter to match the specific friend in the array
+          multi: true, // Update multiple documents
+        }
+      );
 
-const offlineUser = async (token, socket) => {
-  try {
-    console.log('User making offline:', token);
-    const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
-    const user = await User.findById(decoded._id);
-    if (user) {
-      user.status = 'offline';
-      const result = await user.save();
-      console.log('Offline result:', result.username, result.status);
-
-      // Broadcast to all clients that a user is offline
-      io.emit('offlineUser', result.username);
+      console.log(`User ${user.username} is now ${status}`);
     } else {
       console.log('User not found');
     }
@@ -84,24 +80,19 @@ const offlineUser = async (token, socket) => {
 
 io.on('connection', (socket) => {
   console.log('A user connected');
-
   let token; // Variable to store the user's token
 
   // Listen for token from client
   socket.on('sendToken', async (receivedToken) => {
     token = receivedToken; // Store the token
-    await onlineUser(token, socket); // Pass socket to onlineUser
+    await updateUserStatus(token, 'online');
   });
 
   socket.on('disconnect', async () => {
     console.log('User disconnected');
-    await offlineUser(token, socket); // Use the stored token
-  });
-
-  // Example event
-  socket.on('exampleEvent', (data) => {
-    console.log(data);
-    io.emit('exampleEventResponse', { msg: 'Hello from server!' });
+    if (token) {
+      await updateUserStatus(token, 'offline');
+    }
   });
 });
 
