@@ -42,13 +42,12 @@ const io = new Server(server, {
   },
 });
 
-// Unified function to handle online and offline status updates
-const updateUserStatus = async (token, status) => {
-  try {
-    console.log(`Updating user status to ${status} for token:`, token);
-    const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
-    const userId = decoded._id;
+// Map to store userId and their socket IDs
+const userSocketMap = new Map();
 
+// Unified function to handle online and offline status updates
+const updateUserStatus = async (userId, status) => {
+  try {
     // Update the user's own status
     const user = await User.findById(userId);
     if (user) {
@@ -65,33 +64,47 @@ const updateUserStatus = async (token, status) => {
         },
         {
           arrayFilters: [{ 'elem.id': userId }], // Filter to match the specific friend in the array
-          multi: true, // Update multiple documents
         }
       );
 
       console.log(`User ${user.username} is now ${status}`);
+
+      // Emit status update to all connected clients
+      io.emit('statusUpdate', { userId, status });
     } else {
       console.log('User not found');
     }
   } catch (err) {
-    console.log('Invalid token:', err.message);
+    console.log('Error updating user status:', err.message);
   }
 };
 
 io.on('connection', (socket) => {
   console.log('A user connected');
-  let token; // Variable to store the user's token
+  let userId; // Variable to store the user's ID
 
   // Listen for token from client
-  socket.on('sendToken', async (receivedToken) => {
-    token = receivedToken; // Store the token
-    await updateUserStatus(token, 'online');
+  socket.on('sendToken', async (token) => {
+    try {
+      const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+      userId = decoded._id; // Store the user's ID
+
+      // Map the user ID to their socket ID
+      userSocketMap.set(userId, socket.id);
+
+      await updateUserStatus(userId, 'online');
+    } catch (err) {
+      console.log('Invalid token:', err.message);
+    }
   });
 
   socket.on('disconnect', async () => {
     console.log('User disconnected');
-    if (token) {
-      await updateUserStatus(token, 'offline');
+    if (userId) {
+      await updateUserStatus(userId, 'offline');
+
+      // Remove the user from the socket map
+      userSocketMap.delete(userId);
     }
   });
 });

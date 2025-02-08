@@ -71,4 +71,17 @@ router.post('/', authenticateToken, async (req, res) => {
   }
 });
 
+// Route to get the user's friends list
+router.get('/list', authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select('friends');
+    if (!user) return res.status(404).send('User not found');
+
+    res.json({ friends: user.friends });
+  } catch (err) {
+    console.error('Error fetching friends list:', err);
+    res.status(500).send('Internal server error');
+  }
+});
+
 module.exports = router;
