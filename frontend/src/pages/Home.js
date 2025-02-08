@@ -9,14 +9,13 @@ import coder from '../images/coder.png';
 import coder2 from '../images/coder2.png';
 import { HomeLeaderBoard } from './../components/HomeLeaderBoard';
 import { useSocket } from '../SocketContext';
-import { jwtDecode } from 'jwt-decode'; // Corrected import statement
+import { jwtDecode } from 'jwt-decode';
 
 const Home = () => {
   const navigate = useNavigate();
   const socket = useSocket();
 
-  const [onlineUsers, setOnlineUsers] = useState([]);
-  const [currentUser, setCurrentUser] = useState(null); // To store current user's username
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -25,9 +24,8 @@ const Home = () => {
       return;
     }
 
-    // Decode the token to get the username
-    const decodedToken = jwtDecode(token); // Updated function name
-    const username = decodedToken.username; // Ensure your token contains the 'username' field
+    const decodedToken = jwtDecode(token);
+    const username = decodedToken.username;
     setCurrentUser(username);
 
     if (socket) {
@@ -35,26 +33,41 @@ const Home = () => {
         socket.emit('sendToken', token);
       };
 
-      const handleOnlineUser = (username) => {
+      const handleOnlineUser = async (username) => {
         console.log('User online:', username);
-
-        // Exclude the current user
-        if (username !== currentUser) {
-          setOnlineUsers((prevUsers) => {
-            // Avoid duplicates
-            if (!prevUsers.includes(username)) {
-              return [...prevUsers, username];
-            }
-            return prevUsers;
+        try {
+          const response = await fetch(`http://localhost:5000/friends/online/${decodedToken._id}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
           });
+
+          const data = await response.json();
+          console.log('Online status updated:', data);
+        } catch (error) {
+          console.error('Error updating online status:', error);
         }
       };
 
-      const handleOfflineUser = (username) => {
+      const handleOfflineUser = async (username) => {
         console.log('User offline:', username);
-        setOnlineUsers((prevUsers) =>
-          prevUsers.filter((user) => user !== username)
-        );
+        try {
+          const response = await fetch(`http://localhost:3001/friends/online/${username}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({ status: 'offline' }),
+          });
+
+          const data = await response.json();
+          console.log('Offline status updated:', data);
+        } catch (error) {
+          console.error('Error updating offline status:', error);
+        }
       };
 
       // Attach event listeners
@@ -92,14 +105,7 @@ const Home = () => {
         <div className='homeLeaderBoardContainer'>
           <HomeLeaderBoard />
         </div>
-        <div className='onlineUsers'>
-          <h3>Online Users:</h3>
-          <ul>
-            {onlineUsers.map((user, index) => (
-              <li key={index}>{user}</li>
-            ))}
-          </ul>
-        </div>
+        {/* Removed online users list */}
       </div>
     </div>
   );
