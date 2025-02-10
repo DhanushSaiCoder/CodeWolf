@@ -14,6 +14,7 @@ export const UserFriend = (props) => {
     } = props;
     const [socket, setSocket] = useState(null);
     const [popup, showPopup] = useState(false);
+    
     const token = localStorage.getItem('token');
 
     // Holds the ID of the user you want to challenge (set when clicking a friend)
@@ -25,6 +26,7 @@ export const UserFriend = (props) => {
         difficulty: 'easy',        // Default: Easy
         mode: 'quick-debug'
     });
+    const [matchRequestData, setMatchRequestData] = useState({})
 
     useEffect(() => {
         // Establish the socket connection
@@ -37,7 +39,7 @@ export const UserFriend = (props) => {
             newSocket.emit('sendToken', token);
         });
 
-        newSocket.on('customEvent', (data) => {
+        newSocket.on('sendMatchRequest', (data) => {
             console.log('Received customEvent in the client:', data);
         });
 
