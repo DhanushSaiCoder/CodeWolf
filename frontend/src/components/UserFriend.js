@@ -14,7 +14,7 @@ export const UserFriend = (props) => {
     } = props;
     const [socket, setSocket] = useState(null);
     const [popup, showPopup] = useState(false);
-    
+
     const token = localStorage.getItem('token');
 
     // Holds the ID of the user you want to challenge (set when clicking a friend)
@@ -26,7 +26,7 @@ export const UserFriend = (props) => {
         difficulty: 'easy',        // Default: Easy
         mode: 'quick-debug'
     });
-    const [matchRequestData, setMatchRequestData] = useState({})
+    const [matchRequestData, setMatchRequestData] = useState(false)
 
     useEffect(() => {
         // Establish the socket connection
@@ -41,6 +41,7 @@ export const UserFriend = (props) => {
 
         newSocket.on('sendMatchRequest', (data) => {
             console.log('Received customEvent in the client:', data);
+            setMatchRequestData(data)
         });
 
         setSocket(newSocket);
@@ -250,29 +251,29 @@ export const UserFriend = (props) => {
             </div>
 
             {/* (Optional) Example section showing an incoming match request */}
-            {/* {requestData && (
-        <div className='requestDiv'>
-          <h1 className='RHeading'>MATCH INVITE</h1>
-          <h2>
-            Dhanush Sai <span className='RRating'>(1000)</span>
-          </h2>
-          <p>
-            <i>invited you for a match</i>
-          </p>
-          <div className='RModeDetailsDiv'>
-            <p className='RModeDetails'>
-              <b>MODE:</b> Quick Debug - JavaScript
-            </p>
-            <p className='RModeDetails'>
-              <b>DIFFICULTY:</b> Easy
-            </p>
-          </div>
-          <div className='acceptRejectDiv'>
-            <button className='RAccept'>Accept</button>
-            <button className='RReject'>Reject</button>
-          </div>
-        </div>
-      )} */}
+            {matchRequestData && (
+                <div className='requestDiv'>
+                    <h1 className='RHeading'>MATCH INVITE</h1>
+                    <h2>
+                       {matchRequestData.requesterUsername}<span className='RRating'>({matchRequestData.requesterRating})</span>
+                    </h2>
+                    <p>
+                        <i>invited you for a match</i>
+                    </p>
+                    <div className='RModeDetailsDiv'>
+                        <p className='RModeDetails'>
+                            <b>MODE:</b> {matchRequestData.mode} - {matchRequestData.programmingLanguage}
+                        </p>
+                        <p className='RModeDetails'>
+                            <b>DIFFICULTY:</b> {matchRequestData.difficulty}
+                        </p>
+                    </div>
+                    <div className='acceptRejectDiv'>
+                        <button className='RAccept'>Accept</button>
+                        <button className='RReject'>Reject</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
