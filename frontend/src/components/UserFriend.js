@@ -11,7 +11,7 @@ export const UserFriend = (props) => {
         UFloading: loading,
         setUFLoading: setLoading,
     } = props;
-
+    const [requestData, setRequestData] = useState({})
     const [socket, setSocket] = useState(null);
     const token = localStorage.getItem('token'); // Get the JWT token from local storage
 
@@ -126,6 +126,21 @@ export const UserFriend = (props) => {
                     }) : <p>No Friends</p>
                 )}
             </div>
+            {requestData && (
+                <div className='requestDiv'>
+                    <h1 className='RHeading'>MATCH INVITE</h1>
+                    <h2>Dhanush Sai <span className='RRating'>(1000)</span></h2>
+                    {/* <h2>{requestData.requesteeName}</h2> */}
+                    <p><i>invited you to a quick debug match</i></p>
+                    {/* <p><i>invited you for a quick debug match</i></p> */}
+                    <div className='acceptRejectDiv'>
+                        <button className='RAccept'>Accept</button>
+                        <button className='RReject'>Reject</button>
+
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 };
