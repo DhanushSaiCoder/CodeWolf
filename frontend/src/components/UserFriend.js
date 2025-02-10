@@ -1,18 +1,52 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import io from 'socket.io-client';
 import "../styles/UserFriend.css";
 import { NotUserFriend } from './NotUserFriend';
 
 export const UserFriend = (props) => {
-
     const {
         userFriendsData,
         UFloading: loading,
         setUFLoading: setLoading,
     } = props
 
+    const [socket, setSocket] = useState(null);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token'); // Get the JWT token from local storage
+        // Establish the socket connection
+        const newSocket = io('http://localhost:3000', {
+          auth: { token: token },
+        });
+        
+        newSocket.on('connect', () => {
+          console.log('Connected to the server');
+          // Emit the token so that the server can verify it and join the room
+          newSocket.emit('sendToken', token);
+        });
+      
+        // Listen for customEvent and log it
+        newSocket.on('customEvent', (data) => {
+          console.log(`Received customEvent in the client: `, data);
+        });
+        
+        setSocket(newSocket);
+        return () => {
+          newSocket.disconnect();
+        };
+      }, []);
+      
+
     const requestMatch = (user) => {
-        console.log('requesting user: ', user)
-    }
+        if (socket) {
+            console.log('requesting user:', user);
+            // Emit an event to the user's room
+            socket.emit('requestMatch', {
+                userId: user.id,
+                message: 'You have a match request!',
+            });
+        }
+    };
 
     return (
         <div className='UserFriend'>
@@ -77,8 +111,9 @@ export const UserFriend = (props) => {
                                 <button
                                     className='modeBtns quickMatchBtn UserFriendQuickMatchBtn'
                                     disabled={userFriend.status !== "online"}
-
-
+                                    onClick={() => {
+                                        requestMatch(userFriend)
+                                    }}
                                 >
                                     <b>QUICK MATCH</b>
                                 </button>
