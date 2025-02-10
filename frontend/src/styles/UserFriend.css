@@ -196,7 +196,7 @@
 .formGroup label {
     margin-bottom: 5px;
     font-weight: 600;
-    color: #333;
+    color: var(--darker);
 }
 
 /* Input & Select Elements */
@@ -210,8 +210,8 @@
 
 /* Submit Button */
 button[type="submit"] {
-    background-color: #ff69b4;
-    color: #fff;
+    background-color: var(--darkest);
+    color: var(--main);
     border: none;
     padding: 12px;
     font-size: 1rem;
@@ -223,7 +223,7 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background-color: #ff85c1;
+    background-color: #1b0630;
 }
 
 .RPopupDivContainer {
@@ -240,7 +240,6 @@ button[type="submit"]:hover {
 }
 .RPopupDiv {
     min-width: 450px;
-    min-height: 550px;
     padding: 20px 30px;
     border-radius: 10px;
     z-index: 100;
