@@ -23,11 +23,14 @@ export const UserFriend = (props) => {
   });
   const [matchRequestData, setMatchRequestData] = useState(false);
 
-  // State for auto-reject countdown (in seconds)
+  // State for auto‑reject countdown (in seconds)
   const [rejectCountdown, setRejectCountdown] = useState(10);
 
-  // State to track rejections for opponents (object with opponent IDs as keys)
+  // State to track which opponents have rejected your request (by their ID)
   const [rejectedOpponents, setRejectedOpponents] = useState({});
+
+  // State to track which opponents have been sent a request
+  const [sentRequests, setSentRequests] = useState({});
 
   // Ref for the CSSTransition element
   const requestDivRef = useRef(null);
@@ -125,10 +128,23 @@ export const UserFriend = (props) => {
     if (socket) {
       socket.emit('requestMatch', requestMatchPayload);
     }
+
+    // Mark that a request has been sent to this friend
+    setSentRequests(prev => ({ ...prev, [selectedFriend.id]: true }));
+    // Reset the button text after 10 seconds
+    setTimeout(() => {
+      setSentRequests(prev => {
+        const newState = { ...prev };
+        delete newState[selectedFriend.id];
+        return newState;
+      });
+    }, 10000);
+
     setSelectedFriend(null);
     showPopup(false);
   };
 
+  // (Optional) For a quick match method without a popup
   const sendQuickMatch = (user) => {
     // Clear previous rejection for this opponent when sending a new match request
     setRejectedOpponents(prev => {
@@ -136,6 +152,8 @@ export const UserFriend = (props) => {
       delete newObj[user.id];
       return newObj;
     });
+    // Mark that a request is sent
+    setSentRequests(prev => ({ ...prev, [user.id]: true }));
     const quickMatchDetails = {
       userId: user.id,
       programmingLanguage: 'js',
@@ -151,6 +169,14 @@ export const UserFriend = (props) => {
         requesterRating: userDoc.rating,
       });
     }
+    // Reset the button text after 10 seconds
+    setTimeout(() => {
+      setSentRequests(prev => {
+        const newState = { ...prev };
+        delete newState[user.id];
+        return newState;
+      });
+    }, 10000);
   };
 
   return (
@@ -222,9 +248,11 @@ export const UserFriend = (props) => {
             }
             return (
               <div
-                className={userFriend.status === "online"
-                  ? "UserFriend__container onlineUF"
-                  : "UserFriend__container offlineUF"}
+                className={
+                  userFriend.status === "online"
+                    ? "UserFriend__container onlineUF"
+                    : "UserFriend__container offlineUF"
+                }
                 key={userFriend.id}
               >
                 <p>{index + 1}</p>
@@ -250,10 +278,10 @@ export const UserFriend = (props) => {
                 )}
                 <button
                   className='modeBtns quickMatchBtn UserFriendQuickMatchBtn'
-                  disabled={userFriend.status !== "online"}
+                  disabled={userFriend.status !== "online" || sentRequests[userFriend.id]}
                   onClick={() => configureMatch(userFriend)}
                 >
-                  <b>QUICK MATCH</b>
+                  <b>{sentRequests[userFriend.id] ? "REQUEST SENT" : "QUICK MATCH"}</b>
                 </button>
                 {/* Display "Rejected" below the QUICK MATCH button if this friend rejected your request */}
                 {rejectedOpponents[userFriend.id] && (
