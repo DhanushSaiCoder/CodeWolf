@@ -98,6 +98,7 @@
     justify-content: space-evenly;
     flex-direction: column;
     gap: 10px;
+    border: 2.5px solid white;
 }
 .requestDiv p i {
     opacity: 0.8;
@@ -115,6 +116,13 @@
     font-weight: bold;
     font-size: large;
     cursor: pointer;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
+}
+.RAccept:hover, .RReject:hover{
+    transform: translateY(-3px); /* Move the button upwards */
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.3141);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.418);
 }
 .acceptRejectDiv {
     width: 100%;

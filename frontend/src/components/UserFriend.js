@@ -133,8 +133,10 @@ export const UserFriend = (props) => {
                     {/* <h2>{requestData.requesteeName}</h2> */}
                     <p><i>invited you for a match</i></p>
                     {/* <p><i>invited you for a quick debug match</i></p> */}
-                    <p className='RModeDetails'><b>MODE:</b> Quick Debug</p>
-                    <p className='RModeDetails'><b>DIFFICULTY:</b> Easy</p>
+                    <div className='RModeDetailsDiv'>
+                        <p className='RModeDetails'><b>MODE:</b> Quick Debug - JavaScript</p>
+                        <p className='RModeDetails'><b>DIFFICULTY:</b> Easy</p>
+                    </div>
                     <div className='acceptRejectDiv'>
                         <button className='RAccept'>Accept</button>
                         <button className='RReject'>Reject</button>
