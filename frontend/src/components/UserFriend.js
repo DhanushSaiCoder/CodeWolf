@@ -17,7 +17,7 @@ export const UserFriend = (props) => {
 
     useEffect(() => {
         // Establish the socket connection
-        const newSocket = io('http://localhost:3000', {
+        const newSocket = io('http://localhost:5000', {
             auth: { token },
         });
 

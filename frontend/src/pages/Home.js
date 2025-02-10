@@ -31,7 +31,7 @@ const Home = () => {
     // Fetch initial friends list
     const fetchFriends = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/friends/list`, {
+        const response = await fetch(`http://localhost:5000/friends/list`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
