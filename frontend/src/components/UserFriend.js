@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode'; // Use default import for jwt-decode
 
 import "../styles/UserFriend.css";
 import { NotUserFriend } from './NotUserFriend';
@@ -12,12 +12,14 @@ export const UserFriend = (props) => {
         UFloading: loading,
         setUFLoading: setLoading,
     } = props;
-    const [requestData, setRequestData] = useState({});
     const [socket, setSocket] = useState(null);
     const [popup, showPopup] = useState(false);
-    const token = localStorage.getItem('token'); // Get the JWT token from local storage
+    const token = localStorage.getItem('token');
 
-    // State to hold the form inputs with default values
+    // Holds the ID of the user you want to challenge (set when clicking a friend)
+    const [selectedFriend, setSelectedFriend] = useState(null);
+
+    // Hold the form values
     const [matchSettings, setMatchSettings] = useState({
         programmingLanguage: 'js', // Default: JavaScript
         difficulty: 'easy',        // Default: Easy
@@ -32,13 +34,11 @@ export const UserFriend = (props) => {
 
         newSocket.on('connect', () => {
             console.log('Connected to the server');
-            // Emit the token so that the server can verify it and join the room
             newSocket.emit('sendToken', token);
         });
 
-        // Listen for customEvent and log it
         newSocket.on('customEvent', (data) => {
-            console.log(`Received customEvent in the client: `, data);
+            console.log('Received customEvent in the client:', data);
         });
 
         setSocket(newSocket);
@@ -47,57 +47,89 @@ export const UserFriend = (props) => {
         };
     }, [token]);
 
-    // Handler for form input changes
+    // Update the form state when the user changes inputs
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setMatchSettings((prev) => ({
+        setMatchSettings(prev => ({
             ...prev,
             [name]: value,
         }));
     };
 
-    // Handler for form submission
+    // This handler is used when a user clicks the quick match button
+    // It sets the selected friend and opens the match settings popup.
+    const configureMatch = (user) => {
+        setSelectedFriend(user);
+        showPopup(true);
+    };
+
+    // Instead of setting state and then immediately calling requestMatch (risking stale state),
+    // merge the match settings with the selected friend info in a local variable and send.
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Log or process the form data as needed
-        console.log('Sending match request with settings:', matchSettings);
-        // Optionally, send this data via socket:
-        if (socket) {
-            socket.emit('sendMatchSettings', {
-                ...matchSettings,
-                requesterId: jwtDecode(token)._id,
-                requesterUsername: userDoc.username,
-                requesterRating: userDoc.rating,
-            });
+
+        if (!selectedFriend) {
+            console.error('No friend selected!');
+            return;
         }
-        // Close the popup after sending the request
+
+        const newMatchDetails = {
+            userId: selectedFriend.id, // the friend’s id to challenge
+            ...matchSettings,          // the settings from the form
+        };
+
+        const requestMatchPayload = {
+            ...newMatchDetails,
+            message: 'You have a match request!',
+            requesterId: jwtDecode(token)._id,
+            requesterUsername: userDoc.username,
+            requesterRating: userDoc.rating,
+        }
+        console.log('Sending match request with details:', requestMatchPayload);
+
+        // Emit the socket event with all necessary details.
+        socket.emit('requestMatch', requestMatchPayload);
+
+        // Optionally clear the selected friend and close the popup.
+        setSelectedFriend(null);
         showPopup(false);
     };
 
-    const configureMatch = (user) => {
-        // Toggle the popup state when a user is selected for match configuration
-        showPopup((prev) => !prev);
-    };
+    // For a “direct” quick match (without configuring settings) you might have a function like:
+    const sendQuickMatch = (user) => {
+        const quickMatchDetails = {
+            userId: user.id,
+            // Here you can use the default settings or any predetermined ones.
+            programmingLanguage: 'js',
+            difficulty: 'easy',
+            mode: 'quick-debug',
+        };
 
-    const requestMatch = (user) => {
-        if (socket) {
-            console.log('requesting user:', user);
-            socket.emit('requestMatch', {
-                userId: user.id,
-                message: 'You have a match request!',
-                requesterId: jwtDecode(token)._id,
-                requesterUsername: userDoc.username,
-                requesterRating: userDoc.rating,
-            });
-        }
+        socket.emit('requestMatch', {
+            ...quickMatchDetails,
+            message: 'You have a match request!',
+            requesterId: jwtDecode(token)._id,
+            requesterUsername: userDoc.username,
+            requesterRating: userDoc.rating,
+        });
     };
 
     return (
         <div className='UserFriend'>
+
             {popup && (
-                <div onClick={() => showPopup((prev) => !prev)} className='RPopupDivContainer'>
+                <div onClick={() => showPopup(false)} className='RPopupDivContainer'>
                     <div onClick={(e) => e.stopPropagation()} className='RPopupDiv'>
-                        <div className='popupHeader'>Set Match <button onClick={() => showPopup(false)} className='closeButton'>X</button></div>
+                        <div className='popupHeader'>
+                            Set Match
+                            <button
+                                type="button"
+                                onClick={() => showPopup(false)}
+                                className='closeButton'
+                            >
+                                &times;
+                            </button>
+                        </div>
                         <div className='popupContent'>
                             <form onSubmit={handleSubmit}>
                                 <div className="formGroup">
@@ -151,14 +183,26 @@ export const UserFriend = (props) => {
                 <h4>FRIENDS</h4>
                 {loading ? <p>Loading...</p> : (
                     userFriendsData.length ? userFriendsData.map((userFriend, index) => {
-                        return !props.onlineOnly ? (
-                            <div className={userFriend.status === "online" ? "UserFriend__container onlineUF" : "UserFriend__container offlineUF"} key={userFriend.id}>
+                        // Here we decide whether to show the friend depending on the onlineOnly prop.
+                        if (props.onlineOnly && userFriend.status !== "online") {
+                            return null;
+                        }
+                        return (
+                            <div
+                                className={
+                                    userFriend.status === "online"
+                                        ? "UserFriend__container onlineUF"
+                                        : "UserFriend__container offlineUF"
+                                }
+                                key={userFriend.id}
+                            >
                                 <p>{index + 1}</p>
                                 <div className='UserFriend__userDetails'>
                                     <div>
                                         <h3 className='UserFriend__username'>{userFriend.username}</h3>
                                         <p>
-                                            <span className='userFriend__rating'>&#8902; </span>{userFriend.rating}
+                                            <span className='userFriend__rating'>&#8902; </span>
+                                            {userFriend.rating}
                                         </p>
                                     </div>
                                 </div>
@@ -173,67 +217,60 @@ export const UserFriend = (props) => {
                                         <p>Offline</p>
                                     </div>
                                 )}
+                                {/* Choose one of the two buttons below:
+                    1. If you want the user to configure the match settings in a popup,
+                       use the "configureMatch" button.
+                    2. If you want to send a quick match immediately (with default settings),
+                       use the "sendQuickMatch" button.
+                 */}
                                 <button
                                     className='modeBtns quickMatchBtn UserFriendQuickMatchBtn'
                                     disabled={userFriend.status !== "online"}
-                                    onClick={() => {
-                                        configureMatch(userFriend);
-                                    }}
+                                    onClick={() => configureMatch(userFriend)}
                                 >
                                     <b>QUICK MATCH</b>
                                 </button>
+
+                                {/* Example of a direct quick match (uncomment to use) */}
+                                {/*
+                <button
+                  className='modeBtns quickMatchBtn UserFriendQuickMatchBtn'
+                  disabled={userFriend.status !== "online"}
+                  onClick={() => sendQuickMatch(userFriend)}
+                >
+                  <b>QUICK MATCH</b>
+                </button>
+                */}
                             </div>
-                        ) : userFriend.status === "online" ? (
-                            <div className="UserFriend__container onlineUF" key={userFriend.id}>
-                                <p>{index + 1}</p>
-                                <div className='UserFriend__userDetails'>
-                                    <div>
-                                        <h3 className='UserFriend__username'>{userFriend.username}</h3>
-                                        <p>
-                                            <span className='userFriend__rating'>&#8902; </span>{userFriend.rating}
-                                        </p>
-                                    </div>
-                                </div>
-                                {userFriend.status === "online" ? (
-                                    <div className='UserFriend__onlineBadgeDiv'>
-                                        <div className='UserFriend__onlineBadge'></div>
-                                        <p>Online</p>
-                                    </div>
-                                ) : (
-                                    <div className='UserFriend__offlineBadgeDiv'>
-                                        <div className='UserFriend__offlineBadge'></div>
-                                        <p>Offline</p>
-                                    </div>
-                                )}
-                                <button
-                                    className='modeBtns quickMatchBtn UserFriendQuickMatchBtn'
-                                    disabled={userFriend.status !== "online"}
-                                    onClick={() => {
-                                        requestMatch(userFriend);
-                                    }}
-                                >
-                                    <b>QUICK MATCH</b>
-                                </button>
-                            </div>
-                        ) : null;
+                        );
                     }) : <p>No Friends</p>
                 )}
             </div>
-            {requestData && (
-                <div className='requestDiv'>
-                    <h1 className='RHeading'>MATCH INVITE</h1>
-                    <h2>Dhanush Sai <span className='RRating'>(1000)</span></h2>
-                    <p><i>invited you for a match</i></p>
-                    <div className='RModeDetailsDiv'>
-                        <p className='RModeDetails'><b>MODE:</b> Quick Debug - JavaScript</p>
-                        <p className='RModeDetails'><b>DIFFICULTY:</b> Easy</p>
-                    </div>
-                    <div className='acceptRejectDiv'>
-                        <button className='RAccept'>Accept</button>
-                        <button className='RReject'>Reject</button>
-                    </div>
-                </div>
-            )}
+
+            {/* (Optional) Example section showing an incoming match request */}
+            {/* {requestData && (
+        <div className='requestDiv'>
+          <h1 className='RHeading'>MATCH INVITE</h1>
+          <h2>
+            Dhanush Sai <span className='RRating'>(1000)</span>
+          </h2>
+          <p>
+            <i>invited you for a match</i>
+          </p>
+          <div className='RModeDetailsDiv'>
+            <p className='RModeDetails'>
+              <b>MODE:</b> Quick Debug - JavaScript
+            </p>
+            <p className='RModeDetails'>
+              <b>DIFFICULTY:</b> Easy
+            </p>
+          </div>
+          <div className='acceptRejectDiv'>
+            <button className='RAccept'>Accept</button>
+            <button className='RReject'>Reject</button>
+          </div>
+        </div>
+      )} */}
         </div>
     );
 };
