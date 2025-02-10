@@ -119,7 +119,7 @@ io.on('connection', (socket) => {
   socket.on('requestMatch', (data) => {
     const { userId, message, requesterId, requesterUsername, requesterRating } = data;
     console.log(`Forwarding match request to user ID ${userId}`);
-    io.to(userId).emit('customEvent', { message, userId, requesterId, requesterUsername, requesterRating });
+    io.to(userId).emit('customEvent', data);
   });
 });
 
