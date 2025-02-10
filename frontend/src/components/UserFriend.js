@@ -9,7 +9,11 @@ export const UserFriend = (props) => {
         UFloading: loading,
         setUFLoading: setLoading,
     } = props
-   
+
+    const requestMatch = (user) => {
+        console.log('requesting user: ', user)
+    }
+
     return (
         <div className='UserFriend'>
             <div className='data'>
@@ -41,6 +45,9 @@ export const UserFriend = (props) => {
                                 <button
                                     className='modeBtns quickMatchBtn UserFriendQuickMatchBtn'
                                     disabled={userFriend.status !== "online"}
+                                    onClick={() => {
+                                        requestMatch(userFriend)
+                                    }}
                                 >
                                     <b>QUICK MATCH</b>
                                 </button>
@@ -70,6 +77,8 @@ export const UserFriend = (props) => {
                                 <button
                                     className='modeBtns quickMatchBtn UserFriendQuickMatchBtn'
                                     disabled={userFriend.status !== "online"}
+
+
                                 >
                                     <b>QUICK MATCH</b>
                                 </button>
