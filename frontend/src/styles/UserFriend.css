@@ -87,7 +87,6 @@
     right: 40px;
     bottom: 40px;
     width: 30vw;
-    max-height: 300px;
     min-width: 400px;
     border-radius: 10px;
     background-color: var(--main);
@@ -135,4 +134,7 @@
     font-size: medium;
     text-align: center;
     opacity: 0.8;
+}
+.RModeDetails{
+    font-size: 1.1rem;
 }
