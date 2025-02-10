@@ -1,4 +1,3 @@
-// Server.js
 const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
@@ -11,7 +10,7 @@ const jwt = require('jsonwebtoken');
 
 dotenv.config();
 
-const port = process.env.PORT || 3001; // Changed to 3001 for the server port
+const port = process.env.PORT || 3001;
 const authRoutes = require('./routes/auth');
 const matchRoutes = require('./routes/matches');
 const friendsRoutes = require('./routes/friends');
@@ -37,7 +36,7 @@ app.get('/', (req, res) => {
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:3000', // Frontend URL
+    origin: 'http://localhost:3000',
     methods: ['GET', 'POST'],
   },
 });
@@ -81,30 +80,54 @@ const updateUserStatus = async (userId, status) => {
 
 io.on('connection', (socket) => {
   console.log('A user connected');
-  let userId; // Variable to store the user's ID
+  let userId; // Will store the user's ID
 
-  // Listen for token from client
-  socket.on('sendToken', async (token) => {
+  // Retrieve the token from the handshake auth data
+  const token = socket.handshake.auth.token;
+  if (token) {
     try {
       const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
       userId = decoded._id; // Store the user's ID
-
-      // Map the user ID to their socket ID
+      // Map the user ID to their socket ID and join a room for that user
       userSocketMap.set(userId, socket.id);
-
-      await updateUserStatus(userId, 'online');
+      socket.join(userId);
+      updateUserStatus(userId, 'online');
     } catch (err) {
-      console.log('Invalid token:', err.message);
+      console.log('Invalid token on connection:', err.message);
+      socket.disconnect();
+      return;
     }
+  } else {
+    console.log('No token provided');
+    socket.disconnect();
+    return;
+  }
+
+  // Listen for match request events and forward them to the target user
+  socket.on('requestMatch', (data) => {
+    const { userId: targetUserId } = data;
+    console.log(`Forwarding match request to user ID ${targetUserId}`);
+    io.to(targetUserId).emit('sendMatchRequest', data);
+  });
+
+  // Listen for request rejection events
+  socket.on('requestRejected', (data) => {
+    const { requesterId } = data;
+    console.log(`Match request rejected by ${userId} for request from ${requesterId}`);
+    // Forward the rejection to the requester
+    io.to(requesterId).emit('requestRejected', {
+      ...data,
+      receiverId: userId,
+      receiverUsername: data.receiverUsername || "Opponent" // Optionally include more info
+    });
   });
 
   socket.on('disconnect', async () => {
     console.log('User disconnected');
     if (userId) {
       await updateUserStatus(userId, 'offline');
-
-      // Remove the user from the socket map
       userSocketMap.delete(userId);
+      socket.leave(userId);
     }
   });
 });
