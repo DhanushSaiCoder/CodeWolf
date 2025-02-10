@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
+import { jwtDecode } from 'jwt-decode';
+
 import "../styles/UserFriend.css";
 import { NotUserFriend } from './NotUserFriend';
 
@@ -8,42 +10,44 @@ export const UserFriend = (props) => {
         userFriendsData,
         UFloading: loading,
         setUFLoading: setLoading,
-    } = props
+    } = props;
 
     const [socket, setSocket] = useState(null);
+    const token = localStorage.getItem('token'); // Get the JWT token from local storage
 
     useEffect(() => {
-        const token = localStorage.getItem('token'); // Get the JWT token from local storage
         // Establish the socket connection
         const newSocket = io('http://localhost:3000', {
-          auth: { token: token },
+            auth: { token },
         });
-        
+
         newSocket.on('connect', () => {
-          console.log('Connected to the server');
-          // Emit the token so that the server can verify it and join the room
-          newSocket.emit('sendToken', token);
+            console.log('Connected to the server');
+            // Emit the token so that the server can verify it and join the room
+            newSocket.emit('sendToken', token);
         });
-      
+
         // Listen for customEvent and log it
         newSocket.on('customEvent', (data) => {
-          console.log(`Received customEvent in the client: `, data);
+            console.log(`Received customEvent in the client: `, data);
         });
-        
+
         setSocket(newSocket);
         return () => {
-          newSocket.disconnect();
+            newSocket.disconnect();
         };
-      }, []);
-      
+    }, [token]);
 
     const requestMatch = (user) => {
         if (socket) {
+            // Decode the token to extract the requestee's id
             console.log('requesting user:', user);
             // Emit an event to the user's room
             socket.emit('requestMatch', {
                 userId: user.id,
                 message: 'You have a match request!',
+                requesteeId: jwtDecode(token)._id
+
             });
         }
     };
@@ -60,27 +64,27 @@ export const UserFriend = (props) => {
                                 <div className='UserFriend__userDetails'>
                                     <div>
                                         <h3 className='UserFriend__username'>{userFriend.username}</h3>
-                                        <p><span className='userFriend__rating'>&#8902; </span>{userFriend.rating}</p>
+                                        <p>
+                                            <span className='userFriend__rating'>&#8902; </span>{userFriend.rating}
+                                        </p>
                                     </div>
                                 </div>
-                                {
-                                    userFriend.status === "online" ? (
-                                        <div className='UserFriend__onlineBadgeDiv'>
-                                            <div className='UserFriend__onlineBadge'></div>
-                                            <p>Online</p>
-                                        </div>
-                                    ) : (
-                                        <div className='UserFriend__offlineBadgeDiv'>
-                                            <div className='UserFriend__offlineBadge'></div>
-                                            <p>Offline</p>
-                                        </div>
-                                    )
-                                }
+                                {userFriend.status === "online" ? (
+                                    <div className='UserFriend__onlineBadgeDiv'>
+                                        <div className='UserFriend__onlineBadge'></div>
+                                        <p>Online</p>
+                                    </div>
+                                ) : (
+                                    <div className='UserFriend__offlineBadgeDiv'>
+                                        <div className='UserFriend__offlineBadge'></div>
+                                        <p>Offline</p>
+                                    </div>
+                                )}
                                 <button
                                     className='modeBtns quickMatchBtn UserFriendQuickMatchBtn'
                                     disabled={userFriend.status !== "online"}
                                     onClick={() => {
-                                        requestMatch(userFriend)
+                                        requestMatch(userFriend);
                                     }}
                                 >
                                     <b>QUICK MATCH</b>
@@ -92,27 +96,27 @@ export const UserFriend = (props) => {
                                 <div className='UserFriend__userDetails'>
                                     <div>
                                         <h3 className='UserFriend__username'>{userFriend.username}</h3>
-                                        <p><span className='userFriend__rating'>&#8902; </span>{userFriend.rating}</p>
+                                        <p>
+                                            <span className='userFriend__rating'>&#8902; </span>{userFriend.rating}
+                                        </p>
                                     </div>
                                 </div>
-                                {
-                                    userFriend.status === "online" ? (
-                                        <div className='UserFriend__onlineBadgeDiv'>
-                                            <div className='UserFriend__onlineBadge'></div>
-                                            <p>Online</p>
-                                        </div>
-                                    ) : (
-                                        <div className='UserFriend__offlineBadgeDiv'>
-                                            <div className='UserFriend__offlineBadge'></div>
-                                            <p>Offline</p>
-                                        </div>
-                                    )
-                                }
+                                {userFriend.status === "online" ? (
+                                    <div className='UserFriend__onlineBadgeDiv'>
+                                        <div className='UserFriend__onlineBadge'></div>
+                                        <p>Online</p>
+                                    </div>
+                                ) : (
+                                    <div className='UserFriend__offlineBadgeDiv'>
+                                        <div className='UserFriend__offlineBadge'></div>
+                                        <p>Offline</p>
+                                    </div>
+                                )}
                                 <button
                                     className='modeBtns quickMatchBtn UserFriendQuickMatchBtn'
                                     disabled={userFriend.status !== "online"}
                                     onClick={() => {
-                                        requestMatch(userFriend)
+                                        requestMatch(userFriend);
                                     }}
                                 >
                                     <b>QUICK MATCH</b>

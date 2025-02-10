@@ -117,9 +117,9 @@ io.on('connection', (socket) => {
 
   // Listen for match request events and forward them to the appropriate room
   socket.on('requestMatch', (data) => {
-    const { userId, message } = data;
+    const { userId, message, requesteeId } = data;
     console.log(`Forwarding match request to user ID ${userId}`);
-    io.to(userId).emit('customEvent', { message, userId });
+    io.to(userId).emit('customEvent', { message, userId, requesteeId });
   });
 });
 
