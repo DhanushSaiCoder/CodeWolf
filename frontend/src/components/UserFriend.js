@@ -14,6 +14,7 @@ export const UserFriend = (props) => {
     } = props;
     const [requestData, setRequestData] = useState({})
     const [socket, setSocket] = useState(null);
+    const [popup, showPopup] = useState(false)
     const token = localStorage.getItem('token'); // Get the JWT token from local storage
 
     useEffect(() => {
@@ -39,12 +40,16 @@ export const UserFriend = (props) => {
         };
     }, [token]);
 
+    const configureMatch = (user) => {
+        showPopup((prev) => {
+            return !prev
+        })
+    }
+
     const requestMatch = (user) => {
         if (socket) {
-            console.log('USER DOC: ', userDoc)
-            // Decode the token to extract the requestee's id
+
             console.log('requesting user:', user);
-            // Emit an event to the user's room
             socket.emit('requestMatch', {
                 userId: user.id,
                 message: 'You have a match request!',
@@ -57,6 +62,12 @@ export const UserFriend = (props) => {
 
     return (
         <div className='UserFriend'>
+            {popup && (
+                <div onClick={() => showPopup((prev) => !prev)} className='RPopupDivContainer'>
+                    {/* Popup content can go here */}
+                </div>
+            )}
+
             <div className='data'>
                 <h4>FRIENDS</h4>
                 {loading ? <p>Loading...</p> : (
@@ -87,7 +98,7 @@ export const UserFriend = (props) => {
                                     className='modeBtns quickMatchBtn UserFriendQuickMatchBtn'
                                     disabled={userFriend.status !== "online"}
                                     onClick={() => {
-                                        requestMatch(userFriend);
+                                        configureMatch(userFriend);
                                     }}
                                 >
                                     <b>QUICK MATCH</b>
