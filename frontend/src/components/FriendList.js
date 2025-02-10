@@ -11,6 +11,7 @@ export const FriendList = (props) => {
     const [loading, setLoading] = useState(false);
     const [userFriendsData, setUserFriendsData] = useState([]);
     const [UFloading, setUFLoading] = useState(true);
+    const [userDoc, setUserDoc] = useState({})
     const socket = useSocket();
 
     const handleInviteClick = () => {
@@ -89,6 +90,7 @@ export const FriendList = (props) => {
         })
             .then(response => response.json())
             .then(data => {
+                setUserDoc(data)
                 data.friends.sort((a, b) => b.online - a.online);
                 setUserFriendsData(data.friends);
                 console.log("userFriendsData:", data.friends);
@@ -136,7 +138,7 @@ export const FriendList = (props) => {
                 </button>
             </div>
             <div className='friendListContent'>
-                <UserFriend fetchUserFriend={fetchUserFriend} userFriendsData={userFriendsData} UFloading={UFloading} setUFLoading={setUFLoading} onlineOnly={onlineOnly} />
+                <UserFriend userDoc={userDoc} fetchUserFriend={fetchUserFriend} userFriendsData={userFriendsData} UFloading={UFloading} setUFLoading={setUFLoading} onlineOnly={onlineOnly} />
                 <NotUserFriend handleAddFriend={handleAddFriend} notUserFriendsData={notUserFriendsData} setLoading={setLoading} fetchNonFriendsData={fetchNonFriendsData} />
             </div>
         </div>

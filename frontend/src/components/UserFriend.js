@@ -7,6 +7,7 @@ import { NotUserFriend } from './NotUserFriend';
 
 export const UserFriend = (props) => {
     const {
+        userDoc,
         userFriendsData,
         UFloading: loading,
         setUFLoading: setLoading,
@@ -40,14 +41,16 @@ export const UserFriend = (props) => {
 
     const requestMatch = (user) => {
         if (socket) {
+            console.log('USER DOC: ', userDoc)
             // Decode the token to extract the requestee's id
             console.log('requesting user:', user);
             // Emit an event to the user's room
             socket.emit('requestMatch', {
                 userId: user.id,
                 message: 'You have a match request!',
-                requesteeId: jwtDecode(token)._id
-
+                requesterId: jwtDecode(token)._id,
+                requesterUsername: userDoc.username,
+                requesterRating: userDoc.rating
             });
         }
     };

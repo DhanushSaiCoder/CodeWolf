@@ -81,7 +81,7 @@ const updateUserStatus = async (userId, status) => {
 io.on('connection', (socket) => {
   console.log('A user connected');
   let userId; // Variable to store the user's ID
-  
+
   // Retrieve the token from the handshake auth data
   const token = socket.handshake.auth.token;
   if (token) {
@@ -117,9 +117,9 @@ io.on('connection', (socket) => {
 
   // Listen for match request events and forward them to the appropriate room
   socket.on('requestMatch', (data) => {
-    const { userId, message, requesteeId } = data;
+    const { userId, message, requesterId, requesterUsername, requesterRating } = data;
     console.log(`Forwarding match request to user ID ${userId}`);
-    io.to(userId).emit('customEvent', { message, userId, requesteeId });
+    io.to(userId).emit('customEvent', { message, userId, requesterId, requesterUsername, requesterRating });
   });
 });
 
