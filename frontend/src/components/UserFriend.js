@@ -1,26 +1,21 @@
 import React, { useEffect, useState, useRef } from 'react';
 import io from 'socket.io-client';
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode'; // Ensure proper import of jwt-decode
 import { CSSTransition } from 'react-transition-group';
 
 import "../styles/UserFriend.css";
 import { NotUserFriend } from './NotUserFriend';
 
 export const UserFriend = (props) => {
-  const {
-    userDoc,
-    userFriendsData,
-    UFloading: loading,
-    setUFLoading: setLoading,
-  } = props;
+  const { userDoc, userFriendsData, UFloading: loading, setUFLoading: setLoading } = props;
   const [socket, setSocket] = useState(null);
   const [popup, showPopup] = useState(false);
   const token = localStorage.getItem('token');
 
-  // Holds the ID of the user you want to challenge (set when clicking a friend)
+  // Holds the friend you want to challenge (set when clicking a friend)
   const [selectedFriend, setSelectedFriend] = useState(null);
 
-  // Hold the form values
+  // Hold the form values for match settings
   const [matchSettings, setMatchSettings] = useState({
     programmingLanguage: 'js', // Default: JavaScript
     difficulty: 'easy',        // Default: Easy
@@ -28,17 +23,18 @@ export const UserFriend = (props) => {
   });
   const [matchRequestData, setMatchRequestData] = useState(false);
 
-  // New state to hold the countdown for auto-rejection (in seconds)
+  // State for auto-reject countdown (in seconds)
   const [rejectCountdown, setRejectCountdown] = useState(10);
 
-  // Create a ref for the requestDiv to avoid using findDOMNode
+  // State to track rejections for opponents (object with opponent IDs as keys)
+  const [rejectedOpponents, setRejectedOpponents] = useState({});
+
+  // Ref for the CSSTransition element
   const requestDivRef = useRef(null);
 
   useEffect(() => {
     // Establish the socket connection
-    const newSocket = io('http://localhost:5000', {
-      auth: { token },
-    });
+    const newSocket = io('http://localhost:5000', { auth: { token } });
 
     newSocket.on('connect', () => {
       console.log('Connected to the server');
@@ -46,13 +42,26 @@ export const UserFriend = (props) => {
     });
 
     newSocket.on('sendMatchRequest', (data) => {
-      console.log('Received customEvent in the client:', data);
+      console.log('Received match request:', data);
       setMatchRequestData(data);
 
-      // Automatically clear the match request after 10 seconds
+      // Automatically reject the match request after 10 seconds if no action is taken
       setTimeout(() => {
+        if (data && newSocket) {
+          newSocket.emit('requestRejected', data);
+        }
         setMatchRequestData(false);
       }, 10000);
+    });
+
+    // Listen for rejection notifications from opponents (i.e. when your match request is rejected)
+    newSocket.on('requestRejected', (data) => {
+      // Ensure that the current user is the original requester
+      const currentUserId = jwtDecode(token)._id;
+      if (data.requesterId === currentUserId) {
+        // Mark the corresponding opponent (data.userId) as rejected
+        setRejectedOpponents(prev => ({ ...prev, [data.userId]: true }));
+      }
     });
 
     setSocket(newSocket);
@@ -61,10 +70,10 @@ export const UserFriend = (props) => {
     };
   }, [token]);
 
-  // Start (or reset) the countdown whenever a new match request is received
+  // Start (or reset) the countdown whenever a new match request is displayed
   useEffect(() => {
     if (matchRequestData) {
-      setRejectCountdown(10); // Reset countdown to 10 seconds
+      setRejectCountdown(10);
       const interval = setInterval(() => {
         setRejectCountdown(prev => {
           if (prev <= 1) {
@@ -78,33 +87,33 @@ export const UserFriend = (props) => {
     }
   }, [matchRequestData]);
 
-  // Update the form state when the user changes inputs
+  // Update form state when user changes inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setMatchSettings(prev => ({
-      ...prev,
-      [name]: value,
-    }));
+    setMatchSettings(prev => ({ ...prev, [name]: value }));
   };
 
+  // When configuring a match for an opponent, clear any previous rejection for that opponent
   const configureMatch = (user) => {
+    setRejectedOpponents(prev => {
+      const newObj = { ...prev };
+      delete newObj[user.id];
+      return newObj;
+    });
     setSelectedFriend(user);
     showPopup(true);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (!selectedFriend) {
       console.error('No friend selected!');
       return;
     }
-
     const newMatchDetails = {
-      userId: selectedFriend.id, // the friend’s id to challenge
+      userId: selectedFriend.id,
       ...matchSettings,
     };
-
     const requestMatchPayload = {
       ...newMatchDetails,
       message: 'You have a match request!',
@@ -112,24 +121,27 @@ export const UserFriend = (props) => {
       requesterUsername: userDoc.username,
       requesterRating: userDoc.rating,
     };
-    console.log('Sending match request with details:', requestMatchPayload);
-
+    console.log('Sending match request:', requestMatchPayload);
     if (socket) {
       socket.emit('requestMatch', requestMatchPayload);
     }
-
     setSelectedFriend(null);
     showPopup(false);
   };
 
   const sendQuickMatch = (user) => {
+    // Clear previous rejection for this opponent when sending a new match request
+    setRejectedOpponents(prev => {
+      const newObj = { ...prev };
+      delete newObj[user.id];
+      return newObj;
+    });
     const quickMatchDetails = {
       userId: user.id,
       programmingLanguage: 'js',
       difficulty: 'easy',
       mode: 'quick-debug',
     };
-
     if (socket) {
       socket.emit('requestMatch', {
         ...quickMatchDetails,
@@ -148,11 +160,7 @@ export const UserFriend = (props) => {
           <div onClick={(e) => e.stopPropagation()} className='RPopupDiv'>
             <div className='popupHeader'>
               Set Match
-              <button
-                type="button"
-                onClick={() => showPopup(false)}
-                className='closeButton'
-              >
+              <button type="button" onClick={() => showPopup(false)} className='closeButton'>
                 &times;
               </button>
             </div>
@@ -214,11 +222,9 @@ export const UserFriend = (props) => {
             }
             return (
               <div
-                className={
-                  userFriend.status === "online"
-                    ? "UserFriend__container onlineUF"
-                    : "UserFriend__container offlineUF"
-                }
+                className={userFriend.status === "online"
+                  ? "UserFriend__container onlineUF"
+                  : "UserFriend__container offlineUF"}
                 key={userFriend.id}
               >
                 <p>{index + 1}</p>
@@ -249,22 +255,16 @@ export const UserFriend = (props) => {
                 >
                   <b>QUICK MATCH</b>
                 </button>
-                {/*
-                <button
-                  className='modeBtns quickMatchBtn UserFriendQuickMatchBtn'
-                  disabled={userFriend.status !== "online"}
-                  onClick={() => sendQuickMatch(userFriend)}
-                >
-                  <b>QUICK MATCH</b>
-                </button>
-                */}
+                {/* Display "Rejected" below the QUICK MATCH button if this friend rejected your request */}
+                {rejectedOpponents[userFriend.id] && (
+                  <p className="rejectedLabel">Rejected</p>
+                )}
               </div>
             );
           }) : <p>No Friends</p>
         )}
       </div>
 
-      {/* Wrap the match request div with CSSTransition using nodeRef */}
       <CSSTransition
         in={!!matchRequestData}
         timeout={300}
@@ -293,10 +293,14 @@ export const UserFriend = (props) => {
           </div>
           <div className='acceptRejectDiv'>
             <button className='RAccept'>Accept</button>
-            {/* The reject button now shows the countdown next to it */}
-            <button 
-              className='RReject' 
-              onClick={() => setMatchRequestData(false)}
+            <button
+              className='RReject'
+              onClick={() => {
+                if (socket && matchRequestData) {
+                  socket.emit('requestRejected', matchRequestData);
+                }
+                setMatchRequestData(false);
+              }}
             >
               Reject ({rejectCountdown})
             </button>

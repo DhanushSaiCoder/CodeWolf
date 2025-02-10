@@ -80,7 +80,7 @@ const updateUserStatus = async (userId, status) => {
 
 io.on('connection', (socket) => {
   console.log('A user connected');
-  let userId; // Variable to store the user's ID
+  let userId; // Will store the user's ID
 
   // Retrieve the token from the handshake auth data
   const token = socket.handshake.auth.token;
@@ -88,14 +88,12 @@ io.on('connection', (socket) => {
     try {
       const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
       userId = decoded._id; // Store the user's ID
-      // Map the user ID to their socket ID
+      // Map the user ID to their socket ID and join a room for that user
       userSocketMap.set(userId, socket.id);
-      // Join a room identified by the user ID
       socket.join(userId);
       updateUserStatus(userId, 'online');
     } catch (err) {
       console.log('Invalid token on connection:', err.message);
-      // Optionally disconnect the socket if the token is invalid
       socket.disconnect();
       return;
     }
@@ -105,7 +103,25 @@ io.on('connection', (socket) => {
     return;
   }
 
-  // Handle disconnection
+  // Listen for match request events and forward them to the target user
+  socket.on('requestMatch', (data) => {
+    const { userId: targetUserId } = data;
+    console.log(`Forwarding match request to user ID ${targetUserId}`);
+    io.to(targetUserId).emit('sendMatchRequest', data);
+  });
+
+  // Listen for request rejection events
+  socket.on('requestRejected', (data) => {
+    const { requesterId } = data;
+    console.log(`Match request rejected by ${userId} for request from ${requesterId}`);
+    // Forward the rejection to the requester
+    io.to(requesterId).emit('requestRejected', {
+      ...data,
+      receiverId: userId,
+      receiverUsername: data.receiverUsername || "Opponent" // Optionally include more info
+    });
+  });
+
   socket.on('disconnect', async () => {
     console.log('User disconnected');
     if (userId) {
@@ -113,13 +129,6 @@ io.on('connection', (socket) => {
       userSocketMap.delete(userId);
       socket.leave(userId);
     }
-  });
-
-  // Listen for match request events and forward them to the appropriate room
-  socket.on('requestMatch', (data) => {
-    const { userId, message, requesterId, requesterUsername, requesterRating } = data;
-    console.log(`Forwarding match request to user ID ${userId}`);
-    io.to(userId).emit('sendMatchRequest', data);
   });
 });
 
