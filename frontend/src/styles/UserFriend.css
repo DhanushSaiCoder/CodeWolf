@@ -210,7 +210,7 @@
 
 /* Submit Button */
 button[type="submit"] {
-    background-color: var(--darkest);
+    background-color: var(--darker);
     color: var(--main);
     border: none;
     padding: 12px;
@@ -259,6 +259,10 @@ button[type="submit"]:hover {
     background-color: transparent;
     font-weight: bold;
     font-size: large;
+    padding: 10px;
+    border-radius: 5px;
+}
 
-  }
-  
+.closeButton:hover {
+    background-color:#a875ea29;
+}
