@@ -12,10 +12,17 @@ export const UserFriend = (props) => {
         UFloading: loading,
         setUFLoading: setLoading,
     } = props;
-    const [requestData, setRequestData] = useState({})
+    const [requestData, setRequestData] = useState({});
     const [socket, setSocket] = useState(null);
-    const [popup, showPopup] = useState(false)
+    const [popup, showPopup] = useState(false);
     const token = localStorage.getItem('token'); // Get the JWT token from local storage
+
+    // State to hold the form inputs with default values
+    const [matchSettings, setMatchSettings] = useState({
+        programmingLanguage: 'js', // Default: JavaScript
+        difficulty: 'easy',        // Default: Easy
+        mode: 'quick-debug'
+    });
 
     useEffect(() => {
         // Establish the socket connection
@@ -40,22 +47,47 @@ export const UserFriend = (props) => {
         };
     }, [token]);
 
+    // Handler for form input changes
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setMatchSettings((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    // Handler for form submission
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // Log or process the form data as needed
+        console.log('Sending match request with settings:', matchSettings);
+        // Optionally, send this data via socket:
+        if (socket) {
+            socket.emit('sendMatchSettings', {
+                ...matchSettings,
+                requesterId: jwtDecode(token)._id,
+                requesterUsername: userDoc.username,
+                requesterRating: userDoc.rating,
+            });
+        }
+        // Close the popup after sending the request
+        showPopup(false);
+    };
+
     const configureMatch = (user) => {
-        showPopup((prev) => {
-            return !prev
-        })
-    }
+        // Toggle the popup state when a user is selected for match configuration
+        showPopup((prev) => !prev);
+    };
 
     const requestMatch = (user) => {
         if (socket) {
-
             console.log('requesting user:', user);
             socket.emit('requestMatch', {
                 userId: user.id,
                 message: 'You have a match request!',
                 requesterId: jwtDecode(token)._id,
                 requesterUsername: userDoc.username,
-                requesterRating: userDoc.rating
+                requesterRating: userDoc.rating,
             });
         }
     };
@@ -64,7 +96,54 @@ export const UserFriend = (props) => {
         <div className='UserFriend'>
             {popup && (
                 <div onClick={() => showPopup((prev) => !prev)} className='RPopupDivContainer'>
-                    {/* Popup content can go here */}
+                    <div onClick={(e) => e.stopPropagation()} className='RPopupDiv'>
+                        <div className='popupHeader'>Set Match <button onClick={() => showPopup(false)} className='closeButton'>X</button></div>
+                        <div className='popupContent'>
+                            <form onSubmit={handleSubmit}>
+                                <div className="formGroup">
+                                    <label htmlFor="programmingLanguage">Programming Language:</label>
+                                    <select
+                                        id="programmingLanguage"
+                                        name="programmingLanguage"
+                                        value={matchSettings.programmingLanguage}
+                                        onChange={handleChange}
+                                        required
+                                    >
+                                        <option value="js">JavaScript</option>
+                                        <option value="c">C</option>
+                                        <option value="java">Java</option>
+                                    </select>
+                                </div>
+                                <div className="formGroup">
+                                    <label htmlFor="difficulty">Difficulty:</label>
+                                    <select
+                                        id="difficulty"
+                                        name="difficulty"
+                                        value={matchSettings.difficulty}
+                                        onChange={handleChange}
+                                        required
+                                    >
+                                        <option value="easy">Easy</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="hard">Hard</option>
+                                    </select>
+                                </div>
+                                <div className="formGroup">
+                                    <label htmlFor="mode">Mode:</label>
+                                    <select
+                                        id="mode"
+                                        name="mode"
+                                        value={matchSettings.mode}
+                                        onChange={handleChange}
+                                        required
+                                    >
+                                        <option value="quick-debug">QUICK DEBUG MODE</option>
+                                    </select>
+                                </div>
+                                <button type="submit">SEND MATCH REQUEST</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             )}
 
@@ -144,9 +223,7 @@ export const UserFriend = (props) => {
                 <div className='requestDiv'>
                     <h1 className='RHeading'>MATCH INVITE</h1>
                     <h2>Dhanush Sai <span className='RRating'>(1000)</span></h2>
-                    {/* <h2>{requestData.requesteeName}</h2> */}
                     <p><i>invited you for a match</i></p>
-                    {/* <p><i>invited you for a quick debug match</i></p> */}
                     <div className='RModeDetailsDiv'>
                         <p className='RModeDetails'><b>MODE:</b> Quick Debug - JavaScript</p>
                         <p className='RModeDetails'><b>DIFFICULTY:</b> Easy</p>
@@ -154,11 +231,9 @@ export const UserFriend = (props) => {
                     <div className='acceptRejectDiv'>
                         <button className='RAccept'>Accept</button>
                         <button className='RReject'>Reject</button>
-
                     </div>
                 </div>
             )}
-
         </div>
     );
 };
