@@ -5,22 +5,29 @@ import { io } from 'socket.io-client';
 const SocketContext = createContext();
 
 export const useSocket = () => {
-    return useContext(SocketContext);
+  return useContext(SocketContext);
 };
 
 export const SocketProvider = ({ children }) => {
-    const [socket, setSocket] = useState(null);
+  const [socket, setSocket] = useState(null);
 
-    useEffect(() => {
-        const newSocket = io('http://localhost:5000'); // Update this URL if needed
-        setSocket(newSocket);
+  useEffect(() => {
+    // Retrieve token from localStorage
+    const token = localStorage.getItem('token');
+    
+    // Create a new socket instance and pass the token in the auth options
+    const newSocket = io('http://localhost:5000', {
+      auth: { token }
+    });
+    setSocket(newSocket);
 
-        return () => newSocket.close();
-    }, []);
+    // Clean up the socket when the component unmounts
+    return () => newSocket.disconnect();
+  }, []);
 
-    return (
-        <SocketContext.Provider value={socket}>
-            {children}
-        </SocketContext.Provider>
-    );
+  return (
+    <SocketContext.Provider value={socket}>
+      {children}
+    </SocketContext.Provider>
+  );
 };
