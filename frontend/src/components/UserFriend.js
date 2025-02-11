@@ -64,6 +64,16 @@ export const UserFriend = (props) => {
       }
     });
 
+    // Listen for rejection notifications from opponents (i.e. when your match request is rejected)
+    newSocket.on('requestAccepted', (data) => {
+      // Ensure that the current user is the original requester
+      const currentUserId = jwtDecode(token)._id;
+      if (data.requesterId === currentUserId) {
+        // Mark the corresponding opponent (data.userId) as rejected
+        alert('accepted')
+        
+      }
+    });
     setSocket(newSocket);
 
   }, [token]);
@@ -178,6 +188,7 @@ export const UserFriend = (props) => {
   const handleAccept = () => {
     // Add your accept logic here (e.g., notify the server, redirect to match page, etc.)
     console.log("Match accepted");
+    socket.emit('requestAccepted', matchRequestData);
     setMatchRequestData(false);
   };
 

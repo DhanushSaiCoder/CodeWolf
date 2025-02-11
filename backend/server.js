@@ -122,6 +122,19 @@ io.on('connection', (socket) => {
     });
   });
 
+  socket.on('requestAccepted', (data) => {
+    const { requesterId } = data;
+    console.log(`Match request accepted by ${userId} for request from ${requesterId}`);
+    // Forward the rejection to the requester
+    io.to(requesterId).emit('requestAccepted', {
+      ...data,
+      receiverId: userId,
+      receiverUsername: data.receiverUsername || "Opponent" // Optionally include more info
+    });
+  });
+
+  
+
   socket.on('disconnect', async () => {
     console.log('User disconnected');
     if (userId) {
