@@ -5,8 +5,10 @@ import { jwtDecode } from 'jwt-decode'; // Ensure proper import of jwt-decode
 import "../styles/UserFriend.css";
 import { NotUserFriend } from './NotUserFriend';
 import { MatchRequest } from './MatchRequest';
+import { useNavigate } from 'react-router-dom';
 
 export const UserFriend = (props) => {
+  const navigate = useNavigate()
   const { userDoc, userFriendsData, UFloading: loading, setUFLoading: setLoading } = props;
   const [socket, setSocket] = useState(null);
   const [popup, showPopup] = useState(false);
@@ -70,8 +72,8 @@ export const UserFriend = (props) => {
       const currentUserId = jwtDecode(token)._id;
       if (data.requesterId === currentUserId) {
         // Mark the corresponding opponent (data.userId) as rejected
-        alert('accepted')
         console.log('request accepted: ', data)
+        navigate(`/match/${data.requesterId}/${data.receiverId}`)
       }
     });
     setSocket(newSocket);
@@ -187,8 +189,11 @@ export const UserFriend = (props) => {
   // Handler functions for the match request component
   const handleAccept = () => {
     // Add your accept logic here (e.g., notify the server, redirect to match page, etc.)
-    console.log("Match accepted");
+    console.log("Match accepted", matchRequestData);
+
     socket.emit('requestAccepted', matchRequestData);
+    navigate(`/match/${matchRequestData.requesterId}/${matchRequestData.userId}`)
+
     setMatchRequestData(false);
   };
 
