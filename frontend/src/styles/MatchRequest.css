@@ -20,7 +20,7 @@
   width: 30vw;
   min-width: 400px;
   background: var(--light-bg);
-  border: 2px solid var(--dark-pink);
+  border: 3.5px solid var(--main-2);
   border-radius: 10px;
   box-shadow: 0 4px 15px var(--shadow-color);
   z-index: 100;
@@ -31,7 +31,7 @@
 
 /* Header: using the dark pink to tie into the background */
 .mr-header {
-  background: var(--dark-pink);
+  background: var(--main-2);
   color: var(--light-bg);
   padding: 12px;
   text-align: center;
@@ -57,7 +57,7 @@
 
 .mr-rating {
   font-size: 1rem;
-  color: var(--dark-pink);
+  color: var(--main-2);
   margin-left: 5px;
 }
 
