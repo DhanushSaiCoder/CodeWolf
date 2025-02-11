@@ -12,10 +12,10 @@ export const MatchWait = (props) => {
     const token = localStorage.getItem('token');
     const query = useQuery();
     const requesterId = query.get("requesterId");
-    const receiverId = query.get("receiverId"); 
-    const difficulty = query.get("difficulty"); 
-    const programmingLanguage = query.get("language"); 
-    const mode = query.get("mode"); 
+    const receiverId = query.get("receiverId");
+    const difficulty = query.get("difficulty");
+    const programmingLanguage = query.get("language");
+    const mode = query.get("mode");
 
     // Decode the token to get the current user's ID
     let currentUserId = null;
@@ -59,7 +59,7 @@ export const MatchWait = (props) => {
                     // Emit beginMatch only if the current user is the requester
                     if (currentUserId === requesterId && requesterId && receiverId) {
                         console.log('Emitting beginMatch with playersDocs:', playersDocs);
-                        newSocket.emit('beginMatch', { requesterId, receiverId, playersDocs });
+                        newSocket.emit('beginMatch', { requesterId, receiverId, playersDocs, difficulty, mode, programmingLanguage });
                     }
                 })
                 .catch((error) => {

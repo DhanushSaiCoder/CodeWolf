@@ -134,7 +134,7 @@ io.on('connection', (socket) => {
   });
 
   // Handle the beginMatch event
-  socket.on('beginMatch', async ({ requesterId, receiverId, playersDocs }) => {
+  socket.on('beginMatch', async ({ requesterId, receiverId, playersDocs, mode, programmingLanguage, difficulty }) => {
     console.log(`Match started between ${requesterId} and ${receiverId}`);
     console.log("playersDocs:", playersDocs);
 
@@ -172,7 +172,9 @@ io.on('connection', (socket) => {
           rating: receiverInfo.rating,
         },
       ],
-      // Add any additional required fields here
+      difficulty,
+      mode,
+      language: programmingLanguage
     };
 
     let createdMatch;

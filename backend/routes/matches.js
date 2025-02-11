@@ -14,7 +14,10 @@ router.post('/', async (req, res) => {
     const match = new Match({
         players: req.body.players,
         winner: req.body.winner,
-        loser: req.body.loser
+        loser: req.body.loser,
+        mode: req.body.mode,
+        difficulty: req.body.difficulty,
+        language: req.body.language
     })
 
     await match.save()
