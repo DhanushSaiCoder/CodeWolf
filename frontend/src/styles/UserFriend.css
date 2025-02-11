@@ -291,3 +291,25 @@ button[type="submit"]:hover {
 .rejectedLabel{
     color: orangered;
 }
+
+.UFModeBtns {
+    height: auto;
+    width: auto;
+    border-radius: 5px;
+    background-color: var(--main-1);
+    color: var(--darkest);
+    font-weight: normal;
+    font-size: medium;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease-in-out cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.quickMatchBtn {
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.quickMatchBtn:hover {
+    background-color: #d0b4f4;
+    transform: translateY(-3px); /* Move the button upwards */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

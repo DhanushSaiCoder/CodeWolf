@@ -288,7 +288,7 @@ export const UserFriend = (props) => {
                   </div>
                 )}
                 <button
-                  className="modeBtns quickMatchBtn UserFriendQuickMatchBtn"
+                  className="UFModeBtns quickMatchBtn UserFriendQuickMatchBtn"
                   disabled={userFriend.status !== "online" || sentRequests[userFriend.id]}
                   onClick={() => configureMatch(userFriend)}
                 >
