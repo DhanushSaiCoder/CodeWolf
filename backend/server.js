@@ -6,6 +6,7 @@ const cors = require('cors');
 const http = require('http');
 const { Server } = require('socket.io');
 const { User } = require('./models/User');
+const {Match} = require('./models/Match')
 const jwt = require('jsonwebtoken');
 
 dotenv.config();
@@ -135,7 +136,6 @@ io.on('connection', (socket) => {
 
   // Handle the beginMatch event
   // At the top of your file, import the Match model
-  const Match = require('./models/Match'); // adjust the path as needed
 
   socket.on(
     'beginMatch',
@@ -262,14 +262,29 @@ io.on('connection', (socket) => {
 
 
 
+  // Make sure to import the Match model correctly
   socket.on('disconnect', async () => {
     console.log('User disconnected');
     if (userId) {
       await updateUserStatus(userId, 'offline');
       userSocketMap.delete(userId);
       socket.leave(userId);
+
+      // Update all pending matches involving this user to "canceled" using the native collection method
+      try {
+        const result = await Match.updateMany(
+          { 'players.id': userId, status: 'pending' },
+          { $set: { status: 'canceled' } }
+        );
+        console.log(`Canceled pending matches for user ${userId}:`, result);
+      } catch (error) {
+        console.error(`Error canceling pending matches for user ${userId}:`, error);
+      }
     }
   });
+
+
+
 });
 
 server.listen(port, () => {
