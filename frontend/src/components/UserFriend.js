@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useRef } from 'react';
+// UserFriend.js
+import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
-import {jwtDecode} from 'jwt-decode'; // Ensure proper import of jwt-decode
-import { CSSTransition } from 'react-transition-group';
-
+import { jwtDecode } from 'jwt-decode'; // Ensure proper import of jwt-decode
 import "../styles/UserFriend.css";
 import { NotUserFriend } from './NotUserFriend';
+import { MatchRequest } from './MatchRequest';
 
 export const UserFriend = (props) => {
   const { userDoc, userFriendsData, UFloading: loading, setUFLoading: setLoading } = props;
@@ -31,9 +31,6 @@ export const UserFriend = (props) => {
 
   // State to track which opponents have been sent a request
   const [sentRequests, setSentRequests] = useState({});
-
-  // Ref for the CSSTransition element
-  const requestDivRef = useRef(null);
 
   useEffect(() => {
     // Establish the socket connection
@@ -179,18 +176,32 @@ export const UserFriend = (props) => {
     }, 10000);
   };
 
+  // Handler functions for the match request component
+  const handleAccept = () => {
+    // Add your accept logic here (e.g., notify the server, redirect to match page, etc.)
+    console.log("Match accepted");
+    setMatchRequestData(false);
+  };
+
+  const handleReject = () => {
+    if (socket && matchRequestData) {
+      socket.emit('requestRejected', matchRequestData);
+    }
+    setMatchRequestData(false);
+  };
+
   return (
-    <div className='UserFriend'>
+    <div className="UserFriend">
       {popup && (
-        <div onClick={() => showPopup(false)} className='RPopupDivContainer'>
-          <div onClick={(e) => e.stopPropagation()} className='RPopupDiv'>
-            <div className='popupHeader'>
+        <div onClick={() => showPopup(false)} className="RPopupDivContainer">
+          <div onClick={(e) => e.stopPropagation()} className="RPopupDiv">
+            <div className="popupHeader">
               Set Match
-              <button type="button" onClick={() => showPopup(false)} className='closeButton'>
+              <button type="button" onClick={() => showPopup(false)} className="closeButton">
                 &times;
               </button>
             </div>
-            <div className='popupContent'>
+            <div className="popupContent">
               <form onSubmit={handleSubmit}>
                 <div className="formGroup">
                   <label htmlFor="programmingLanguage">Programming Language:</label>
@@ -239,10 +250,12 @@ export const UserFriend = (props) => {
         </div>
       )}
 
-      <div className='data'>
+      <div className="data">
         <h4>FRIENDS</h4>
-        {loading ? <p>Loading...</p> : (
-          userFriendsData.length ? userFriendsData.map((userFriend, index) => {
+        {loading ? (
+          <p>Loading...</p>
+        ) : userFriendsData.length ? (
+          userFriendsData.map((userFriend, index) => {
             if (props.onlineOnly && userFriend.status !== "online") {
               return null;
             }
@@ -256,28 +269,28 @@ export const UserFriend = (props) => {
                 key={userFriend.id}
               >
                 <p>{index + 1}</p>
-                <div className='UserFriend__userDetails'>
+                <div className="UserFriend__userDetails">
                   <div>
-                    <h3 className='UserFriend__username'>{userFriend.username}</h3>
+                    <h3 className="UserFriend__username">{userFriend.username}</h3>
                     <p>
-                      <span className='userFriend__rating'>&#8902; </span>
+                      <span className="userFriend__rating">&#8902; </span>
                       {userFriend.rating}
                     </p>
                   </div>
                 </div>
                 {userFriend.status === "online" ? (
-                  <div className='UserFriend__onlineBadgeDiv'>
-                    <div className='UserFriend__onlineBadge'></div>
+                  <div className="UserFriend__onlineBadgeDiv">
+                    <div className="UserFriend__onlineBadge"></div>
                     <p>Online</p>
                   </div>
                 ) : (
-                  <div className='UserFriend__offlineBadgeDiv'>
-                    <div className='UserFriend__offlineBadge'></div>
+                  <div className="UserFriend__offlineBadgeDiv">
+                    <div className="UserFriend__offlineBadge"></div>
                     <p>Offline</p>
                   </div>
                 )}
                 <button
-                  className='modeBtns quickMatchBtn UserFriendQuickMatchBtn'
+                  className="modeBtns quickMatchBtn UserFriendQuickMatchBtn"
                   disabled={userFriend.status !== "online" || sentRequests[userFriend.id]}
                   onClick={() => configureMatch(userFriend)}
                 >
@@ -289,52 +302,19 @@ export const UserFriend = (props) => {
                 )}
               </div>
             );
-          }) : <p>No Friends</p>
+          })
+        ) : (
+          <p>No Friends</p>
         )}
       </div>
 
-      <CSSTransition
-        in={!!matchRequestData}
-        timeout={300}
-        classNames="slide"
-        unmountOnExit
-        nodeRef={requestDivRef}
-      >
-        <div ref={requestDivRef} className='requestDiv'>
-          <h1 className='RHeading'>MATCH INVITE</h1>
-          <h2>
-            {matchRequestData && matchRequestData.requesterUsername}
-            <span className='RRating'>
-              ({matchRequestData && matchRequestData.requesterRating})
-            </span>
-          </h2>
-          <p>
-            <i>invited you for a match</i>
-          </p>
-          <div className='RModeDetailsDiv'>
-            <p className='RModeDetails'>
-              <b>MODE:</b> {matchRequestData && matchRequestData.mode} - {matchRequestData && matchRequestData.programmingLanguage}
-            </p>
-            <p className='RModeDetails'>
-              <b>DIFFICULTY:</b> {matchRequestData && matchRequestData.difficulty}
-            </p>
-          </div>
-          <div className='acceptRejectDiv'>
-            <button className='RAccept'>Accept</button>
-            <button
-              className='RReject'
-              onClick={() => {
-                if (socket && matchRequestData) {
-                  socket.emit('requestRejected', matchRequestData);
-                }
-                setMatchRequestData(false);
-              }}
-            >
-              Reject ({rejectCountdown})
-            </button>
-          </div>
-        </div>
-      </CSSTransition>
+      {/* Use the extracted MatchRequest component */}
+      <MatchRequest
+        matchRequestData={matchRequestData}
+        rejectCountdown={rejectCountdown}
+        onAccept={handleAccept}
+        onReject={handleReject}
+      />
     </div>
   );
 };
