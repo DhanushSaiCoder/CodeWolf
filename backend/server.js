@@ -136,100 +136,79 @@ io.on('connection', (socket) => {
   // Handle the beginMatch event
   socket.on('beginMatch', async ({ requesterId, receiverId, playersDocs }) => {
     console.log(`Match started between ${requesterId} and ${receiverId}`);
-  
+    console.log("playersDocs:", playersDocs);
+
+    // Get socket IDs for both players
     const requesterSocketId = userSocketMap.get(requesterId);
     const receiverSocketId = userSocketMap.get(receiverId);
-    console.log("playersDocs: ", playersDocs);
-  
-    // Initialize default values in case the lookup fails
-    let requesterUserName = playersDocs.requester.username
-    let requesterRating = playersDocs.requester.rating;
-    let receiverUserName = playersDocs.receiver.username
-    let receiverRating = playersDocs.receiver.rating
-  
-    // Example assumes playersDocs is an array of user objects.
-    // If it's not an array, adjust accordingly.
-    if (Array.isArray(playersDocs)) {
-      const requesterDoc = playersDocs.find(player => player._id === requesterId);
-      const receiverDoc = playersDocs.find(player => player._id === receiverId);
-  
-      if (requesterDoc) {
-        requesterUserName = requesterDoc.username;
-        requesterRating = requesterDoc.rating;
+
+    // Helper function to extract player info from playersDocs.
+    // If playersDocs is an array, we search by _id.
+    // If it's an object, we assume it has keys like 'requester' and 'receiver'.
+    const getPlayerInfo = (id, key) => {
+      if (Array.isArray(playersDocs)) {
+        return playersDocs.find(player => player._id === id) || {};
+      } else if (playersDocs && typeof playersDocs === 'object') {
+        return playersDocs[key] || {};
       }
-      if (receiverDoc) {
-        receiverUserName = receiverDoc.username;
-        receiverRating = receiverDoc.rating;
-      }
-    } else if (playersDocs && typeof playersDocs === 'object') {
-      // If playersDocs is an object with keys for each player, e.g. { requester: {...}, receiver: {...} }
-      if (playersDocs.requester) {
-        requesterUserName = playersDocs.requester.username;
-        requesterRating = playersDocs.requester.rating;
-      }
-      if (playersDocs.receiver) {
-        receiverUserName = playersDocs.receiver.username;
-        receiverRating = playersDocs.receiver.rating;
-      }
-    }
-  
+      return {};
+    };
+
+    // Extract info for both players
+    const requesterInfo = getPlayerInfo(requesterId, 'requester');
+    const receiverInfo = getPlayerInfo(receiverId, 'receiver');
+
     // Build the match object using the extracted data
     const matchObj = {
       players: [
         {
           id: requesterId,
-          username: requesterUserName,
-          rating: requesterRating,
+          username: requesterInfo.username,
+          rating: requesterInfo.rating,
         },
         {
           id: receiverId,
-          username: receiverUserName,
-          rating: receiverRating,
-        }
-      ]
+          username: receiverInfo.username,
+          rating: receiverInfo.rating,
+        },
+      ],
       // Add any additional required fields here
     };
-  
-    // Declare createdMatch in the outer scope so it can be accessed later
+
     let createdMatch;
-  
+
+    // Create the match via a POST request
     try {
       const response = await fetch('http://localhost:5000/matches', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(matchObj)
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(matchObj),
       });
-  
+
       if (!response.ok) {
-        // Optionally, read the error details returned by the server
         const errorDetails = await response.text();
         throw new Error(`HTTP error! Status: ${response.status}. Details: ${errorDetails}`);
       }
-  
-      // If the request was successful, parse the created match document
+
       createdMatch = await response.json();
       console.log('Match created with ID:', createdMatch._id);
     } catch (error) {
       console.error('Error creating match:', error);
     }
-  
-    // Deduplicate socket IDs in case they are the same
-    const players = [...new Set([requesterSocketId, receiverSocketId])].filter(id => id);
-  
-    // Build the payload to emit (including the created match if available)
-    const payload = { requesterId, receiverId };
-    if (createdMatch) {
-      payload.createdMatch = createdMatch;
-    }
-  
+
+    // Deduplicate socket IDs (also filters out any falsy values)
+    const players = [...new Set([requesterSocketId, receiverSocketId])].filter(Boolean);
+
+    // Build the payload, including the created match if available
+    const payload = { requesterId, receiverId, ...(createdMatch && { createdMatch }) };
+
     if (players.length > 0) {
-      console.log('sending to players: ', payload);
+      console.log('Sending to players:', payload);
       io.to(players).emit('beginMatch', payload);
     }
   });
-  
+
+
 
 
   socket.on('disconnect', async () => {
