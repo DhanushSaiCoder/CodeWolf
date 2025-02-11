@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useLocation } from "react-router-dom";
 import io from 'socket.io-client';
 import { jwtDecode } from 'jwt-decode';
+import { Mode } from './../components/Mode';
 
 const useQuery = () => {
     return new URLSearchParams(useLocation().search);
@@ -11,7 +12,10 @@ export const MatchWait = (props) => {
     const token = localStorage.getItem('token');
     const query = useQuery();
     const requesterId = query.get("requesterId");
-    const receiverId = query.get("receiverId");  // Corrected spelling
+    const receiverId = query.get("receiverId"); 
+    const difficulty = query.get("difficulty"); 
+    const programmingLanguage = query.get("language"); 
+    const mode = query.get("mode"); 
 
     // Decode the token to get the current user's ID
     let currentUserId = null;
@@ -84,6 +88,9 @@ export const MatchWait = (props) => {
         <div>
             <p>Requester ID: {requesterId}</p>
             <p>Receiver ID: {receiverId}</p>
+            <p>match Mode: {mode}</p>
+            <p>match Language: {programmingLanguage}</p>
+            <p>match Difficulty: {difficulty}</p>
         </div>
     );
 }
