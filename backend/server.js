@@ -122,18 +122,31 @@ io.on('connection', (socket) => {
     });
   });
 
+  // Listen for request acceptance events
   socket.on('requestAccepted', (data) => {
     const { requesterId } = data;
     console.log(`Match request accepted by ${userId} for request from ${requesterId}`);
-    // Forward the rejection to the requester
     io.to(requesterId).emit('requestAccepted', {
       ...data,
       receiverId: userId,
-      receiverUsername: data.receiverUsername || "Opponent" // Optionally include more info
+      receiverUsername: data.receiverUsername || "Opponent"
     });
   });
 
-  
+  // Handle the beginMatch event
+  socket.on('beginMatch', ({ requesterId, receiverId }) => {
+    console.log(`Match started between ${requesterId} and ${receiverId}`);
+
+    const requesterSocketId = userSocketMap.get(requesterId);
+    const receiverSocketId = userSocketMap.get(receiverId);
+
+    // Deduplicate socket IDs in case they are the same
+    const players = [...new Set([requesterSocketId, receiverSocketId])].filter(id => id);
+
+    if (players.length > 0) {
+      io.to(players).emit('beginMatch', { requesterId, receiverId });
+    }
+  });
 
   socket.on('disconnect', async () => {
     console.log('User disconnected');
