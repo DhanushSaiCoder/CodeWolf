@@ -99,6 +99,7 @@
     flex-direction: column;
     gap: 10px;
     border: 2.5px solid white;
+    z-index: 100;
 }
 .requestDiv p i {
     opacity: 0.8;

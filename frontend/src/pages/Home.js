@@ -10,7 +10,8 @@ import coder2 from '../images/coder2.png';
 import { HomeLeaderBoard } from '../components/HomeLeaderBoard';
 import { useSocket } from '../SocketContext';
 import { jwtDecode } from 'jwt-decode';
-import { MatchRequest } from '../components/MatchRequest';
+// Removed MatchRequest import since it is no longer used here
+// import { MatchRequest } from '../components/MatchRequest';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -134,7 +135,14 @@ const Home = () => {
     <div className='Home'>
       <Header />
       <div className='homeContent'>
-        <Nav currPage='home' />
+        <Nav
+          currPage="home"
+          matchRequestData={matchRequestData}
+          rejectCountdown={rejectCountdown}
+          onAccept={handleAccept}
+          onReject={handleReject}
+        />
+
         <div className='modesContainer'>
           <Mode
             modeName='QUICK DEBUG MODE'
@@ -147,13 +155,7 @@ const Home = () => {
           <HomeLeaderBoard />
         </div>
       </div>
-      {/* Render the MatchRequest component if there is an incoming match request */}
-      <MatchRequest
-        matchRequestData={matchRequestData}
-        rejectCountdown={rejectCountdown}
-        onAccept={handleAccept}
-        onReject={handleReject}
-      />
+      {/* Removed the MatchRequest component from here */}
     </div>
   );
 };

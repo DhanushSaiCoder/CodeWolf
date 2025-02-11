@@ -65,9 +65,7 @@ export const UserFriend = (props) => {
     });
 
     setSocket(newSocket);
-    return () => {
-      newSocket.disconnect();
-    };
+   
   }, [token]);
 
   // Start (or reset) the countdown whenever a new match request is displayed
