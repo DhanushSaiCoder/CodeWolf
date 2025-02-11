@@ -6,7 +6,7 @@ const { validateUser, User } = require('../models/User')
 const authenticateToken = require('../middleware/authenticateToken')
 
 //getLogged in user document
-router.get('/me',authenticateToken, async (req, res) => {
+router.get('/me', authenticateToken, async (req, res) => {
     try {
         const user = await User.findById(req.user._id).select('-password');
         res.json(user);
@@ -15,6 +15,35 @@ router.get('/me',authenticateToken, async (req, res) => {
         res.status(500).json({ message: 'An unexpected error occurred.' });
     }
 })
+
+router.get('/user', async (req, res) => {
+    try {
+        // Expecting query parameters: /user?requesterId=<id>&receiverId=<id>
+        const { requesterId, receiverId } = req.query;
+
+        // Validate that both query parameters are provided
+        if (!requesterId || !receiverId) {
+            return res.status(400).json({ message: 'Both requesterId and receiverId are required as query parameters.' });
+        }
+
+        // Find both the requester and the receiver user documents, excluding their passwords
+        const requester = await User.findById(requesterId).select('-password');
+        const receiver = await User.findById(receiverId).select('-password');
+
+        // Check if both users exist
+        if (!requester || !receiver) {
+            return res.status(404).json({ message: 'One or both users were not found.' });
+        }
+
+        // Send both documents in the response
+        res.status(200).json({ requester, receiver });
+    } catch (err) {
+        console.error('Error fetching user:', err);
+        res.status(500).json({ message: 'An unexpected error occurred.' });
+    }
+});
+
+
 
 // Get all users except one's friends and himself
 router.get('/nonfriends', authenticateToken, async (req, res) => {

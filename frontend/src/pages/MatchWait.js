@@ -31,10 +31,36 @@ export const MatchWait = (props) => {
             console.log('Connected to the server');
             newSocket.emit('sendToken', token);
 
-            // Emit beginMatch only if the current user is the requester
-            if (currentUserId === requesterId && requesterId && receiverId) {
-                newSocket.emit('beginMatch', { requesterId, receiverId });
-            }
+            // Build the query string with requesterId and receiverId
+            const queryParams = new URLSearchParams({ requesterId, receiverId }).toString();
+            const url = `http://localhost:5000/auth/user?${queryParams}`;
+
+            // Fetch user details from /user with query parameters
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log('Fetched user data:', data);
+                    const playersDocs = data;  // Now playersDocs is set to the fetched data
+
+                    // Emit beginMatch only if the current user is the requester
+                    if (currentUserId === requesterId && requesterId && receiverId) {
+                        console.log('Emitting beginMatch with playersDocs:', playersDocs);
+                        newSocket.emit('beginMatch', { requesterId, receiverId, playersDocs });
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error fetching user data:', error);
+                });
         });
 
         const handleBeginMatch = (data) => {
@@ -51,6 +77,8 @@ export const MatchWait = (props) => {
             newSocket.disconnect();
         };
     }, [token, currentUserId, requesterId, receiverId]);
+
+
 
     return (
         <div>
