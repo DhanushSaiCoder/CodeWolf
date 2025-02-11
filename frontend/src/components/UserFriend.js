@@ -73,7 +73,8 @@ export const UserFriend = (props) => {
       if (data.requesterId === currentUserId) {
         // Mark the corresponding opponent (data.userId) as rejected
         console.log('request accepted: ', data)
-        navigate(`/matchwait/?requesterId=${data.requesterId}/?recieverId=${data.receiverId}`)
+        navigate(`/matchwait/?requesterId=${data.requesterId}&recieverId=${data.receiverId}`)
+
       }
     });
     setSocket(newSocket);
@@ -192,7 +193,7 @@ export const UserFriend = (props) => {
     console.log("Match accepted", matchRequestData);
 
     socket.emit('requestAccepted', matchRequestData);
-    navigate(`/matchwait/?requesterId=${matchRequestData.requesterId}/?recieverId=${matchRequestData.userId}`)
+    navigate(`/matchwait/?requesterId=${matchRequestData.requesterId}&recieverId=${matchRequestData.userId}`)
 
 
     setMatchRequestData(false);

@@ -12,6 +12,7 @@ import Leaderboard from './pages/Leaderboard';
 import Settings from './pages/Settings';
 import History from './pages/History';
 import { SocketProvider } from './SocketContext'; // Import SocketProvider
+import { MatchWait } from './pages/MatchWait';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -25,6 +26,7 @@ root.render(
         <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/history" element={<History />} />
+        <Route path="/matchwait" element={<MatchWait />} />
       </Routes>
     </BrowserRouter>
   </SocketProvider>
