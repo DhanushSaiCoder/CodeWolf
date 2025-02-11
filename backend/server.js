@@ -142,10 +142,10 @@ io.on('connection', (socket) => {
     console.log("playersDocs: ", playersDocs);
   
     // Initialize default values in case the lookup fails
-    let requesterUserName = "Requester'sUsername";
-    let requesterRating = 1500;
-    let receiverUserName = "Receiver'sUsername";
-    let receiverRating = 1500;
+    let requesterUserName = playersDocs.requester.username
+    let requesterRating = playersDocs.requester.rating;
+    let receiverUserName = playersDocs.receiver.username
+    let receiverRating = playersDocs.receiver.rating
   
     // Example assumes playersDocs is an array of user objects.
     // If it's not an array, adjust accordingly.
