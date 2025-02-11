@@ -71,7 +71,7 @@ export const UserFriend = (props) => {
       if (data.requesterId === currentUserId) {
         // Mark the corresponding opponent (data.userId) as rejected
         alert('accepted')
-        
+        console.log('request accepted: ', data)
       }
     });
     setSocket(newSocket);
