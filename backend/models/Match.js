@@ -3,11 +3,11 @@ const joi = require("joi");
 
 const matchObj = {
     players: [{
-        _id: 'aMongoDbId',
+        id: 'aMongoDbId',
         username: 'aUsername',
         rating: 962,
     }, {
-        _id: 'aMongoDbId',
+        id: 'aMongoDbId',
         username: 'aUsername',
         rating: 945,
     }],
@@ -17,7 +17,7 @@ const matchObj = {
 
 const matchSchema = new mongoose.Schema({
     players: [{
-        _id: {
+        id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: true
@@ -40,7 +40,6 @@ const matchSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         default: null
-
     }
 }, { timestamps: true });
 
@@ -50,7 +49,7 @@ function validateMatch(match) {
     console.log(match);
     const schema = joi.object({
         players: joi.array().items(joi.object({
-            _id: joi.string().required(),
+            id: joi.string().required(),
             username: joi.string().required(),
             rating: joi.number().required()
         })).required(),
