@@ -1,0 +1,139 @@
+/* MatchRequest.css */
+
+/* Theme variables: the overall page is dark pink (#C2185B), so we use that as an accent */
+:root {
+  --dark-pink: #C2185B;      /* Primary dark pink for header and borders */
+  --dark-pink-dark: #AD1457; /* Slightly darker for hover effects if needed */
+  --light-bg: #ffffff;      /* Light background for the card */
+  --text-dark: #333333;     /* Dark text for readability */
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --button-green: #4CAF50;
+  --button-green-hover: #43A047;
+  --button-red: #E53935;
+  --button-red-hover: #D32F2F;
+}
+
+.match-request-card {
+  position: fixed;
+  right: 40px;
+  bottom: 40px;
+  width: 30vw;
+  min-width: 400px;
+  background: var(--light-bg);
+  border: 2px solid var(--dark-pink);
+  border-radius: 10px;
+  box-shadow: 0 4px 15px var(--shadow-color);
+  z-index: 100;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header: using the dark pink to tie into the background */
+.mr-header {
+  background: var(--dark-pink);
+  color: var(--light-bg);
+  padding: 12px;
+  text-align: center;
+}
+
+.mr-header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+}
+
+/* Body */
+.mr-body {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-dark);
+}
+
+.mr-username {
+  font-size: 1.3rem;
+  margin: 5px 0;
+}
+
+.mr-rating {
+  font-size: 1rem;
+  color: var(--dark-pink);
+  margin-left: 5px;
+}
+
+.mr-invite-text {
+  font-size: 1.1rem;
+  font-style: italic;
+  opacity: 0.8;
+  margin: 5px 0;
+}
+
+.mr-details p {
+  margin: 8px 0;
+  font-size: 1rem;
+}
+
+/* Footer / Action Buttons */
+.mr-actions {
+  display: flex;
+  gap: 10px;
+  padding: 0 20px 20px;
+}
+
+.mr-btn {
+  flex: 1;
+  padding: 12px 0;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  color: var(--light-bg);
+}
+
+.mr-btn:focus {
+  outline: none;
+}
+
+.accept-btn {
+  background-color: var(--button-green);
+}
+
+.accept-btn:hover {
+  background-color: var(--button-green-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.reject-btn {
+  background-color: var(--button-red);
+}
+
+.reject-btn:hover {
+  background-color: var(--button-red-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+/* Slide Transition Animation */
+.slide-enter {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.slide-enter-active {
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 300ms ease-out, opacity 300ms ease-out;
+}
+
+.slide-exit {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.slide-exit-active {
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 300ms ease-in, opacity 300ms ease-in;
+}

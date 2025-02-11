@@ -1,7 +1,7 @@
 // MatchRequest.js
 import React, { useRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
-import "../styles/UserFriend.css";
+import "../styles/MatchRequest.css";
 
 export const MatchRequest = ({
   matchRequestData,
@@ -19,34 +19,38 @@ export const MatchRequest = ({
       unmountOnExit
       nodeRef={requestDivRef}
     >
-      <div ref={requestDivRef} className="requestDiv">
-        <h1 className="RHeading">MATCH INVITE</h1>
-        <h2>
-          {matchRequestData && matchRequestData.requesterUsername}
-          <span className="RRating">
-            ({matchRequestData && matchRequestData.requesterRating})
-          </span>
-        </h2>
-        <p>
-          <i>invited you for a match</i>
-        </p>
-        <div className="RModeDetailsDiv">
-          <p className="RModeDetails">
-            <b>MODE:</b> {matchRequestData && matchRequestData.mode} -{" "}
-            {matchRequestData && matchRequestData.programmingLanguage}
+      <div ref={requestDivRef} className="match-request-card">
+        <header className="mr-header">
+          <h1>Match Invite</h1>
+        </header>
+        <section className="mr-body">
+          <h2 className="mr-username">
+            {matchRequestData && matchRequestData.requesterUsername}
+            <span className="mr-rating">
+              ({matchRequestData && matchRequestData.requesterRating})
+            </span>
+          </h2>
+          <p className="mr-invite-text">
+            <em>invited you for a match</em>
           </p>
-          <p className="RModeDetails">
-            <b>DIFFICULTY:</b> {matchRequestData && matchRequestData.difficulty}
-          </p>
-        </div>
-        <div className="acceptRejectDiv">
-          <button className="RAccept" onClick={onAccept}>
+          <div className="mr-details">
+            <p>
+              <strong>Mode:</strong> {matchRequestData && matchRequestData.mode} -{" "}
+              {matchRequestData && matchRequestData.programmingLanguage}
+            </p>
+            <p>
+              <strong>Difficulty:</strong> {matchRequestData && matchRequestData.difficulty}
+            </p>
+          </div>
+        </section>
+        <footer className="mr-actions">
+          <button className="mr-btn accept-btn" onClick={onAccept}>
             Accept
           </button>
-          <button className="RReject" onClick={onReject}>
+          <button className="mr-btn reject-btn" onClick={onReject}>
             Reject ({rejectCountdown})
           </button>
-        </div>
+        </footer>
       </div>
     </CSSTransition>
   );
