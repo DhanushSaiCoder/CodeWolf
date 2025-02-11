@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { useLocation } from "react-router-dom";
 import io from 'socket.io-client';
-import { jwtDecode } from 'jwt-decode';
-import { Mode } from './../components/Mode';
+import {jwtDecode} from 'jwt-decode';
 
 const useQuery = () => {
     return new URLSearchParams(useLocation().search);
@@ -39,7 +38,6 @@ export const MatchWait = (props) => {
             const queryParams = new URLSearchParams({ requesterId, receiverId }).toString();
             const url = `http://localhost:5000/auth/user?${queryParams}`;
 
-            // Fetch user details from /user with query parameters
             fetch(url, {
                 method: 'GET',
                 headers: {
@@ -54,12 +52,28 @@ export const MatchWait = (props) => {
                 })
                 .then((data) => {
                     console.log('Fetched user data:', data);
-                    const playersDocs = data;  // Now playersDocs is set to the fetched data
+                    const playersDocs = data;
 
-                    // Emit beginMatch only if the current user is the requester
-                    if (currentUserId === requesterId && requesterId && receiverId) {
+                    // Only emit beginMatch if:
+                    // 1. The current user is the requester,
+                    // 2. requesterId and receiverId are provided,
+                    // 3. And no match has been initiated already.
+                    if (
+                        currentUserId === requesterId &&
+                        requesterId &&
+                        receiverId &&
+                        !localStorage.getItem('matchInitiated')
+                    ) {
                         console.log('Emitting beginMatch with playersDocs:', playersDocs);
-                        newSocket.emit('beginMatch', { requesterId, receiverId, playersDocs, difficulty, mode, programmingLanguage });
+                        localStorage.setItem('matchInitiated', 'true'); // Set flag to avoid duplicate emits
+                        newSocket.emit('beginMatch', {
+                            requesterId,
+                            receiverId,
+                            playersDocs,
+                            difficulty,
+                            mode,
+                            programmingLanguage,
+                        });
                     }
                 })
                 .catch((error) => {
@@ -72,7 +86,7 @@ export const MatchWait = (props) => {
             console.log('beginMatch event received', data);
         };
 
-        // Ensure no duplicate listeners exist
+        // Prevent duplicate listeners
         newSocket.off('beginMatch', handleBeginMatch);
         newSocket.on('beginMatch', handleBeginMatch);
 
@@ -82,17 +96,15 @@ export const MatchWait = (props) => {
         };
     }, [token, currentUserId, requesterId, receiverId]);
 
-
-
     return (
         <div>
             <p>Requester ID: {requesterId}</p>
             <p>Receiver ID: {receiverId}</p>
-            <p>match Mode: {mode}</p>
-            <p>match Language: {programmingLanguage}</p>
-            <p>match Difficulty: {difficulty}</p>
+            <p>Match Mode: {mode}</p>
+            <p>Match Language: {programmingLanguage}</p>
+            <p>Match Difficulty: {difficulty}</p>
         </div>
     );
-}
+};
 
 export default MatchWait;

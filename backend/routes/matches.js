@@ -17,7 +17,8 @@ router.post('/', async (req, res) => {
         loser: req.body.loser,
         mode: req.body.mode,
         difficulty: req.body.difficulty,
-        language: req.body.language
+        language: req.body.language,
+        status: req.body.status
     })
 
     await match.save()

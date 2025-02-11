@@ -1,25 +1,7 @@
 const mongoose = require("mongoose");
 const joi = require("joi");
 
-// Example match object
-const matchObj = {
-    players: [{
-        id: 'aMongoDbId',
-        username: 'aUsername',
-        rating: 962,
-    }, {
-        id: 'aMongoDbId',
-        username: 'aUsername',
-        rating: 945,
-    }],
-    winner: 'aMongoDbId',
-    loser: 'aMongoDbId',
-    mode: 'quick-debug',
-    language: 'js',
-    difficulty: 'easy'
-};
-
-// Update the Mongoose schema to include mode, language, and difficulty
+// Updated match schema with a status field
 const matchSchema = new mongoose.Schema({
     players: [{
         id: {
@@ -57,12 +39,17 @@ const matchSchema = new mongoose.Schema({
     difficulty: {
         type: String,
         required: true
+    },
+    status: {
+        type: String,
+        required: true,
+        default: 'pending'  // Default status set to "pending"
     }
 }, { timestamps: true });
 
 const Match = mongoose.model("Match", matchSchema);
 
-// Update the Joi validation schema to include the new fields
+// Update the Joi validation schema to include the new status field
 function validateMatch(match) {
     console.log(match);
     const schema = joi.object({
@@ -71,11 +58,12 @@ function validateMatch(match) {
             username: joi.string().required(),
             rating: joi.number().required()
         })).required(),
-        winner: joi.string().default(null),
-        loser: joi.string().default(null),
+        winner: joi.string().allow(null).default(null),
+        loser: joi.string().allow(null).default(null),
         mode: joi.string().required(),
         language: joi.string().required(),
-        difficulty: joi.string().required()
+        difficulty: joi.string().required(),
+        status: joi.string().default('pending')
     });
     return schema.validate(match);
 }
