@@ -65,7 +65,7 @@ export const UserFriend = (props) => {
     });
 
     setSocket(newSocket);
-   
+
   }, [token]);
 
   // Start (or reset) the countdown whenever a new match request is displayed
@@ -287,17 +287,20 @@ export const UserFriend = (props) => {
                     <p>Offline</p>
                   </div>
                 )}
-                <button
-                  className="UFModeBtns quickMatchBtn UserFriendQuickMatchBtn"
-                  disabled={userFriend.status !== "online" || sentRequests[userFriend.id]}
-                  onClick={() => configureMatch(userFriend)}
-                >
-                  <b>{sentRequests[userFriend.id] ? "REQUEST SENT" : "QUICK MATCH"}</b>
-                </button>
-                {/* Display "Rejected" below the QUICK MATCH button if this friend rejected your request */}
-                {rejectedOpponents[userFriend.id] && (
-                  <p className="rejectedLabel">Rejected</p>
-                )}
+                <div className='buttons_rejectedTxtDiv'>
+
+                  <button
+                    className="UFModeBtns quickMatchBtn UserFriendQuickMatchBtn"
+                    disabled={userFriend.status !== "online" || sentRequests[userFriend.id]}
+                    onClick={() => configureMatch(userFriend)}
+                  >
+                    <b>{sentRequests[userFriend.id] ? "REQUEST SENT" : "QUICK MATCH"}</b>
+                  </button>
+                  {/* Display "Rejected" below the QUICK MATCH button if this friend rejected your request */}
+                  {rejectedOpponents[userFriend.id] && (
+                    <p className="rejectedLabel">Rejected</p>
+                  )}
+                </div>
               </div>
             );
           })

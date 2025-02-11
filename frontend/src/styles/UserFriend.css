@@ -303,6 +303,7 @@ button[type="submit"]:hover {
     cursor: pointer;
     border: none;
     transition: all 0.3s ease-in-out cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
 }
 .quickMatchBtn {
     transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
@@ -312,4 +313,11 @@ button[type="submit"]:hover {
     background-color: #d0b4f4;
     transform: translateY(-3px); /* Move the button upwards */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.buttons_rejectedTxtDiv{
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
