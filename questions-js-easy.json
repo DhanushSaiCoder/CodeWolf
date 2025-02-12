@@ -1,0 +1,93 @@
+[
+    {
+      "language": "JavaScript",
+      "difficulty": "easy",
+      "buggy_code": "function sum(a, b) {\n    return a - b;\n}\nconsole.log(sum(3, 5));",
+      "bug_description": "The function incorrectly subtracts instead of adding the two numbers.",
+      "expected_fix": "Change the `-` operator to `+` in the return statement.",
+      "expected_output": 8,
+      "check": "console.log(sum(3, 5) === 8);"
+    },
+    {
+      "language": "JavaScript",
+      "difficulty": "easy",
+      "buggy_code": "function square(n) {\n    return n * n;\n}\nconsole.log(square(4));",
+      "bug_description": "No bug in the function, but let's introduce an intentional one: returning `n + n` instead of `n * n`.",
+      "expected_fix": "Ensure the function correctly multiplies `n` by itself.",
+      "expected_output": 16,
+      "check": "console.log(square(4) === 16);"
+    },
+    {
+      "language": "JavaScript",
+      "difficulty": "easy",
+      "buggy_code": "function isEven(n) {\n    return n % 2 == 1;\n}\nconsole.log(isEven(4));",
+      "bug_description": "The function incorrectly checks for odd numbers instead of even.",
+      "expected_fix": "Change `== 1` to `== 0` to correctly check for even numbers.",
+      "expected_output": true,
+      "check": "console.log(isEven(4) === true);"
+    },
+    {
+      "language": "JavaScript",
+      "difficulty": "easy",
+      "buggy_code": "function getFirstCharacter(str) {\n    return str[1];\n}\nconsole.log(getFirstCharacter('hello'));",
+      "bug_description": "The function returns the second character instead of the first.",
+      "expected_fix": "Change `str[1]` to `str[0]`.",
+      "expected_output": "h",
+      "check": "console.log(getFirstCharacter('hello') === 'h');"
+    },
+    {
+      "language": "JavaScript",
+      "difficulty": "easy",
+      "buggy_code": "function multiply(a, b) {\n    return a * b;\n}\nconsole.log(multiply(3));",
+      "bug_description": "Missing second parameter in function call, resulting in NaN.",
+      "expected_fix": "Ensure both parameters are provided when calling the function.",
+      "expected_output": 6,
+      "check": "console.log(multiply(3, 2) === 6);"
+    },
+    {
+      "language": "JavaScript",
+      "difficulty": "easy",
+      "buggy_code": "function greet(name) {\n    return 'Hello' + name;\n}\nconsole.log(greet('Alice'));",
+      "bug_description": "Missing space between 'Hello' and `name` in the return statement.",
+      "expected_fix": "Change `'Hello' + name` to `'Hello ' + name`.",
+      "expected_output": "Hello Alice",
+      "check": "console.log(greet('Alice') === 'Hello Alice');"
+    },
+    {
+      "language": "JavaScript",
+      "difficulty": "easy",
+      "buggy_code": "function reverseString(str) {\n    return str.split('').reverse;\n}\nconsole.log(reverseString('abc'));",
+      "bug_description": "The function is missing `()` to call `reverse()`.",
+      "expected_fix": "Change `reverse` to `reverse()`.",
+      "expected_output": "cba",
+      "check": "console.log(reverseString('abc') === 'cba');"
+    },
+    {
+      "language": "JavaScript",
+      "difficulty": "easy",
+      "buggy_code": "function findMax(a, b) {\n    return a > b ? a : b;\n}\nconsole.log(findMax(3));",
+      "bug_description": "Only one parameter is passed, causing `b` to be `undefined`.",
+      "expected_fix": "Ensure two parameters are provided when calling the function.",
+      "expected_output": 5,
+      "check": "console.log(findMax(3, 5) === 5);"
+    },
+    {
+      "language": "JavaScript",
+      "difficulty": "easy",
+      "buggy_code": "function getArrayLength(arr) {\n    return arr.length;\n}\nconsole.log(getArrayLength());",
+      "bug_description": "The function is called without an argument, causing an error.",
+      "expected_fix": "Pass an array as an argument when calling the function.",
+      "expected_output": 3,
+      "check": "console.log(getArrayLength([1, 2, 3]) === 3);"
+    },
+    {
+      "language": "JavaScript",
+      "difficulty": "easy",
+      "buggy_code": "function toUpperCase(str) {\n    return str.touppercase();\n}\nconsole.log(toUpperCase('hello'));",
+      "bug_description": "Incorrect method name `touppercase()`, should be `toUpperCase()`.",
+      "expected_fix": "Replace `touppercase()` with `toUpperCase()`.",
+      "expected_output": "HELLO",
+      "check": "console.log(toUpperCase('hello') === 'HELLO');"
+    }
+  ]
+  

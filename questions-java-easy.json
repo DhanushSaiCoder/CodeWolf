@@ -1,0 +1,93 @@
+[
+    {
+      "language": "Java",
+      "difficulty": "easy",
+      "buggy_code": "public class Main {\n    public static int add(int a, int b) {\n        return a - b;\n    }\n    public static void main(String[] args) {\n        System.out.println(add(3, 5));\n    }\n}",
+      "bug_description": "The function incorrectly subtracts instead of adding the two numbers.",
+      "expected_fix": "Change the `-` operator to `+` in the return statement.",
+      "expected_output": "8",
+      "check": "Expected output: 8"
+    },
+    {
+      "language": "Java",
+      "difficulty": "easy",
+      "buggy_code": "public class Main {\n    public static int square(int n) {\n        return n + n;\n    }\n    public static void main(String[] args) {\n        System.out.println(square(4));\n    }\n}",
+      "bug_description": "Incorrectly returns `n + n` instead of `n * n`.",
+      "expected_fix": "Change `n + n` to `n * n`.",
+      "expected_output": "16",
+      "check": "Expected output: 16"
+    },
+    {
+      "language": "Java",
+      "difficulty": "easy",
+      "buggy_code": "public class Main {\n    public static boolean isEven(int n) {\n        return n % 2 == 1;\n    }\n    public static void main(String[] args) {\n        System.out.println(isEven(4));\n    }\n}",
+      "bug_description": "The function incorrectly checks for odd numbers instead of even.",
+      "expected_fix": "Change `== 1` to `== 0` to correctly check for even numbers.",
+      "expected_output": "true",
+      "check": "Expected output: true"
+    },
+    {
+      "language": "Java",
+      "difficulty": "easy",
+      "buggy_code": "public class Main {\n    public static char getFirstCharacter(String str) {\n        return str.charAt(1);\n    }\n    public static void main(String[] args) {\n        System.out.println(getFirstCharacter(\"hello\"));\n    }\n}",
+      "bug_description": "Returns the second character instead of the first.",
+      "expected_fix": "Change `str.charAt(1)` to `str.charAt(0)`.",
+      "expected_output": "h",
+      "check": "Expected output: h"
+    },
+    {
+      "language": "Java",
+      "difficulty": "easy",
+      "buggy_code": "public class Main {\n    public static int multiply(int a, int b) {\n        return a * b;\n    }\n    public static void main(String[] args) {\n        System.out.println(multiply(3));\n    }\n}",
+      "bug_description": "Missing second argument in function call, causing a compilation error.",
+      "expected_fix": "Ensure both parameters are provided when calling the function.",
+      "expected_output": "6",
+      "check": "Expected output: 6"
+    },
+    {
+      "language": "Java",
+      "difficulty": "easy",
+      "buggy_code": "public class Main {\n    public static void greet(String name) {\n        System.out.println(\"Hello\" + name);\n    }\n    public static void main(String[] args) {\n        greet();\n    }\n}",
+      "bug_description": "The function call is missing the required parameter.",
+      "expected_fix": "Pass a string argument to `greet()`, e.g., `greet(\"Alice\")`.",
+      "expected_output": "Hello Alice",
+      "check": "Expected output: Hello Alice"
+    },
+    {
+      "language": "Java",
+      "difficulty": "easy",
+      "buggy_code": "public class Main {\n    public static int findMax(int a, int b) {\n        return a > b ? a : b;\n    }\n    public static void main(String[] args) {\n        System.out.println(findMax(3));\n    }\n}",
+      "bug_description": "Missing second argument in function call, causing a compilation error.",
+      "expected_fix": "Ensure two parameters are provided when calling the function.",
+      "expected_output": "5",
+      "check": "Expected output: 5"
+    },
+    {
+      "language": "Java",
+      "difficulty": "easy",
+      "buggy_code": "public class Main {\n    public static int getArrayLength(int[] arr) {\n        return arr.length();\n    }\n    public static void main(String[] args) {\n        int[] arr = {1, 2, 3};\n        System.out.println(getArrayLength(arr));\n    }\n}",
+      "bug_description": "`length()` is incorrect for arrays in Java. It should be `length` without parentheses.",
+      "expected_fix": "Replace `arr.length()` with `arr.length`.",
+      "expected_output": "3",
+      "check": "Expected output: 3"
+    },
+    {
+      "language": "Java",
+      "difficulty": "easy",
+      "buggy_code": "public class Main {\n    public static String toUpperCase(String str) {\n        return str.toUpper;\n    }\n    public static void main(String[] args) {\n        System.out.println(toUpperCase(\"hello\"));\n    }\n}",
+      "bug_description": "Incorrect method usage `toUpper`, should be `toUpperCase()`.",
+      "expected_fix": "Use `str.toUpperCase()` instead of `str.toUpper`.",
+      "expected_output": "HELLO",
+      "check": "Expected output: HELLO"
+    },
+    {
+      "language": "Java",
+      "difficulty": "easy",
+      "buggy_code": "public class Main {\n    public static boolean isPositive(int n) {\n        return n > 0 ? true : false;\n    }\n    public static void main(String[] args) {\n        System.out.println(isPositive(-5));\n    }\n}",
+      "bug_description": "The function is unnecessarily using a ternary operator for a boolean condition.",
+      "expected_fix": "Simply return `n > 0` instead of using `? true : false`.",
+      "expected_output": "false",
+      "check": "Expected output: false"
+    }
+  ]
+  

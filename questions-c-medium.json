@@ -1,0 +1,265 @@
+[
+    {
+        "language": "C",
+        "difficulty": "medium",
+        "buggy_code": "#include <stdio.h>\nint sum(int a, int b) {\n    int result;\n    result =+ a + b;\n    return result;\n}\nint main() {\n    printf(\"%d\", sum(5, 10));\n    return 0;\n}",
+        "bug_description": [
+            "1. 'result =+ a + b;' is incorrect; it should be 'result = a + b;'.",
+            "2. Missing newline in printf()."
+        ],
+        "expected_fix": [
+            "1. Change 'result =+ a + b;' to 'result = a + b;'.",
+            "2. Modify printf to include a newline: 'printf(\"%d\\n\", sum(5, 10));'."
+        ],
+        "expected_output": "15",
+        "check": "Expected output: 15"
+    },
+    {
+        "language": "C",
+        "difficulty": "medium",
+        "buggy_code": "#include <stdio.h>\nvoid printArray(int arr[], int size) {\n    for (int i = 0; i <= size; i++) {\n        printf(\"%d \", arr[i]);\n    }\n}\nint main() {\n    int arr[] = {1, 2, 3, 4, 5};\n    printArray(arr, 5);\n    return 0;\n}",
+        "bug_description": [
+            "1. The loop condition 'i <= size' causes an out-of-bounds access; should be 'i < size'."
+        ],
+        "expected_fix": [
+            "1. Change 'i <= size' to 'i < size'."
+        ],
+        "expected_output": "1 2 3 4 5",
+        "check": "Expected output: 1 2 3 4 5"
+    },
+    {
+        "language": "C",
+        "difficulty": "medium",
+        "buggy_code": "#include <stdio.h>\nint main() {\n    char str[5];\n    scanf(\"%s\", str);\n    printf(\"%s\", str);\n    return 0;\n}",
+        "bug_description": [
+            "1. No input size limit in 'scanf(\"%s\", str)', leading to buffer overflow."
+        ],
+        "expected_fix": [
+            "1. Use 'scanf(\"%4s\", str)' to limit input size."
+        ],
+        "expected_output": "User input printed safely",
+        "check": "Expected output: User input printed safely"
+    },
+    {
+        "language": "C",
+        "difficulty": "medium",
+        "buggy_code": "#include <stdio.h>\nint divide(int a, int b) {\n    return a / b;\n}\nint main() {\n    printf(\"%d\", divide(10, 0));\n    return 0;\n}",
+        "bug_description": [
+            "1. Division by zero causes a runtime error."
+        ],
+        "expected_fix": [
+            "1. Add a condition 'if (b == 0) return -1;' before division."
+        ],
+        "expected_output": "Error handling for division by zero",
+        "check": "Expected output: Error handling for division by zero"
+    },
+    {
+        "language": "C",
+        "difficulty": "medium",
+        "buggy_code": "#include <stdio.h>\nint power(int base, int exp) {\n    int result = 1;\n    for (int i = 0; i <= exp; i++) {\n        result *= base;\n    }\n    return result;\n}\nint main() {\n    printf(\"%d\", power(2, 3));\n    return 0;\n}",
+        "bug_description": [
+            "1. Loop condition 'i <= exp' causes one extra multiplication."
+        ],
+        "expected_fix": [
+            "1. Change 'i <= exp' to 'i < exp'."
+        ],
+        "expected_output": "8",
+        "check": "Expected output: 8"
+    },
+    {
+        "language": "C",
+        "difficulty": "medium",
+        "buggy_code": "#include <stdio.h>\nvoid swap(int a, int b) {\n    int temp = a;\n    a = b;\n    b = temp;\n}\nint main() {\n    int x = 5, y = 10;\n    swap(x, y);\n    printf(\"%d %d\", x, y);\n    return 0;\n}",
+        "bug_description": [
+            "1. Function 'swap' does not use pointers, so the values of 'x' and 'y' remain unchanged."
+        ],
+        "expected_fix": [
+            "1. Modify 'swap' to use pointers: 'void swap(int *a, int *b)'.",
+            "2. Call 'swap(&x, &y)' in 'main'."
+        ],
+        "expected_output": "10 5",
+        "check": "Expected output: 10 5"
+    },
+    {
+        "language": "C",
+        "difficulty": "medium",
+        "buggy_code": "#include <stdio.h>\nint sumDigits(int n) {\n    int sum = 0;\n    while (n > 0) {\n        sum += n % 10;\n        n / 10;\n    }\n    return sum;\n}\nint main() {\n    printf(\"%d\", sumDigits(123));\n    return 0;\n}",
+        "bug_description": [
+            "1. 'n / 10;' does not update 'n', leading to an infinite loop."
+        ],
+        "expected_fix": [
+            "1. Change 'n / 10;' to 'n = n / 10;'."
+        ],
+        "expected_output": "6",
+        "check": "Expected output: 6"
+    },
+    {
+        "language": "C",
+        "difficulty": "medium",
+        "buggy_code": "#include <stdio.h>\nint factorial(int n) {\n    if (n == 0) return 1;\n    return n * factorial(n - 1);\n}\nint main() {\n    printf(\"%d\", factorial(-5));\n    return 0;\n}",
+        "bug_description": [
+            "1. Function does not handle negative numbers, leading to infinite recursion."
+        ],
+        "expected_fix": [
+            "1. Add a check 'if (n < 0) return -1;'."
+        ],
+        "expected_output": "Error handling for negative numbers",
+        "check": "Expected output: Error handling for negative numbers"
+    },
+    {
+        "language": "C",
+        "difficulty": "medium",
+        "buggy_code": "#include <stdio.h>\nint main() {\n    int arr[5] = {1, 2, 3, 4, 5};\n    for (int i = 0; i <= 5; i++) {\n        printf(\"%d \", arr[i]);\n    }\n    return 0;\n}",
+        "bug_description": [
+            "1. 'i <= 5' causes out-of-bounds access on the array."
+        ],
+        "expected_fix": [
+            "1. Change 'i <= 5' to 'i < 5'."
+        ],
+        "expected_output": "1 2 3 4 5",
+        "check": "Expected output: 1 2 3 4 5"
+    },
+    {
+        "language": "C",
+        "difficulty": "medium",
+        "buggy_code": "#include <stdio.h>\nint reverseNumber(int n) {\n    int rev = 0;\n    while (n > 0) {\n        rev = rev * 10 + n % 10;\n        n = n / 10;\n    }\n    return rev;\n}\nint main() {\n    printf(\"%d\", reverseNumber(100));\n    return 0;\n}",
+        "bug_description": [
+            "1. Function does not handle trailing zeros properly (100 should return 1, not 001)."
+        ],
+        "expected_fix": [
+            "1. Consider returning a string instead of an integer."
+        ],
+        "expected_output": "1",
+        "check": "Expected output: 1"
+    },
+    {
+        "language": "C",
+        "difficulty": "medium",
+        "buggy_code": "#include <stdio.h>\nint main() {\n    int a = 5;\n    if (a = 10) {\n        printf(\"a is 10\");\n    } else {\n        printf(\"a is not 10\");\n    }\n    return 0;\n}",
+        "bug_description": [
+            "1. 'if (a = 10)' uses assignment instead of comparison, always setting 'a' to 10."
+        ],
+        "expected_fix": [
+            "1. Use 'if (a == 10)' instead."
+        ],
+        "expected_output": "a is not 10",
+        "check": "Expected output: a is not 10"
+    },
+    {
+        "language": "C",
+        "difficulty": "medium",
+        "buggy_code": "#include <stdio.h>\nint divide(int a, int b) {\n    return a / b;\n}\nint main() {\n    printf(\"%d\", divide(10, 0));\n    return 0;\n}",
+        "bug_description": [
+            "1. Division by zero leads to runtime error."
+        ],
+        "expected_fix": [
+            "1. Add a check: 'if (b == 0) return -1;'."
+        ],
+        "expected_output": "Error handling for division by zero",
+        "check": "Expected output: Error handling for division by zero"
+    },
+    {
+        "language": "C",
+        "difficulty": "medium",
+        "buggy_code": "#include <stdio.h>\nvoid printNumbers(int n) {\n    for (int i = 0; i <= n; i--){\n        printf(\"%d \", i);\n    }\n}\nint main() {\n    printNumbers(5);\n    return 0;\n}",
+        "bug_description": [
+            "1. The loop condition causes an infinite loop since 'i--' makes 'i' decrease indefinitely."
+        ],
+        "expected_fix": [
+            "1. Change 'i--' to 'i++'."
+        ],
+        "expected_output": "0 1 2 3 4 5",
+        "check": "Expected output: 0 1 2 3 4 5"
+    },
+    {
+        "language": "C",
+        "difficulty": "medium",
+        "buggy_code": "#include <stdio.h>\nint main() {\n    int arr[3] = {1, 2, 3};\n    printf(\"%d\", arr[3]);\n    return 0;\n}",
+        "bug_description": [
+            "1. Accessing 'arr[3]' is out of bounds, leading to undefined behavior."
+        ],
+        "expected_fix": [
+            "1. Use valid indices (0 to 2)."
+        ],
+        "expected_output": "Undefined behavior or garbage value",
+        "check": "Expected output: Undefined behavior or garbage value"
+    },
+    {
+        "language": "C",
+        "difficulty": "medium",
+        "buggy_code": "#include <stdio.h>\nint power(int base, int exp) {\n    int result = 1;\n    while (exp > 0) {\n        result = result * base;\n        exp - 1;\n    }\n    return result;\n}\nint main() {\n    printf(\"%d\", power(2, 3));\n    return 0;\n}",
+        "bug_description": [
+            "1. 'exp - 1;' does not modify 'exp', leading to an infinite loop."
+        ],
+        "expected_fix": [
+            "1. Change 'exp - 1;' to 'exp = exp - 1;'."
+        ],
+        "expected_output": "8",
+        "check": "Expected output: 8"
+    },
+    {
+        "language": "C",
+        "difficulty": "medium",
+        "buggy_code": "#include <stdio.h>\nint sum(int a, int b) {\n    return a + b;\n}\nint main() {\n    printf(\"%d\", sum(5));\n    return 0;\n}",
+        "bug_description": [
+            "1. 'sum' expects two arguments but only one is provided."
+        ],
+        "expected_fix": [
+            "1. Call 'sum' with two arguments: 'sum(5, 10)'."
+        ],
+        "expected_output": "15",
+        "check": "Expected output: 15"
+    },
+    {
+        "language": "C",
+        "difficulty": "medium",
+        "buggy_code": "#include <stdio.h>\nvoid printMessage() {\n    char *msg = \"Hello\";\n    msg[0] = 'h';\n    printf(\"%s\", msg);\n}\nint main() {\n    printMessage();\n    return 0;\n}",
+        "bug_description": [
+            "1. Modifying a string literal leads to undefined behavior."
+        ],
+        "expected_fix": [
+            "1. Use a character array: 'char msg[] = \"Hello\";'."
+        ],
+        "expected_output": "hello",
+        "check": "Expected output: hello"
+    },
+    {
+        "language": "C",
+        "difficulty": "medium",
+        "buggy_code": "#include <stdio.h>\nint main() {\n    int *p;\n    *p = 10;\n    printf(\"%d\", *p);\n    return 0;\n}",
+        "bug_description": [
+            "1. 'p' is uninitialized, leading to segmentation fault."
+        ],
+        "expected_fix": [
+            "1. Allocate memory: 'int x; p = &x;'."
+        ],
+        "expected_output": "10",
+        "check": "Expected output: 10"
+    },
+    {
+        "language": "C",
+        "difficulty": "medium",
+        "buggy_code": "#include <stdio.h>\nint multiply(int a, int b) {\n    return a * b;\n}\nint main() {\n    printf(\"%d\", multiply(2.5, 4));\n    return 0;\n}",
+        "bug_description": [
+            "1. Passing float values to an 'int' function causes implicit type conversion."
+        ],
+        "expected_fix": [
+            "1. Change function parameters to 'float a, float b'."
+        ],
+        "expected_output": "10",
+        "check": "Expected output: 10"
+    },
+    {
+        "language": "C",
+        "difficulty": "medium",
+        "buggy_code": "#include <stdio.h>\nvoid greet() {\n    printf(\"Hello\");\n}\nint main() {\n    greet;\n    return 0;\n}",
+        "bug_description": [
+            "1. 'greet;' does not call the function."
+        ],
+        "expected_fix": [
+            "1. Use 'greet();' instead."
+        ],
+        "expected_output": "Hello",
+        "check": "Expected output: Hello"
+    }
+]

@@ -1,0 +1,93 @@
+[
+    {
+      "language": "C",
+      "difficulty": "easy",
+      "buggy_code": "#include <stdio.h>\nint add(int a, int b) {\n    return a - b;\n}\nint main() {\n    printf(\"%d\", add(3, 5));\n    return 0;\n}",
+      "bug_description": "The function incorrectly subtracts instead of adding the two numbers.",
+      "expected_fix": "Change the `-` operator to `+` in the return statement.",
+      "expected_output": "8",
+      "check": "Expected output: 8"
+    },
+    {
+      "language": "C",
+      "difficulty": "easy",
+      "buggy_code": "#include <stdio.h>\nint square(int n) {\n    return n + n;\n}\nint main() {\n    printf(\"%d\", square(4));\n    return 0;\n}",
+      "bug_description": "Incorrectly returns `n + n` instead of `n * n`.",
+      "expected_fix": "Change `n + n` to `n * n`.",
+      "expected_output": "16",
+      "check": "Expected output: 16"
+    },
+    {
+      "language": "C",
+      "difficulty": "easy",
+      "buggy_code": "#include <stdio.h>\nint isEven(int n) {\n    return n % 2 == 1;\n}\nint main() {\n    printf(\"%d\", isEven(4));\n    return 0;\n}",
+      "bug_description": "The function incorrectly checks for odd numbers instead of even.",
+      "expected_fix": "Change `== 1` to `== 0` to correctly check for even numbers.",
+      "expected_output": "1",
+      "check": "Expected output: 1 (true)"
+    },
+    {
+      "language": "C",
+      "difficulty": "easy",
+      "buggy_code": "#include <stdio.h>\nchar getFirstCharacter(char *str) {\n    return str[1];\n}\nint main() {\n    printf(\"%c\", getFirstCharacter(\"hello\"));\n    return 0;\n}",
+      "bug_description": "Returns the second character instead of the first.",
+      "expected_fix": "Change `str[1]` to `str[0]`.",
+      "expected_output": "h",
+      "check": "Expected output: h"
+    },
+    {
+      "language": "C",
+      "difficulty": "easy",
+      "buggy_code": "#include <stdio.h>\nint multiply(int a, int b) {\n    return a * b;\n}\nint main() {\n    printf(\"%d\", multiply(3));\n    return 0;\n}",
+      "bug_description": "Missing second argument in function call, causing a compilation error.",
+      "expected_fix": "Ensure both parameters are provided when calling the function.",
+      "expected_output": "6",
+      "check": "Expected output: 6"
+    },
+    {
+      "language": "C",
+      "difficulty": "easy",
+      "buggy_code": "#include <stdio.h>\nvoid greet(char *name) {\n    printf(\"Hello\" + name);\n}\nint main() {\n    greet(\"Alice\");\n    return 0;\n}",
+      "bug_description": "String concatenation is incorrect in C.",
+      "expected_fix": "Use `printf(\"Hello %s\", name);`.",
+      "expected_output": "Hello Alice",
+      "check": "Expected output: Hello Alice"
+    },
+    {
+      "language": "C",
+      "difficulty": "easy",
+      "buggy_code": "#include <stdio.h>\nvoid reverseString(char str[]) {\n    strrev(str);\n}\nint main() {\n    char s[] = \"abc\";\n    reverseString(s);\n    printf(\"%s\", s);\n    return 0;\n}",
+      "bug_description": "`strrev()` is not a standard C function and may not work.",
+      "expected_fix": "Manually implement string reversal using loops.",
+      "expected_output": "cba",
+      "check": "Expected output: cba"
+    },
+    {
+      "language": "C",
+      "difficulty": "easy",
+      "buggy_code": "#include <stdio.h>\nint findMax(int a, int b) {\n    return a > b ? a : b;\n}\nint main() {\n    printf(\"%d\", findMax(3));\n    return 0;\n}",
+      "bug_description": "Missing second argument in function call, causing a compilation error.",
+      "expected_fix": "Ensure two parameters are provided when calling the function.",
+      "expected_output": "5",
+      "check": "Expected output: 5"
+    },
+    {
+      "language": "C",
+      "difficulty": "easy",
+      "buggy_code": "#include <stdio.h>\nint getArrayLength(int arr[]) {\n    return sizeof(arr) / sizeof(arr[0]);\n}\nint main() {\n    int arr[] = {1, 2, 3};\n    printf(\"%d\", getArrayLength(arr));\n    return 0;\n}",
+      "bug_description": "The function incorrectly calculates array length because `sizeof(arr)` inside the function does not give the expected result.",
+      "expected_fix": "Pass array size separately as a parameter.",
+      "expected_output": "3",
+      "check": "Expected output: 3"
+    },
+    {
+      "language": "C",
+      "difficulty": "easy",
+      "buggy_code": "#include <stdio.h>\nvoid toUpperCase(char str[]) {\n    for(int i = 0; str[i] != '\\0'; i++) {\n        str[i] = touppercase(str[i]);\n    }\n}\nint main() {\n    char s[] = \"hello\";\n    toUpperCase(s);\n    printf(\"%s\", s);\n    return 0;\n}",
+      "bug_description": "Incorrect function name `touppercase()`, should be `toupper()`.",
+      "expected_fix": "Use `toupper()` from `ctype.h`.",
+      "expected_output": "HELLO",
+      "check": "Expected output: HELLO"
+    }
+  ]
+  
