@@ -127,6 +127,9 @@ export const MatchWait = () => {
 
   return (
     <div className='MatchWait'>
+      <button onClick={() => {
+        navigate('/')
+      }} className='MWbackBtn'>Back</button>
       {matchCreating && (
         <div className="MWspinner-container">
           <div>Creating Match</div>
@@ -135,6 +138,7 @@ export const MatchWait = () => {
       )}
       {!matchCreating && (
         <div className='counterDiv'>
+
           <p>Match starts in</p>
           {/* 
               Using key={counter} causes React to remount the element on each counter change,

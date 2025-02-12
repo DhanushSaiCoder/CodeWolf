@@ -51,7 +51,22 @@
 .fade {
     animation: fadeInOut 1s ease-in-out;
 }
+.MWbackBtn{
+    all: unset;
+    background-color: #280948;
+    border: 1px solid rgba(var(--divBg));
+    padding: 5px 20px;
+    border-radius: 5px;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+.MWbackBtn:hover{
+    background-color: #370d60;
 
+}
 
 @keyframes fadeInOut {
     0% {
