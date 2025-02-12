@@ -206,16 +206,24 @@ io.on('connection', (socket) => {
         console.log(
           `A match already exists between ${requesterId} and ${receiverId}: ${existingMatch._id}`
         );
-        // Emit an event to inform the players that a match already exists.
+    
+        // Emit 'beginMatch' instead of 'matchExists' with the pending match details.
         const players = [
           ...new Set([requesterSocketId, receiverSocketId]),
         ].filter(Boolean);
-        const payload = { requesterId, receiverId, existingMatch };
+    
+        const payload = { 
+          requesterId, 
+          receiverId, 
+          match: existingMatch // Send existing match details
+        };
+    
         if (players.length > 0) {
-          io.to(players).emit('matchExists', payload);
+          io.to(players).emit('beginMatch', payload);
         }
         return; // Stop further processing.
-      }
+    }
+    
 
       // No duplicate found, so proceed to create the match via a POST request.
       let createdMatch;

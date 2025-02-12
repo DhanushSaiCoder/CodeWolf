@@ -90,7 +90,7 @@ export const MatchWait = (props) => {
 
         return () => {
             newSocket.off('beginMatch', handleBeginMatch); // Cleanup listener on unmount
-            newSocket.disconnect();
+            // newSocket.disconnect();
         };
     }, [token, currentUserId, requesterId, receiverId]);
 
