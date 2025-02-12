@@ -61,11 +61,9 @@ export const MatchWait = (props) => {
                     if (
                         currentUserId === requesterId &&
                         requesterId &&
-                        receiverId &&
-                        !localStorage.getItem('matchInitiated')
+                        receiverId
                     ) {
                         console.log('Emitting beginMatch with playersDocs:', playersDocs);
-                        localStorage.setItem('matchInitiated', 'true'); // Set flag to avoid duplicate emits
                         newSocket.emit('beginMatch', {
                             requesterId,
                             receiverId,
