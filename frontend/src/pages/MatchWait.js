@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
-import { useLocation } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from "react-router-dom";
 import io from 'socket.io-client';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
+import "../styles/MatchWait.css";
 
 const useQuery = () => {
     return new URLSearchParams(useLocation().search);
@@ -15,6 +16,11 @@ export const MatchWait = (props) => {
     const difficulty = query.get("difficulty");
     const programmingLanguage = query.get("language");
     const mode = query.get("mode");
+
+    const [matchCreating, setMatchCreating] = useState(true);
+    const [counter, setCounter] = useState(10);
+
+    const navigate = useNavigate();
 
     // Decode the token to get the current user's ID
     let currentUserId = null;
@@ -80,8 +86,8 @@ export const MatchWait = (props) => {
         });
 
         const handleBeginMatch = (data) => {
-            alert('Match begins..');
             console.log('beginMatch event received', data);
+            setMatchCreating(false);
         };
 
         // Prevent duplicate listeners
@@ -94,13 +100,46 @@ export const MatchWait = (props) => {
         };
     }, [token, currentUserId, requesterId, receiverId]);
 
+    // Countdown timer effect: once matchCreating is false, start the countdown.
+    useEffect(() => {
+        if (!matchCreating) {
+            const timer = setInterval(() => {
+                setCounter(prevCounter => {
+                    if (prevCounter <= 1) {
+                        clearInterval(timer);
+                        navigate('/'); // Navigate to home when countdown reaches 0
+                        return 0;
+                    }
+                    return prevCounter - 1;
+                });
+            }, 1000);
+
+            return () => clearInterval(timer);
+        }
+    }, [matchCreating, navigate]);
+
+    // Determine the display text based on the counter value
+    const getDisplayText = () => {
+        if (counter === 3) return "GET";
+        if (counter === 2) return "SET";
+        if (counter === 1) return "GO!";
+        return counter;
+    };
+
     return (
-        <div>
-            <p>Requester ID: {requesterId}</p>
-            <p>Receiver ID: {receiverId}</p>
-            <p>Match Mode: {mode}</p>
-            <p>Match Language: {programmingLanguage}</p>
-            <p>Match Difficulty: {difficulty}</p>
+        <div className='MatchWait'>
+            {matchCreating && (
+                <div className="MWspinner-container">
+                    Creating Match
+                    <div className="MWspinner"></div>
+                </div>
+            )}
+            {!matchCreating && (
+                <>
+                    <p>Match starts in</p>
+                    <h3 className='counter'>{getDisplayText()}</h3>
+                </>
+            )}
         </div>
     );
 };

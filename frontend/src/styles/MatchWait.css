@@ -1,0 +1,36 @@
+.MatchWait{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.MWspinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    height: auto; /* Adjust height as needed */
+}
+
+/* Spinner */
+.MWspinner {
+    border: 4px solid rgba(255, 255, 255, 0.3); /* Light outer b order */
+    border-top: 4px solid var(--main); /* Main color for the spinning part */
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin .75s linear infinite;
+}
+
+/* Spinner Animation */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
