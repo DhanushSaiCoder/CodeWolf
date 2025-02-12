@@ -1,4 +1,4 @@
-.MatchWait{
+.MatchWait {
     width: 100%;
     height: 100%;
     display: flex;
@@ -6,6 +6,7 @@
     justify-content: center;
     flex-direction: column;
 }
+
 .MWspinner-container {
     display: flex;
     justify-content: center;
@@ -17,12 +18,50 @@
 
 /* Spinner */
 .MWspinner {
-    border: 4px solid rgba(255, 255, 255, 0.3); /* Light outer b order */
+    border: 4px solid rgba(255, 255, 255, 0.3); /* Light outer border */
     border-top: 4px solid var(--main); /* Main color for the spinning part */
     border-radius: 50%;
     width: 30px;
     height: 30px;
-    animation: spin .75s linear infinite;
+    animation: spin 0.75s linear infinite;
+}
+
+/* Counter text style */
+.MWcounterTxt {
+    font-size: 40px;
+}
+
+.counterDiv{
+    border: 1px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: auto;
+    flex-direction: column;
+}
+/* Fade animation for the counter */
+.fade {
+    animation: fadeInOut 1s ease-in-out;
+}
+
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    20% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    80% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
 }
 
 /* Spinner Animation */
@@ -33,4 +72,22 @@
     100% {
         transform: rotate(360deg);
     }
+}
+
+/* Color styles for the counter text */
+.MWcounterTxt.getText {
+    color: orangered;
+    font-size: 45px;
+}
+
+.MWcounterTxt.setText {
+    color: rgb(255, 225, 0);
+    font-size: 50px;
+
+}
+
+.MWcounterTxt.goText {
+    color: rgb(2, 176, 86);
+    font-size: 55px;
+    
 }
