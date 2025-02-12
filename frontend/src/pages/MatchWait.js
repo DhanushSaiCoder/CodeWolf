@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import io from 'socket.io-client';
-import {jwtDecode} from 'jwt-decode'; // adjust the import if necessary
+import { jwtDecode } from 'jwt-decode'; // adjust the import if necessary
 import "../styles/MatchWait.css";
 
 const useQuery = () => new URLSearchParams(useLocation().search);
@@ -90,14 +90,14 @@ export const MatchWait = () => {
     };
   }, [token, currentUserId, requesterId, receiverId]);
 
-  // Countdown timer effect: once matchCreating is false, start the countdown.
+  // Countdown timer effect: once matchCreating becomes false, start the countdown.
   useEffect(() => {
     if (!matchCreating) {
       const timer = setInterval(() => {
         setCounter((prevCounter) => {
           if (prevCounter <= 1) {
             clearInterval(timer);
-            navigate('/match', {replace: true}); // Navigate to home when countdown reaches 0
+            navigate('/match', { replace: true }); // Navigate when countdown reaches 0
             return 0;
           }
           return prevCounter - 1;
@@ -105,6 +105,22 @@ export const MatchWait = () => {
       }, 1000);
 
       return () => clearInterval(timer);
+    }
+  }, [matchCreating, navigate]);
+
+  // New effect: After 10 seconds from mounting, if the match is still being created,
+  // alert the user and navigate back to "/"
+  useEffect(() => {
+    if (matchCreating) {
+      const timeout = setTimeout(() => {
+        // Only trigger if matchCreating is still true after 10 seconds
+        if (matchCreating) {
+          alert("Match creation timed out. Redirecting to home.");
+          navigate('/', { replace: true });
+        }
+      }, 10000);
+
+      return () => clearTimeout(timeout);
     }
   }, [matchCreating, navigate]);
 
@@ -127,27 +143,20 @@ export const MatchWait = () => {
 
   return (
     <div className='MatchWait'>
-      <button onClick={() => {
-        navigate('/')
-      }} className='MWbackBtn'>Back</button>
       {matchCreating && (
         <div className="MWspinner-container">
           <div>Creating Match</div>
           <div className="MWspinner"></div>
+
         </div>
       )}
       {!matchCreating && (
         <div className='counterDiv'>
-
           <p>Match starts in</p>
-          {/* 
-              Using key={counter} causes React to remount the element on each counter change,
-              which re-triggers the fade animation defined in your CSS.
-          */}
           <h3 key={counter} className={getCounterClassName()}>
             {getDisplayText()}
           </h3>
-        </div >
+        </div>
       )}
     </div>
   );

@@ -57,9 +57,7 @@
     border: 1px solid rgba(var(--divBg));
     padding: 5px 20px;
     border-radius: 5px;
-    position: fixed;
-    top: 20px;
-    left: 20px;
+    margin: 10px;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
 }
