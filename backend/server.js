@@ -6,7 +6,7 @@ const cors = require('cors');
 const http = require('http');
 const { Server } = require('socket.io');
 const { User } = require('./models/User');
-const {Match} = require('./models/Match')
+const { Match } = require('./models/Match')
 const jwt = require('jsonwebtoken');
 
 dotenv.config();
@@ -191,12 +191,17 @@ io.on('connection', (socket) => {
         status: 'pending', // This status is used to check for duplicates.
       };
 
-      // **Deduplication:** Check if a pending match already exists between these players.
+      // **Deduplication:**
+      // Check if a pending match already exists between these players with the same
+      // mode, difficulty, and language.
       let existingMatch;
       try {
         existingMatch = await Match.findOne({
           'players.id': { $all: [requesterId, receiverId] },
           status: 'pending',
+          mode, // Ensures the match mode is the same
+          difficulty, // Ensures the difficulty is the same
+          language: programmingLanguage, // Ensures the language is the same
         });
       } catch (error) {
         console.error('Error checking for existing match:', error);
@@ -204,26 +209,25 @@ io.on('connection', (socket) => {
 
       if (existingMatch) {
         console.log(
-          `A match already exists between ${requesterId} and ${receiverId}: ${existingMatch._id}`
+          `A match already exists between ${requesterId} and ${receiverId} with the same mode, difficulty, and language: ${existingMatch._id}`
         );
-    
-        // Emit 'beginMatch' instead of 'matchExists' with the pending match details.
+
+        // Emit 'beginMatch' with the pending match details.
         const players = [
           ...new Set([requesterSocketId, receiverSocketId]),
         ].filter(Boolean);
-    
-        const payload = { 
-          requesterId, 
-          receiverId, 
+
+        const payload = {
+          requesterId,
+          receiverId,
           match: existingMatch // Send existing match details
         };
-    
+
         if (players.length > 0) {
           io.to(players).emit('beginMatch', payload);
         }
         return; // Stop further processing.
-    }
-    
+      }
 
       // No duplicate found, so proceed to create the match via a POST request.
       let createdMatch;
@@ -265,6 +269,7 @@ io.on('connection', (socket) => {
       }
     }
   );
+
 
 
 
