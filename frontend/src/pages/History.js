@@ -68,18 +68,22 @@ const History = () => {
 
   // Handler for accepting a match request
   const handleAccept = () => {
-    console.log('Match accepted!');
-    // Add any additional accept logic here (e.g., navigate to match page)
-    setMatchRequestData(null);
+    // Add your accept logic here (e.g., notify the server, redirect to match page, etc.)
+    console.log("Match accepted", matchRequestData);
+
+    socket.emit('requestAccepted', matchRequestData);
+    navigate(`/matchwait/?requesterId=${matchRequestData.requesterId}&receiverId=${matchRequestData.userId}&mode=${encodeURI(matchRequestData.mode)}&difficulty=${matchRequestData.difficulty}&language=${matchRequestData.programmingLanguage}`)
+
+
+    setMatchRequestData(false);
   };
 
   // Handler for rejecting a match request
   const handleReject = () => {
     if (socket && matchRequestData) {
-      console.log('Match rejected!');
       socket.emit('requestRejected', matchRequestData);
     }
-    setMatchRequestData(null);
+    setMatchRequestData(false);
   };
 
   return (
