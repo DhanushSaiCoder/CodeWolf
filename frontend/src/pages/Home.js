@@ -19,7 +19,7 @@ const Home = () => {
 
   const [currentUser, setCurrentUser] = useState(null);
   const [friends, setFriends] = useState([]);
-  const [matchRequestData, setMatchRequestData] = useState(null);
+  const [matchRequestData, setMatchRequestData] = useState(false);
   const [rejectCountdown, setRejectCountdown] = useState(10);
 
   useEffect(() => {
@@ -103,7 +103,7 @@ const Home = () => {
     if (matchRequestData) {
       setRejectCountdown(10);
       const interval = setInterval(() => {
-        setRejectCountdown((prev) => {
+        setRejectCountdown(prev => {
           if (prev <= 1) {
             clearInterval(interval);
             return 0;
@@ -117,18 +117,22 @@ const Home = () => {
 
   // Handler for accepting a match request
   const handleAccept = () => {
-    console.log('Match accepted!');
-    // Add your accept logic (e.g., navigating to the match page) here...
-    setMatchRequestData(null);
+    // Add your accept logic here (e.g., notify the server, redirect to match page, etc.)
+    console.log("Match accepted", matchRequestData);
+
+    socket.emit('requestAccepted', matchRequestData);
+    navigate(`/matchwait/?requesterId=${matchRequestData.requesterId}&receiverId=${matchRequestData.userId}&mode=${encodeURI(matchRequestData.mode)}&difficulty=${matchRequestData.difficulty}&language=${matchRequestData.programmingLanguage}`)
+
+
+    setMatchRequestData(false);
   };
 
   // Handler for rejecting a match request
   const handleReject = () => {
     if (socket && matchRequestData) {
-      console.log('Match rejected!');
       socket.emit('requestRejected', matchRequestData);
     }
-    setMatchRequestData(null);
+    setMatchRequestData(false);
   };
 
   return (
