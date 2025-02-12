@@ -37,7 +37,16 @@
     justify-content: flex-start;
     height: auto;
     flex-direction: column;
+    position: relative;
+    height: 300px;
+    width: 40vw;
+    padding-top: 35px;
 }
+.counterDiv p{
+    position: absolute;
+    top: 0;
+}
+
 /* Fade animation for the counter */
 .fade {
     animation: fadeInOut 1s ease-in-out;
