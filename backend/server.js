@@ -6,6 +6,7 @@ const cors = require('cors');
 const http = require('http');
 const { Server } = require('socket.io');
 const { User } = require('./models/User');
+const { Match } = require('./models/Match')
 const jwt = require('jsonwebtoken');
 
 dotenv.config();
@@ -122,27 +123,181 @@ io.on('connection', (socket) => {
     });
   });
 
+  // Listen for request acceptance events
   socket.on('requestAccepted', (data) => {
     const { requesterId } = data;
     console.log(`Match request accepted by ${userId} for request from ${requesterId}`);
-    // Forward the rejection to the requester
     io.to(requesterId).emit('requestAccepted', {
       ...data,
       receiverId: userId,
-      receiverUsername: data.receiverUsername || "Opponent" // Optionally include more info
+      receiverUsername: data.receiverUsername || "Opponent"
     });
   });
 
-  
+  // Handle the beginMatch event
+  // At the top of your file, import the Match model
 
+  socket.on(
+    'beginMatch',
+    async ({
+      requesterId,
+      receiverId,
+      playersDocs,
+      mode,
+      programmingLanguage,
+      difficulty,
+    }) => {
+      console.log(`Match started between ${requesterId} and ${receiverId}`);
+      console.log('playersDocs:', playersDocs);
+
+      // Get socket IDs for both players
+      const requesterSocketId = userSocketMap.get(requesterId);
+      const receiverSocketId = userSocketMap.get(receiverId);
+
+      // Helper function to extract player info from playersDocs.
+      // If playersDocs is an array, we search by _id.
+      // If it's an object, we assume it has keys like 'requester' and 'receiver'.
+      const getPlayerInfo = (id, key) => {
+        if (Array.isArray(playersDocs)) {
+          return playersDocs.find((player) => player._id === id) || {};
+        } else if (playersDocs && typeof playersDocs === 'object') {
+          return playersDocs[key] || {};
+        }
+        return {};
+      };
+
+      // Extract info for both players
+      const requesterInfo = getPlayerInfo(requesterId, 'requester');
+      const receiverInfo = getPlayerInfo(receiverId, 'receiver');
+
+      // Build the match object using the extracted data.
+      // Here, we include a status field to mark the match as pending.
+      const matchObj = {
+        players: [
+          {
+            id: requesterId,
+            username: requesterInfo.username,
+            rating: requesterInfo.rating,
+          },
+          {
+            id: receiverId,
+            username: receiverInfo.username,
+            rating: receiverInfo.rating,
+          },
+        ],
+        difficulty,
+        mode,
+        language: programmingLanguage,
+        status: 'pending', // This status is used to check for duplicates.
+      };
+
+      // **Deduplication:**
+      // Check if a pending match already exists between these players with the same
+      // mode, difficulty, and language.
+      let existingMatch;
+      try {
+        existingMatch = await Match.findOne({
+          'players.id': { $all: [requesterId, receiverId] },
+          status: 'pending',
+          mode, // Ensures the match mode is the same
+          difficulty, // Ensures the difficulty is the same
+          language: programmingLanguage, // Ensures the language is the same
+        });
+      } catch (error) {
+        console.error('Error checking for existing match:', error);
+      }
+
+      if (existingMatch) {
+        console.log(
+          `A match already exists between ${requesterId} and ${receiverId} with the same mode, difficulty, and language: ${existingMatch._id}`
+        );
+
+        // Emit 'beginMatch' with the pending match details.
+        const players = [
+          ...new Set([requesterSocketId, receiverSocketId]),
+        ].filter(Boolean);
+
+        const payload = {
+          requesterId,
+          receiverId,
+          match: existingMatch // Send existing match details
+        };
+
+        if (players.length > 0) {
+          io.to(players).emit('beginMatch', payload);
+        }
+        return; // Stop further processing.
+      }
+
+      // No duplicate found, so proceed to create the match via a POST request.
+      let createdMatch;
+      try {
+        const response = await fetch('http://localhost:5000/matches', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(matchObj),
+        });
+
+        if (!response.ok) {
+          const errorDetails = await response.text();
+          throw new Error(
+            `HTTP error! Status: ${response.status}. Details: ${errorDetails}`
+          );
+        }
+
+        createdMatch = await response.json();
+        console.log('Match created with ID:', createdMatch._id);
+      } catch (error) {
+        console.error('Error creating match:', error);
+      }
+
+      // Deduplicate socket IDs (also filters out any falsy values)
+      const players = [
+        ...new Set([requesterSocketId, receiverSocketId]),
+      ].filter(Boolean);
+
+      // Build the payload, including the created match if available
+      const payload = {
+        requesterId,
+        receiverId,
+        ...(createdMatch && { createdMatch }),
+      };
+
+      if (players.length > 0) {
+        console.log('Sending to players:', payload);
+        io.to(players).emit('beginMatch', payload);
+      }
+    }
+  );
+
+
+
+
+
+
+  // Make sure to import the Match model correctly
   socket.on('disconnect', async () => {
     console.log('User disconnected');
     if (userId) {
       await updateUserStatus(userId, 'offline');
       userSocketMap.delete(userId);
       socket.leave(userId);
+
+      // Update all pending matches involving this user to "canceled" using the native collection method
+      try {
+        const result = await Match.updateMany(
+          { 'players.id': userId, status: 'pending' },
+          { $set: { status: 'canceled' } }
+        );
+        console.log(`Canceled pending matches for user ${userId}:`, result);
+      } catch (error) {
+        console.error(`Error canceling pending matches for user ${userId}:`, error);
+      }
     }
   });
+
+
+
 });
 
 server.listen(port, () => {

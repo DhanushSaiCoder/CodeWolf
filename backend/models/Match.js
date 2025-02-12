@@ -1,23 +1,10 @@
 const mongoose = require("mongoose");
 const joi = require("joi");
 
-const matchObj = {
-    players: [{
-        _id: 'aMongoDbId',
-        username: 'aUsername',
-        rating: 962,
-    }, {
-        _id: 'aMongoDbId',
-        username: 'aUsername',
-        rating: 945,
-    }],
-    winner: 'aMongoDbId',
-    loser: 'aMongoDbId',
-}
-
+// Updated match schema with a status field
 const matchSchema = new mongoose.Schema({
     players: [{
-        _id: {
+        id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: true
@@ -40,22 +27,43 @@ const matchSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         default: null
-
+    },
+    mode: {
+        type: String,
+        required: true
+    },
+    language: {
+        type: String,
+        required: true
+    },
+    difficulty: {
+        type: String,
+        required: true
+    },
+    status: {
+        type: String,
+        required: true,
+        default: 'pending'  // Default status set to "pending"
     }
 }, { timestamps: true });
 
 const Match = mongoose.model("Match", matchSchema);
 
+// Update the Joi validation schema to include the new status field
 function validateMatch(match) {
     console.log(match);
     const schema = joi.object({
         players: joi.array().items(joi.object({
-            _id: joi.string().required(),
+            id: joi.string().required(),
             username: joi.string().required(),
             rating: joi.number().required()
         })).required(),
-        winner: joi.string().default(null),
-        loser: joi.string().default(null)
+        winner: joi.string().allow(null).default(null),
+        loser: joi.string().allow(null).default(null),
+        mode: joi.string().required(),
+        language: joi.string().required(),
+        difficulty: joi.string().required(),
+        status: joi.string().default('pending')
     });
     return schema.validate(match);
 }
