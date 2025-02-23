@@ -11,7 +11,14 @@
     color: var(--main);
     font-size: large;
     cursor: pointer;
+    text-align: left;
+    padding: 0 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
 }
+
 .NavButton:hover{
     background-color: rgba(48, 14, 93, 0.432);
 
@@ -25,4 +32,12 @@
 }
 .activeBtn:hover{
     background-color: var(--main);
+}
+svg{
+    height: 25px;
+    margin: 0;
+    margin-right: -7px;
+}
+.unIcon{
+    color: var(--main);
 }

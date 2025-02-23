@@ -5,7 +5,7 @@ import "../styles/NavButton.css";
 
 const NavButton = (props) => {
     const navigate = useNavigate();
-    const { to, currPage, pos } = props;
+    const { to, currPage, pos, activeIcon, unactiveIcon } = props;
     let toUrl = to === "home" ? '/' : `/${to}`
 
     let btnClassName = 'NavButton';
@@ -20,7 +20,7 @@ const NavButton = (props) => {
             className={btnClassName}
             onClick={() => { navigate(toUrl) }}
         >
-            {to.toUpperCase()}
+           {currPage == to ? (activeIcon) : (unactiveIcon)} {to.toUpperCase()}
         </button>
     );
 }
