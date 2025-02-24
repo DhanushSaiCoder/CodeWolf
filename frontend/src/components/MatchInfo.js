@@ -25,6 +25,7 @@ export default function MatchInfo({ matchDoc }) {
                     </div>
                 </div>
 
+                {/* VS */}
                 <div className='vsDiv'>
                     <div className='vsCircle'><p>vs</p></div>
                 </div>
