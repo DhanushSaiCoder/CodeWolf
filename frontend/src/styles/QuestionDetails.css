@@ -1,6 +1,8 @@
 .QuestionDetails{
     flex: 1;
-    overflow: auto;
+    overflow: scroll;
+    scrollbar-width: none;
+    overflow-x: scroll;
     margin-top: 20px;
     border-radius: 20px;
     background: rgba(48, 14, 93, 0.2);
@@ -15,7 +17,7 @@
     align-items: center;
 
     justify-content: flex-start;
-    border-bottom: 0.5px solid rgba(255, 255, 255, 0.218);
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
     font-size: 20px;
     font-weight: normal;
     color: #D5BCF5;
