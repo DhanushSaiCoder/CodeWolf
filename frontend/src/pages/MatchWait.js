@@ -15,6 +15,8 @@ export const MatchWait = () => {
   const programmingLanguage = query.get("language");
   const mode = query.get("mode");
 
+  const [matchId, setMatchId] = useState(null);
+
   const [matchCreating, setMatchCreating] = useState(true);
   const [counter, setCounter] = useState(10);
   const navigate = useNavigate();
@@ -76,6 +78,8 @@ export const MatchWait = () => {
 
     const handleBeginMatch = (data) => {
       console.log('beginMatch event received', data);
+      console.log('matchId:', data.match._id);
+      setMatchId(data.match._id);
       setMatchCreating(false);
     };
 
@@ -97,7 +101,7 @@ export const MatchWait = () => {
         setCounter((prevCounter) => {
           if (prevCounter <= 1) {
             clearInterval(timer);
-            navigate('/match', { replace: true }); // Navigate when countdown reaches 0
+            navigate(`/match/${matchId}`, { replace: true }); // Navigate when countdown reaches 0
             return 0;
           }
           return prevCounter - 1;
