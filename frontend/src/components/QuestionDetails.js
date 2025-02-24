@@ -23,11 +23,24 @@ export default function QuestionDetails() {
         <h3>Question</h3>
       </div>
       <div className='QuestionDetailsBody'>
-        <h3>{sampleQuestion.questionTitle}</h3>
+        <h3  className='questionTitle'>{sampleQuestion.questionTitle}</h3>
         <p
           className='descriptionTxt'
           dangerouslySetInnerHTML={{ __html: sampleQuestion.description }}
         ></p>
+
+        <h3 >Examples</h3>
+        {sampleQuestion.examples.map((example, index) => (
+          <div className='exampleSet' key={index}>
+            <p>
+              <strong>Input:</strong> {example.input}
+            </p>
+            <p>
+              <strong>Output:</strong> {example.output}
+            </p>
+          </div>
+        ))}
+
       </div>
     </div>
   )

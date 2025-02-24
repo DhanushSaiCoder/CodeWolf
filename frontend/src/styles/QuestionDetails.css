@@ -29,7 +29,7 @@
 .QuestionDetailsBody{
     padding: 30px 20px;
 }
-.QuestionDetailsBody h3{
+.questionTitle{
     text-decoration: underline;
     display: flex;
     align-items: flex-start;
@@ -38,7 +38,7 @@
     flex-direction: column;
 }
 .descriptionTxt{
-    opacity: 0.8;
+    opacity: 0.85;
     line-height: 30px;
 
 }
@@ -49,5 +49,14 @@
     border: #300e5d;
     width: max-content;
     height: max-content;
+    
+}
+.exampleSet{
+    border-left: 2px solid  #D5BCF5;
+    margin: 20px 0;
+    padding: 20px;
+    background: #300e5d;
+    border-radius: 10px;
+    color: #D5BCF5;
     
 }
