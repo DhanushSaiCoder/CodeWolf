@@ -20,6 +20,8 @@
     border-radius: 20px 20px 0 0;
     background: #300e5d70;
     padding: 10px 20px;
+
+    position: relative;
 }
 
 .CodeEditorHeader h3 span {
@@ -30,4 +32,23 @@
 .CodeEditorContent{
     width: 100%;
     height: calc(100% - 50px);
+}
+
+.runBtn{
+    padding: 5px 20px;
+    background: #35d359;
+
+    color: #300e5d;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.23s ease-in-out;
+    border: none;
+
+    position: absolute;
+    right: 40px;
+}
+.runBtn:hover{
+    background: #3efc6a;
 }

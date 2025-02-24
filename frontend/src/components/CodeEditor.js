@@ -72,6 +72,7 @@ export default function CodeEditor(props) {
         <h3>
           <span>{"</>"}</span> Code
         </h3>
+        <button className='runBtn'>Run</button>
       </div>
       <div className='CodeEditorContent'>
         <MonacoEditor
