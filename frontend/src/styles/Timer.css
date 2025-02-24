@@ -13,10 +13,12 @@
     border-radius: 13px;
     margin-top: 20px;
     position: relative;
+    border-right: 3.5px solid #D5BCF5;
 }
 .time{
     position: absolute;
     top: 50%;
-    right: -60px;
+    right: 20px;
     transform: translateY(-50%);
+    color: #D5BCF5;
 }
