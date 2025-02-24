@@ -27,6 +27,6 @@ code {
 #root {
     width: 100vw;
     height: 100vh;
-    background-color: #0d0218eb;
+    background-color: #0d0218de;
     backdrop-filter: blur(25px);
 }
