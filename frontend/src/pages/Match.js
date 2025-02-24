@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import "../styles/Match.css";
+
+import MatchLeftColumn from '../components/MatchLeftColumn';
+import MatchRightColumn from '../components/MatchRightColumn';
 
 const useQuery = () => new URLSearchParams(useLocation().search);
 
@@ -20,7 +24,13 @@ export default function Match() {
     }
   }, [matchId]);
 
-  return <div>Match: {matchDoc ? JSON.stringify(matchDoc) : "Loading..."}</div>;
+  return (
+    <div className='Match'>
+      {/* Match: {matchDoc ? JSON.stringify(matchDoc) : "Loading..."} */}
+      <MatchLeftColumn />
+      <MatchRightColumn />
+    </div>
+  )
 }
 
 const getMatchDoc = async (matchId) => {
