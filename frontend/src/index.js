@@ -11,6 +11,7 @@ import Friends from './pages/Friends';
 import Leaderboard from './pages/Leaderboard';
 import Settings from './pages/Settings';
 import History from './pages/History';
+import Match from './pages/Match';
 import { SocketProvider } from './SocketContext'; // Import SocketProvider
 import { MatchWait } from './pages/MatchWait';
 
@@ -27,6 +28,7 @@ root.render(
         <Route path="/settings" element={<Settings />} />
         <Route path="/history" element={<History />} />
         <Route path="/matchwait" element={<MatchWait />} />
+        <Route path="/match" element={<Match />} />
       </Routes>
     </BrowserRouter>
   </SocketProvider>
