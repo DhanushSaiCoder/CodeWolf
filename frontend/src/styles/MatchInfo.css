@@ -3,7 +3,9 @@
     border-radius: 20px; 
 }
 .profileImgs{
-    border-radius: 30px;
+    border-radius: 37.5px;
+    border: 4px white;
+    border-style: groove;
 }
 .MIPlayerDetails{
     display: flex;
@@ -14,7 +16,7 @@
 }
 .bothPlayerDetails{
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     padding: 10px;
     gap: 10px;

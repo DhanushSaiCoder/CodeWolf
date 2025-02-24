@@ -18,7 +18,7 @@ export default function MatchInfo({ matchDoc }) {
             <div className='MIPlayerDetails'>
                 {/* Player One */}
                 <div className='MIPlayerOneDetails bothPlayerDetails'>
-                    <img className='profileImgs' src={Profile} alt="playerOne" width={60} height={60} />
+                    <img className='profileImgs' src={Profile} alt="playerOne" width={75} height={75} />
                     <div>
                         <h2>{matchData.players[0]?.username || "Unknown"}</h2>
                         <p>★ {matchData.players[0]?.rating || "Unknown"}</p>
@@ -38,7 +38,7 @@ export default function MatchInfo({ matchDoc }) {
                         <p>★ {matchData.players[1]?.rating || "Unknown"}</p>
 
                     </div>
-                    <img className='profileImgs' src={Profile} alt="playerTwo" width={60} height={60} />
+                    <img className='profileImgs' src={Profile} alt="playerTwo" width={75} height={75} />
                 </div>
             </div>
         </div>
