@@ -1,0 +1,22 @@
+.sliderBackground {
+    width: 100%;
+    height: 26px;
+    background-color: #300e5d;
+    border-radius: 13px;
+    margin-top: 20px;
+}
+
+.slider {
+    width: 84%;
+    height: 26px;
+    background: linear-gradient(90deg, #691dcd, #b035ff);
+    border-radius: 13px;
+    margin-top: 20px;
+    position: relative;
+}
+.time{
+    position: absolute;
+    top: 50%;
+    right: -60px;
+    transform: translateY(-50%);
+}
