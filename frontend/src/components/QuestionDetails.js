@@ -3,7 +3,7 @@ import "../styles/QuestionDetails.css"
 
 const sampleQuestion = {
   questionTitle: "Two Sum",
-  description: `Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution, and you may not use the same element twice. You can return the answer in any order.`,
+  description: `Given an array of integers <code>nums</code> and an integer <code>target</code>, return indices of the two numbers such that they add up to <code>target</code>.<br/><br/> You may assume that each input would have <b>exactly one solution</b>, and you may not use the same element twice. You can return the answer in any order.`,
   examples: [
     {
       input: "nums = [2,7,11,15], target = 9",
@@ -21,6 +21,13 @@ export default function QuestionDetails() {
     <div className='QuestionDetails'>
       <div className='QuestionDetailsHeader'>
         <h3>Question</h3>
+      </div>
+      <div className='QuestionDetailsBody'>
+        <h3>{sampleQuestion.questionTitle}</h3>
+        <p
+          className='descriptionTxt'
+          dangerouslySetInnerHTML={{ __html: sampleQuestion.description }}
+        ></p>
       </div>
     </div>
   )
