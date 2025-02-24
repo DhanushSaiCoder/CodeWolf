@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import "../styles/CodeEditor.css";
 import MonacoEditor from 'react-monaco-editor';
 
-export default function CodeEditor() {
+export default function CodeEditor(props) {
+
   const [code, setCode] = useState(
     'function hello() {\n  console.log("Hello, world!");\n}'
   );
@@ -72,16 +73,22 @@ export default function CodeEditor() {
           <span>{"</>"}</span> Code
         </h3>
       </div>
-      <MonacoEditor
-        width="100%"
-        height="600"
-        language="javascript"
-        theme="night-owl"
-        value={code}
-        options={options}
-        onChange={onChange}
-        editorDidMount={editorDidMount}
-      />
+      <div className='CodeEditorContent'>
+        <MonacoEditor
+          width="100%"
+          height="100%"
+          scrollbarWidth="none"
+          borderRadius="20px"
+          language="javascript"
+          theme="night-owl"
+          value={code}
+          options={options}
+          onChange={onChange}
+          editorDidMount={editorDidMount}
+          minimap={{ enabled: false }}
+        />
+      </div>
+
     </div>
   );
 }
