@@ -28,6 +28,12 @@
 }
 .QuestionDetailsBody{
     padding: 30px 20px;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    
 }
 .questionTitle{
     text-decoration: underline;
@@ -58,5 +64,9 @@
     background: #300e5d;
     border-radius: 10px;
     color: #D5BCF5;
-    
+    width: 100%;
+}
+.examples{
+    width: 100%;
+    margin: 20px 0;
 }
