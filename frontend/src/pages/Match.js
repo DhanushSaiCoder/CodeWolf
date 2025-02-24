@@ -27,8 +27,8 @@ export default function Match() {
   return (
     <div className='Match'>
       {/* Match: {matchDoc ? JSON.stringify(matchDoc) : "Loading..."} */}
-      <MatchLeftColumn />
-      <MatchRightColumn />
+      <MatchLeftColumn matchDoc={JSON.stringify(matchDoc)} />
+      <MatchRightColumn matchDoc={JSON.stringify(matchDoc)} />
     </div>
   )
 }

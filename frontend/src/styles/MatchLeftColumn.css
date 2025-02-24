@@ -1,6 +1,8 @@
 .MatchLeftColumn{
-    background: rgba(48, 14, 93, 0.2);
+    /* background: rgba(48, 14, 93, 0.2); */
+    border: 1px solid red;
     width: 40%;
     height: 100%;
     border-radius: 20px;
+    word-wrap: break-word;
 }
