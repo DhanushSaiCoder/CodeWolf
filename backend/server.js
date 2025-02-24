@@ -274,8 +274,6 @@ io.on('connection', (socket) => {
 
 
 
-
-  // Make sure to import the Match model correctly
   socket.on('disconnect', async () => {
     console.log('User disconnected');
     if (userId) {
@@ -283,13 +281,20 @@ io.on('connection', (socket) => {
       userSocketMap.delete(userId);
       socket.leave(userId);
 
-      // Update all pending matches involving this user to "canceled" using the native collection method
+      // Calculate the date/time for 30 minutes ago
+      const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
+
+      // Update only pending matches older than 30 minutes to "canceled"
       try {
         const result = await Match.updateMany(
-          { 'players.id': userId, status: 'pending' },
+          {
+            'players.id': userId,
+            status: 'pending',
+            createdAt: { $lte: thirtyMinutesAgo }
+          },
           { $set: { status: 'canceled' } }
         );
-        console.log(`Canceled pending matches for user ${userId}:`, result);
+        console.log(`Canceled pending matches for user ${userId} older than 30 minutes:`, result);
       } catch (error) {
         console.error(`Error canceling pending matches for user ${userId}:`, error);
       }

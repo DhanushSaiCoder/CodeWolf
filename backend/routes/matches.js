@@ -7,6 +7,12 @@ router.get('/', async (req, res) => {
     res.send(matches)
 })
 
+router.get('/:id', async (req, res) => {
+    const match = await Match.findById(req.params.id)
+    if (!match) return res.status(404).send('The match with the given ID was not found.')
+    res.send(match)
+})
+
 router.post('/', async (req, res) => {
     const { error } = validateMatch(req.body)
     if (error) return res.status(400).send(error.details[0].message)

@@ -44,12 +44,13 @@ export const MatchRequest = ({
           </div>
         </section>
         <footer className="mr-actions">
-          <button className="mr-btn accept-btn" onClick={onAccept}>
-            Accept
-          </button>
           <button className="mr-btn reject-btn" onClick={onReject}>
             Reject ({rejectCountdown})
           </button>
+          <button className="mr-btn accept-btn" onClick={onAccept}>
+            Accept
+          </button>
+
         </footer>
       </div>
     </CSSTransition>

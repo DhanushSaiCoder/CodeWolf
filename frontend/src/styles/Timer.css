@@ -1,0 +1,27 @@
+.Timer{
+    height: 50px;
+}
+.sliderBackground {
+    width: 100%;
+    height: 26px;
+    background-color: #300e5d;
+    border-radius: 13px;
+    margin-top: 20px;
+}
+
+.slider {
+    width: 84%;
+    height: 26px;
+    background: linear-gradient(90deg, #691dcd, #b035ff);
+    border-radius: 13px;
+    margin-top: 20px;
+    position: relative;
+    border-right: 3.5px solid #D5BCF5;
+}
+.time{
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    color: #D5BCF5;
+}

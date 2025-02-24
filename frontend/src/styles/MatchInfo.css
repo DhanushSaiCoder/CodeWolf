@@ -1,0 +1,57 @@
+.MatchInfo{
+    /* border: 1px solid rgba(255, 255, 255, 0.203); */
+    border-radius: 20px; 
+    height: 100px;
+}
+.profileImgs{
+    border-radius: 37.5px;
+    border: 4px white;
+    border-style: outset;
+}
+.MIPlayerDetails{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+}
+.bothPlayerDetails{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    gap: 10px;
+}
+.MIPlayerTwoDetails{
+    text-align: right;
+}
+.bothPlayerDetails div p{
+    opacity: 0.6;
+}
+.vsDiv{
+    height: 100px;
+    width: 1px;
+    background-color: rgba(255, 255, 255, 0.18);
+    position: relative;
+}
+.vsCircle{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.851);
+    color: black;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.vsCircle p{
+    font-size: 1.35rem;
+    font-weight: 600;
+    height: max-content;
+}

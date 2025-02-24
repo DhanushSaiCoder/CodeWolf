@@ -15,6 +15,8 @@ export const MatchWait = () => {
   const programmingLanguage = query.get("language");
   const mode = query.get("mode");
 
+  const [matchId, setMatchId] = useState(null);
+
   const [matchCreating, setMatchCreating] = useState(true);
   const [counter, setCounter] = useState(10);
   const navigate = useNavigate();
@@ -76,7 +78,15 @@ export const MatchWait = () => {
 
     const handleBeginMatch = (data) => {
       console.log('beginMatch event received', data);
-      setMatchCreating(false);
+      if (data.match && data.match._id) {
+        console.log('matchId:', data.match._id);
+        setMatchId(data.match._id);
+        setMatchCreating(false);
+      } else {
+        console.log('matchId:', data.createdMatch._id);
+        setMatchId(data.createdMatch._id);
+        setMatchCreating(false);
+      }
     };
 
     // Prevent duplicate listeners
@@ -97,7 +107,7 @@ export const MatchWait = () => {
         setCounter((prevCounter) => {
           if (prevCounter <= 1) {
             clearInterval(timer);
-            navigate('/match', { replace: true }); // Navigate when countdown reaches 0
+            navigate(`/match/?matchId=${matchId}`, { replace: true }); // Navigate when countdown reaches 0
             return 0;
           }
           return prevCounter - 1;
