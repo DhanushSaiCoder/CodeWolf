@@ -25,6 +25,10 @@ export default function MatchInfo({ matchDoc }) {
                     </div>
                 </div>
 
+                <div className='vsDiv'>
+                    <div className='vsCircle'><p>vs</p></div>
+                </div>
+
                 {/* Player Two */}
                 <div className='MIPlayerTwoDetails bothPlayerDetails '>
                     <div>
