@@ -5,7 +5,7 @@
 .profileImgs{
     border-radius: 37.5px;
     border: 4px white;
-    border-style: groove;
+    border-style: outset;
 }
 .MIPlayerDetails{
     display: flex;
