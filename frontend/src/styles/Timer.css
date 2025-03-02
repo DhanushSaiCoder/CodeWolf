@@ -6,11 +6,11 @@
     height: 20px;
     background-color: #300e5d;
     border-radius: 13px;
-    margin-top: 20px;
+    margin-top: 23px;
 }
 .slider {
     /* Remove the static width if it's defined here since it's now set inline */
-    height: 20px;
+    height: 23px;
     background: linear-gradient(90deg, #691dcd, #b035ff);
     border-radius: 13px;
     margin-top: 20px;
