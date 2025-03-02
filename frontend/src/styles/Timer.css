@@ -8,16 +8,17 @@
     border-radius: 13px;
     margin-top: 20px;
 }
-
 .slider {
-    width: 84%;
+    /* Remove the static width if it's defined here since it's now set inline */
     height: 26px;
     background: linear-gradient(90deg, #691dcd, #b035ff);
     border-radius: 13px;
     margin-top: 20px;
     position: relative;
     border-right: 3.5px solid #D5BCF5;
+    transition: width 1s ease-in-out; /* This line smooths the width change */
 }
+
 .time{
     position: absolute;
     top: 50%;

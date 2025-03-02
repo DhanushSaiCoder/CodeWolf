@@ -10,8 +10,8 @@ export default function MatchLeftColumn(props) {
   return (
     <div className='MatchLeftColumn'>
       <MatchInfo matchDoc={matchDoc} />
-      <Timer/>
-      <QuestionDetails/>
+      <Timer time={15} />
+      <QuestionDetails />
     </div>
   )
 }
