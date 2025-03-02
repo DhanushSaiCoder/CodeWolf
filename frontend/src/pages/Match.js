@@ -7,7 +7,6 @@ import MatchRightColumn from '../components/MatchRightColumn';
 
 const useQuery = () => new URLSearchParams(useLocation().search);
 
-
 const getMatchDoc = async (matchId) => {
   try {
     const response = await fetch(`http://localhost:5000/matches/${matchId}`, {
@@ -32,6 +31,15 @@ export default function Match() {
   const matchId = query.get('matchId');
   const [matchDoc, setMatchDoc] = useState(null);
 
+  // Capture current time (hour, minute, second) when the component mounts for the first time
+  useEffect(() => {
+    const now = new Date();
+    const hour = now.getHours();
+    const min = now.getMinutes();
+    const sec = now.getSeconds();
+    localStorage.setItem('matchStartTime', JSON.stringify({ hour, min, sec }));
+  }, []);
+
   useEffect(() => {
     const fetchMatchDoc = async () => {
       const data = await getMatchDoc(matchId);
@@ -46,10 +54,8 @@ export default function Match() {
 
   return (
     <div className='Match'>
-      {/* Match: {matchDoc ? JSON.stringify(matchDoc) : "Loading..."} */}
       <MatchLeftColumn matchDoc={JSON.stringify(matchDoc)} />
       <MatchRightColumn matchDoc={JSON.stringify(matchDoc)} />
     </div>
-  )
+  );
 }
-
