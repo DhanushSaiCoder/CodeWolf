@@ -31,14 +31,28 @@ export default function Match() {
   const matchId = query.get('matchId');
   const [matchDoc, setMatchDoc] = useState(null);
 
-  // Capture current time (hour, minute, second) when the component mounts for the first time
+  // When the component mounts, store matchId with the current start time
   useEffect(() => {
-    const now = new Date();
-    const hour = now.getHours();
-    const min = now.getMinutes();
-    const sec = now.getSeconds();
-    localStorage.setItem('matchStartTime', JSON.stringify({ hour, min, sec }));
-  }, []);
+    const storedData = localStorage.getItem('matchStartData');
+    if (storedData) {
+      const { matchId: storedMatchId } = JSON.parse(storedData);
+      if (storedMatchId !== matchId) {
+        // If the matchId doesn't match, reset the stored data
+        const now = new Date();
+        const hour = now.getHours();
+        const min = now.getMinutes();
+        const sec = now.getSeconds();
+        localStorage.setItem('matchStartData', JSON.stringify({ matchId, hour, min, sec }));
+      }
+    } else {
+      // If nothing stored, store new data
+      const now = new Date();
+      const hour = now.getHours();
+      const min = now.getMinutes();
+      const sec = now.getSeconds();
+      localStorage.setItem('matchStartData', JSON.stringify({ matchId, hour, min, sec }));
+    }
+  }, [matchId]);
 
   useEffect(() => {
     const fetchMatchDoc = async () => {
@@ -54,7 +68,7 @@ export default function Match() {
 
   return (
     <div className='Match'>
-      <MatchLeftColumn matchDoc={JSON.stringify(matchDoc)} />
+      <MatchLeftColumn matchDoc={JSON.stringify(matchDoc)} matchId={matchId} />
       <MatchRightColumn matchDoc={JSON.stringify(matchDoc)} />
     </div>
   );
