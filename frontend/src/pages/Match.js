@@ -7,6 +7,26 @@ import MatchRightColumn from '../components/MatchRightColumn';
 
 const useQuery = () => new URLSearchParams(useLocation().search);
 
+
+const getMatchDoc = async (matchId) => {
+  try {
+    const response = await fetch(`http://localhost:5000/matches/${matchId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    if (!response.ok) {
+      throw new Error(`Error fetching match: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (err) {
+    console.error("Fetch error:", err);
+    return null;
+  }
+};
+
 export default function Match() {
   const query = useQuery();
   const matchId = query.get('matchId');
@@ -33,21 +53,3 @@ export default function Match() {
   )
 }
 
-const getMatchDoc = async (matchId) => {
-  try {
-    const response = await fetch(`http://localhost:5000/matches/${matchId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      }
-    });
-    if (!response.ok) {
-      throw new Error(`Error fetching match: ${response.statusText}`);
-    }
-    return await response.json();
-  } catch (err) {
-    console.error("Fetch error:", err);
-    return null;
-  }
-};
