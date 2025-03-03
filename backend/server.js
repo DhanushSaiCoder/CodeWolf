@@ -147,16 +147,15 @@ io.on('connection', (socket) => {
       programmingLanguage,
       difficulty,
     }) => {
+      // Log the match start
       console.log(`Match started between ${requesterId} and ${receiverId}`);
       console.log('playersDocs:', playersDocs);
 
-      // Get socket IDs for both players
+      // Get socket IDs for the players
       const requesterSocketId = userSocketMap.get(requesterId);
       const receiverSocketId = userSocketMap.get(receiverId);
 
-      // Helper function to extract player info from playersDocs.
-      // If playersDocs is an array, we search by _id.
-      // If it's an object, we assume it has keys like 'requester' and 'receiver'.
+      // Helper function to extract player info from playersDocs
       const getPlayerInfo = (id, key) => {
         if (Array.isArray(playersDocs)) {
           return playersDocs.find((player) => player._id === id) || {};
@@ -166,12 +165,10 @@ io.on('connection', (socket) => {
         return {};
       };
 
-      // Extract info for both players
       const requesterInfo = getPlayerInfo(requesterId, 'requester');
       const receiverInfo = getPlayerInfo(receiverId, 'receiver');
 
-      // Build the match object using the extracted data.
-      // Here, we include a status field to mark the match as pending.
+      // Build the match object
       const matchObj = {
         players: [
           {
@@ -188,48 +185,10 @@ io.on('connection', (socket) => {
         difficulty,
         mode,
         language: programmingLanguage,
-        status: 'pending', // This status is used to check for duplicates.
+        status: 'pending',
       };
 
-      // **Deduplication:**
-      // Check if a pending match already exists between these players with the same
-      // mode, difficulty, and language.
-      let existingMatch;
-      try {
-        existingMatch = await Match.findOne({
-          'players.id': { $all: [requesterId, receiverId] },
-          status: 'pending',
-          mode, // Ensures the match mode is the same
-          difficulty, // Ensures the difficulty is the same
-          language: programmingLanguage, // Ensures the language is the same
-        });
-      } catch (error) {
-        console.error('Error checking for existing match:', error);
-      }
-
-      if (existingMatch) {
-        console.log(
-          `A match already exists between ${requesterId} and ${receiverId} with the same mode, difficulty, and language: ${existingMatch._id}`
-        );
-
-        // Emit 'beginMatch' with the pending match details.
-        const players = [
-          ...new Set([requesterSocketId, receiverSocketId]),
-        ].filter(Boolean);
-
-        const payload = {
-          requesterId,
-          receiverId,
-          match: existingMatch // Send existing match details
-        };
-
-        if (players.length > 0) {
-          io.to(players).emit('beginMatch', payload);
-        }
-        return; // Stop further processing.
-      }
-
-      // No duplicate found, so proceed to create the match via a POST request.
+      // Create a new match
       let createdMatch;
       try {
         const response = await fetch('http://localhost:5000/matches', {
@@ -251,18 +210,17 @@ io.on('connection', (socket) => {
         console.error('Error creating match:', error);
       }
 
-      // Deduplicate socket IDs (also filters out any falsy values)
-      const players = [
-        ...new Set([requesterSocketId, receiverSocketId]),
-      ].filter(Boolean);
+      // Prepare the list of players to notify
+      const players = [...new Set([requesterSocketId, receiverSocketId])].filter(Boolean);
 
-      // Build the payload, including the created match if available
+      // Build the payload with the new match details
       const payload = {
         requesterId,
         receiverId,
         ...(createdMatch && { createdMatch }),
       };
 
+      // Notify the players if there are valid socket IDs
       if (players.length > 0) {
         console.log('Sending to players:', payload);
         io.to(players).emit('beginMatch', payload);

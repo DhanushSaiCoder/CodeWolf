@@ -7,7 +7,7 @@ const Header = () => {
     const navigate = useNavigate();
 
     const handleNavigation = () => {
-        navigate('/');
+        window.location.href = "/"
     };
 
     return (

@@ -7,7 +7,6 @@ import MatchRightColumn from '../components/MatchRightColumn';
 
 const useQuery = () => new URLSearchParams(useLocation().search);
 
-
 const getMatchDoc = async (matchId) => {
   try {
     const response = await fetch(`http://localhost:5000/matches/${matchId}`, {
@@ -32,6 +31,29 @@ export default function Match() {
   const matchId = query.get('matchId');
   const [matchDoc, setMatchDoc] = useState(null);
 
+  // When the component mounts, store matchId with the current start time
+  useEffect(() => {
+    const storedData = localStorage.getItem('matchStartData');
+    if (storedData) {
+      const { matchId: storedMatchId } = JSON.parse(storedData);
+      if (storedMatchId !== matchId) {
+        // If the matchId doesn't match, reset the stored data
+        const now = new Date();
+        const hour = now.getHours();
+        const min = now.getMinutes();
+        const sec = now.getSeconds();
+        localStorage.setItem('matchStartData', JSON.stringify({ matchId, hour, min, sec }));
+      }
+    } else {
+      // If nothing stored, store new data
+      const now = new Date();
+      const hour = now.getHours();
+      const min = now.getMinutes();
+      const sec = now.getSeconds();
+      localStorage.setItem('matchStartData', JSON.stringify({ matchId, hour, min, sec }));
+    }
+  }, [matchId]);
+
   useEffect(() => {
     const fetchMatchDoc = async () => {
       const data = await getMatchDoc(matchId);
@@ -46,10 +68,8 @@ export default function Match() {
 
   return (
     <div className='Match'>
-      {/* Match: {matchDoc ? JSON.stringify(matchDoc) : "Loading..."} */}
-      <MatchLeftColumn matchDoc={JSON.stringify(matchDoc)} />
+      <MatchLeftColumn matchDoc={JSON.stringify(matchDoc)} matchId={matchId} />
       <MatchRightColumn matchDoc={JSON.stringify(matchDoc)} />
     </div>
-  )
+  );
 }
-
