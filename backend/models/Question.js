@@ -38,4 +38,25 @@ const questionSchema = new mongoose.Schema({
 
 const Question = mongoose.model('Question', questionSchema);
 
-module.exports = Question;
+const validateQuestion = (question) => {
+    const schema = Joi.object({
+        question_title: Joi.string().required(),
+        question_description: Joi.array().items(Joi.string()),
+        question_difficulty: Joi.string().valid('easy', 'medium', 'hard').required(),
+        examples: Joi.array().items(
+            Joi.object({
+                input: Joi.string().required(),
+                output: Joi.string().required()
+            })
+        ),
+        question_mode: Joi.string().required(),
+        expected_output: Joi.string().required()
+    });
+
+    return schema.validate(question);
+};
+
+module.exports = {
+    Question,
+    validateQuestion
+};

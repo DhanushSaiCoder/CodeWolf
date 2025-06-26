@@ -51,7 +51,6 @@ const Match = mongoose.model("Match", matchSchema);
 
 // Update the Joi validation schema to include the new status field
 function validateMatch(match) {
-    console.log(match);
     const schema = joi.object({
         players: joi.array().items(joi.object({
             id: joi.string().required(),
