@@ -26,7 +26,6 @@ _Built with the tools and technologies:_
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
   - [Usage](#usage)
-  - [Testing](#testing)
 
 
 ## Overview
@@ -77,17 +76,6 @@ Using [npm](https://www.npmjs.com/):
 npm start
 ```
 
----
-
-## Testing
-
-CodeWolf uses the **{test_framework}** test framework. Run the test suite with:
-
-Using [npm](https://www.npmjs.com/):
-
-```bash
-npm test
-```
 
 ---
 
