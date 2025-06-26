@@ -14,6 +14,10 @@ const questionSchema = new mongoose.Schema({
         required: true,
         enum: ['easy', 'medium', 'hard']
     },
+    question_programming_language:{
+        type: String, 
+        required: true
+    },
     examples: [
         {
             input: {
@@ -43,6 +47,7 @@ const validateQuestion = (question) => {
         question_title: Joi.string().required(),
         question_description: Joi.array().items(Joi.string()),
         question_difficulty: Joi.string().valid('easy', 'medium', 'hard').required(),
+        question_programming_language: Joi.string().required(),
         examples: Joi.array().items(
             Joi.object({
                 input: Joi.string().required(),
