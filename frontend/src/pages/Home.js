@@ -36,7 +36,7 @@ const Home = () => {
     // Fetch the initial friends list
     const fetchFriends = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/friends/list`, {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/friends/list`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -149,6 +149,24 @@ const Home = () => {
 
         <div className='modesContainer'>
           <Mode
+            modeName='QUICK DEBUG MODE'
+            modeImg={coder}
+            modeImg2={coder2}
+            modeDescription='Resolve all errors in the provided code faster than your opponent within the allocated time.'
+          />
+           <Mode
+            modeName='QUICK DEBUG MODE'
+            modeImg={coder}
+            modeImg2={coder2}
+            modeDescription='Resolve all errors in the provided code faster than your opponent within the allocated time.'
+          />
+          <Mode
+            modeName='QUICK DEBUG MODE'
+            modeImg={coder}
+            modeImg2={coder2}
+            modeDescription='Resolve all errors in the provided code faster than your opponent within the allocated time.'
+          />
+           <Mode
             modeName='QUICK DEBUG MODE'
             modeImg={coder}
             modeImg2={coder2}

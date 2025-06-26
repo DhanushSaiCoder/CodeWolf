@@ -16,7 +16,7 @@ export const SocketProvider = ({ children }) => {
     const token = localStorage.getItem('token');
     
     // Create a new socket instance and pass the token in the auth options
-    const newSocket = io('http://localhost:5000', {
+    const newSocket = io(process.env.REACT_APP_FRONTEND_URL, {
       auth: { token }
     });
     setSocket(newSocket);

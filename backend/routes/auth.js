@@ -43,8 +43,6 @@ router.get('/user', async (req, res) => {
     }
 });
 
-
-
 // Get all users except one's friends and himself
 router.get('/nonfriends', authenticateToken, async (req, res) => {
     try {
