@@ -1,5 +1,5 @@
 import React from 'react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import "../styles/QuestionDetails.css"
 
 const sampleQuestion = {
@@ -19,7 +19,12 @@ const sampleQuestion = {
 
 export default function QuestionDetails(props) {
   let { matchDoc } = props;
-  console.log("matchDoc in QuestionDetails: ",JSON.parse(matchDoc));
+
+  //states
+  const [question, setQuestion] = useState(null);
+  const [isFetchingQuestion, setIsFetchingQuestion] = useState(true);
+
+  console.log("matchDoc in QuestionDetails: ", JSON.parse(matchDoc));
   matchDoc = JSON.parse(matchDoc);
   // useEffect to fetch the question details using filters from matchDoc.
   useEffect(() => {
@@ -36,7 +41,9 @@ export default function QuestionDetails(props) {
           throw new Error(`Error fetching question: ${response.statusText}`);
         }
         const data = await response.json();
-        console.log("Fetched question details: ", data);
+        setQuestion(data.data[0]); // Assuming the first question is the one we want
+        setIsFetchingQuestion(false);
+        console.log("Fetched question details: ", data.data[0]);
       } catch (err) {
         console.error("Fetch error:", err);
       }
@@ -51,7 +58,7 @@ export default function QuestionDetails(props) {
       <div className='QuestionDetailsHeader'>
         <h3>Question</h3>
       </div>
-      <div className='QuestionDetailsBody'>
+      {!isFetchingQuestion && (<div className='QuestionDetailsBody'>
         <h3 className='questionTitle'>{sampleQuestion.questionTitle}</h3>
         <p
           className='descriptionTxt'
@@ -73,7 +80,12 @@ export default function QuestionDetails(props) {
           ))}
         </div>
 
-      </div>
+      </div>)}
+      {isFetchingQuestion && (
+        <div className='loading'>
+          <p>Loading question details...</p>
+        </div>
+      )}
     </div>
   )
 }
