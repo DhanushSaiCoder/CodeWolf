@@ -15,6 +15,7 @@ const port = process.env.PORT || 3001;
 const authRoutes = require('./routes/auth');
 const matchRoutes = require('./routes/matches');
 const friendsRoutes = require('./routes/friends');
+const questionsRoutes = require('./routes/questions.route');
 
 mongoose
   .connect(process.env.MONGO_URI)
@@ -26,6 +27,8 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 app.use('/matches', matchRoutes);
 app.use('/friends', friendsRoutes);
+app.use('/questions', questionsRoutes);
+
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
