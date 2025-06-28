@@ -55,9 +55,11 @@ router.get('/', async (req, res) => {
         if (lang) filter.question_programming_language = lang;
 
         console.log('Filter built:', filter);
+
         const questions = await Question.find(filter);
 
         res.status(200).json({
+            filter: filter,
             success: true,
             message: questions.length
                 ? 'Questions retrieved successfully'

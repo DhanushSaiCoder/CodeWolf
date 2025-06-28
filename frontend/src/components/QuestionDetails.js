@@ -1,4 +1,5 @@
 import React from 'react'
+import { useEffect } from 'react'
 import "../styles/QuestionDetails.css"
 
 const sampleQuestion = {
@@ -17,8 +18,34 @@ const sampleQuestion = {
 }
 
 export default function QuestionDetails(props) {
-  const { matchDoc } = props;
-  console.log("matchDoc in QuestionDetails: ", matchDoc);
+  let { matchDoc } = props;
+  console.log("matchDoc in QuestionDetails: ",JSON.parse(matchDoc));
+  matchDoc = JSON.parse(matchDoc);
+  // useEffect to fetch the question details using filters from matchDoc.
+  useEffect(() => {
+    const fetchQuestionDetails = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/questions?mode_slug=${matchDoc.mode}&question_difficulty=${matchDoc.difficulty}&programming_language=${matchDoc.language == "js" ? "javascript" : matchDoc.language}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        if (!response.ok) {
+          throw new Error(`Error fetching question: ${response.statusText}`);
+        }
+        const data = await response.json();
+        console.log("Fetched question details: ", data);
+      } catch (err) {
+        console.error("Fetch error:", err);
+      }
+    }
+
+    if (matchDoc) fetchQuestionDetails();
+
+  }, [matchDoc]);
+
   return (
     <div className='QuestionDetails'>
       <div className='QuestionDetailsHeader'>
