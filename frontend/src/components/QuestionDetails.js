@@ -59,16 +59,29 @@ export default function QuestionDetails(props) {
         <h3>Question</h3>
       </div>
       {!isFetchingQuestion && (<div className='QuestionDetailsBody'>
-        <h3 className='questionTitle'>{sampleQuestion.questionTitle}</h3>
-        <p
-          className='descriptionTxt'
-          dangerouslySetInnerHTML={{ __html: sampleQuestion.description }}
-        ></p>
+        <h3 className='questionTitle'>{question.question_title}</h3>
+        {/* <p className='questionMode'>Mode: {question.question_mode}</p> */}
+        {/* <p className='questionDifficulty'>Difficulty: {question.question_difficulty}</p> */}
+        
+        {
+          question.question_description.map((line, index) => (
+            <>
+              <br key={`br-${index}`} />
+
+              <p key={index}
+                className='descriptionTxt'
+                dangerouslySetInnerHTML={{ __html: line }}
+              ></p>
+            </>
+          )
+          )
+        }
+
 
         <div className='examples'>
 
           <h3>Examples</h3>
-          {sampleQuestion.examples.map((example, index) => (
+          {question.examples.map((example, index) => (
             <div className='exampleSet' key={index}>
               <p>
                 <strong>Input:</strong> {example.input}

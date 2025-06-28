@@ -43,6 +43,7 @@
     justify-content: flex-start;
     gap: 20px;
     flex-direction: column;
+    font-size: larger;
 }
 .descriptionTxt{
     opacity: 0.85;
