@@ -107,7 +107,7 @@ export const MatchWait = () => {
         setCounter((prevCounter) => {
           if (prevCounter <= 1) {
             clearInterval(timer);
-            navigate(`/match/?matchId=${matchId}`, { replace: true }); // Navigate when countdown reaches 0
+            navigate(`/match?matchId=${matchId}`, { replace: true }); // Navigate when countdown reaches 0
             return 0;
           }
           return prevCounter - 1;

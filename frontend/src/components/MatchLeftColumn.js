@@ -12,7 +12,7 @@ export default function MatchLeftColumn(props) {
       <MatchInfo matchDoc={matchDoc} />
       {/* Pass the current matchId to Timer */}
       <Timer matchId={matchId} time={15} /> {/* here time is duration in minutes */}
-      <QuestionDetails />
+      <QuestionDetails matchDoc={matchDoc} />
     </div>
   );
 }

@@ -16,7 +16,9 @@ const sampleQuestion = {
   ]
 }
 
-export default function QuestionDetails() {
+export default function QuestionDetails(props) {
+  const { matchDoc } = props;
+  console.log("matchDoc in QuestionDetails: ", matchDoc);
   return (
     <div className='QuestionDetails'>
       <div className='QuestionDetailsHeader'>
