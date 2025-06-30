@@ -72,4 +72,21 @@ router.get('/', async (req, res) => {
     }
 });
 
+// GET QUESTION BY ID
+router.get('/:id', async (req, res) => {
+    const questionId = req.params.id;
+
+    try {
+        const question = await Question
+            .findById(questionId)
+
+            if (!question) {
+            return res.status(404).json({ success: false, message: 'Question not found' });
+        }
+        res.status(200).json({ success: true, data: question });
+    } catch (err) {
+        console.error('Error in GET /questions/:id:', err);
+        res.status(500).json({ success: false, message: 'Internal server error', error: err.message });
+    }
+});
 module.exports = router;

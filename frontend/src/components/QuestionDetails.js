@@ -23,7 +23,28 @@ export default function QuestionDetails({ matchDoc: matchDocStr }) {
   useEffect(() => {
     const fetchQuestionDetails = async () => {
       try {
+        // if matchDoc has questionId, get it from database
+        if (matchDoc.questionId) {
+          const response = await fetch(
+            `${process.env.REACT_APP_BACKEND_URL}/questions/${matchDoc.questionId}`,
+            {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            }
+          );
+          if (!response.ok) {
+            throw new Error(`Error fetching question: ${response.statusText}`);
+          }
+          const data = await response.json();
+          setQuestion(data.data);
+          setIsFetchingQuestion(false);
+          console.log("Fetched question details (/questions/:id):-", data.data);
+          return;
+        }
 
+        // else get a random question based on mode, difficulty, and language
         const filterStr = `mode_slug=${matchDoc.mode}&question_difficulty=${matchDoc.difficulty}&programming_language=${matchDoc.language === "js" ? "javascript" : matchDoc.language}`
 
         const response = await fetch(
@@ -42,9 +63,18 @@ export default function QuestionDetails({ matchDoc: matchDocStr }) {
         }
 
         const data = await response.json();
-        setQuestion(data.data[0]); // Assuming the first question is the one we want
+        const randomIndex = Math.floor(Math.random() * data.data.length);
+        
+        setQuestion(data.data[randomIndex]); // Assuming the first question is the one we want
         setIsFetchingQuestion(false);
-        console.log("Fetched question details:", data.data[0]);
+        console.log("Fetched question details:", data.data[randomIndex]);
+
+        // Update the match document with the fetched questionId
+        if (data.data[randomIndex]) {
+          const questionId = data.data[randomIndex]._id;
+          await updateQuestionIdInDatabase(questionId);
+          console.log("Updated match with questionId:", questionId);
+        }
       } catch (err) {
         console.error("Fetch error:", err);
       }
@@ -53,6 +83,34 @@ export default function QuestionDetails({ matchDoc: matchDocStr }) {
     if (matchDoc) fetchQuestionDetails();
 
   }, [matchDocStr]); // depend on the string, not the parsed object
+
+
+  // Function to update questionId in the match document in the database
+  const updateQuestionIdInDatabase = async (questionId) => {
+    if (!questionId) return; // No questionId to update
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/matches/${matchDoc._id}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          },
+          body: JSON.stringify({ questionId, ...matchDoc }) // Assuming you want to set status to 'in-progress'
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Error updating match: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log("Updated match with questionId:", data);
+    } catch (err) {
+      console.error("Update error:", err);
+    }
+  }
 
   return (
     <div className='QuestionDetails'>

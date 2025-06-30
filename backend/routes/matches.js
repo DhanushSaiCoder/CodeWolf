@@ -31,5 +31,19 @@ router.post('/', async (req, res) => {
     res.send(match)
 })
 
+// PATCH request to update a match document
+router.patch('/:id', async (req, res) => {
+    console.log("Updating match with ID:", req.params.id, "with data:", req.body)
+
+    const match = await Match.findByIdAndUpdate(req.params.id, {
+        questionId: req.body.questionId,
+    }, { new: true })
+
+    if (!match) return res.status(404).send('The match with the given ID was not found.')
+
+    res.status(200).send(match)
+})
+
+
 module.exports = router
 

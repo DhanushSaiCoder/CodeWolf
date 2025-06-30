@@ -3,6 +3,11 @@ const joi = require("joi");
 
 // Updated match schema with a status field
 const matchSchema = new mongoose.Schema({
+    questionId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Question',
+        optional: true
+    },
     players: [{
         id: {
             type: mongoose.Schema.Types.ObjectId,
@@ -52,6 +57,7 @@ const Match = mongoose.model("Match", matchSchema);
 // Update the Joi validation schema to include the new status field
 function validateMatch(match) {
     const schema = joi.object({
+        questionId: joi.string().optional(),
         players: joi.array().items(joi.object({
             id: joi.string().required(),
             username: joi.string().required(),
