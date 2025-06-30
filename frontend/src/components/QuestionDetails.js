@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import "../styles/QuestionDetails.css";
-
+import LightbulbIcon from '@mui/icons-material/Lightbulb';
 /**
  * QuestionDetails component fetches and displays details of a specific question
  * based on the match document passed as a prop.
@@ -149,14 +149,69 @@ export default function QuestionDetails({ matchDoc: matchDocStr }) {
               </div>
             ))}
           </div>
+
+
+
+
+          <div className='testcasesDiv'>
+            <h3>Test Cases</h3>
+            <div className='testcasesSet'>
+              {question.test_cases && question.test_cases.length > 0 ? (
+                question.test_cases.map((testCase, index) => (
+                  <div key={index} className='testcase'>
+                    <p>
+                      <strong>Input:</strong> {testCase.input}
+                    </p>
+                    <p>
+                      <strong>Output:</strong> {testCase.expected_output}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <p>No test cases available for this question.</p>
+              )}
+            </div>
+          </div>
+
+
+          <div className='hintsDiv'>
+            <h3>Hints</h3>
+            <div className='hintsSet'>
+              {question.hints && question.hints.length > 0 ? (
+                question.hints.map((hint, index) => (
+                  <p key={index} className='hint'>
+                    <LightbulbIcon
+                      sx={
+                        { fontSize: '14px', verticalAlign: 'middle', marginRight: '4px' }
+                      }
+                    /> {hint}
+                  </p>
+                ))
+              ) : (
+                <p>No hints available for this question.</p>
+              )}
+            </div>
+          </div>
+          <div className='tagsDiv'>
+            <h3>Tags</h3>
+            <div className='tags'>
+              {question.tags.map((tag, index) => (
+                <span key={index} className='tag'>
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+
         </div>
+
       )}
       {isFetchingQuestion && (
         <div className='loading'>
           <p>Loading question details...</p>
         </div>
       )}
-     
+
     </div>
   );
 }
