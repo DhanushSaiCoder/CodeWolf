@@ -64,7 +64,7 @@ export default function QuestionDetails({ matchDoc: matchDocStr }) {
 
         const data = await response.json();
         const randomIndex = Math.floor(Math.random() * data.data.length);
-        
+
         setQuestion(data.data[randomIndex]); // Assuming the first question is the one we want
         setIsFetchingQuestion(false);
         console.log("Fetched question details:", data.data[randomIndex]);
@@ -116,10 +116,15 @@ export default function QuestionDetails({ matchDoc: matchDocStr }) {
     <div className='QuestionDetails'>
       <div className='QuestionDetailsHeader'>
         <h3>Question</h3>
+
+
       </div>
       {!isFetchingQuestion && question && (
         <div className='QuestionDetailsBody'>
+
           <h3 className='questionTitle'>{question.question_title}</h3>
+
+
 
           {question.question_description.map((line, index) => (
             <React.Fragment key={index}>
@@ -151,6 +156,7 @@ export default function QuestionDetails({ matchDoc: matchDocStr }) {
           <p>Loading question details...</p>
         </div>
       )}
+     
     </div>
   );
 }
