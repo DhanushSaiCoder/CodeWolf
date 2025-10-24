@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "../styles/CodeEditor.css";
 import MonacoEditor from 'react-monaco-editor';
 
 export default function CodeEditor({ question }) {
-  const [code, setCode] = useState(question?.defaultCode || "#Your Code Goes Here");
+  const [code, setCode] = useState("//Your code goes here");
 
   // Update code state when editor content changes
   const onChange = (newValue) => {
     setCode(newValue);
   };
+
+  useEffect(() => {
+    setCode(question?.default_code)
+  }, [question])
 
   const editorDidMount = (editor, monaco) => {
     // Define and register the Night Owl theme
@@ -63,7 +67,7 @@ export default function CodeEditor({ question }) {
     automaticLayout: true,
   };
 
-  
+
 
   return (
     <div className='CodeEditor'>
@@ -74,7 +78,7 @@ export default function CodeEditor({ question }) {
         <button className='runBtn'>Run</button>
       </div>
       <div className='CodeEditorContent'>
-        <MonacoEditor
+        {question != null ? <MonacoEditor
           width="100%"
           height="100%"
           scrollbarWidth="none"
@@ -86,7 +90,7 @@ export default function CodeEditor({ question }) {
           onChange={onChange}
           editorDidMount={editorDidMount}
           minimap={{ enabled: false }}
-        />
+        /> : <p>Loading...</p>}
       </div>
 
     </div>
