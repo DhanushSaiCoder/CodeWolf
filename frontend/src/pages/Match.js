@@ -66,9 +66,13 @@ export default function Match() {
     }
   }, [matchId]);
 
+  const handleQuestionFound = (question) => {
+    console.log("question in Match page: ", question)
+  }
+
   return (
     <div className='Match'>
-      <MatchLeftColumn matchDoc={JSON.stringify(matchDoc)} matchId={matchId} />
+      <MatchLeftColumn matchDoc={JSON.stringify(matchDoc)} matchId={matchId} handleQuestionFound={handleQuestionFound} />
       <MatchRightColumn matchDoc={JSON.stringify(matchDoc)} />
     </div>
   );

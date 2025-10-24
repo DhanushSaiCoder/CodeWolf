@@ -10,7 +10,7 @@ import LightbulbIcon from '@mui/icons-material/Lightbulb';
  * @returns {JSX.Element} Rendered component.
  */
 
-export default function QuestionDetails({ matchDoc: matchDocStr }) {
+export default function QuestionDetails({ matchDoc: matchDocStr, handleQuestionFound }) {
   // Memoize parsing to avoid new object each render
   const matchDoc = useMemo(() => JSON.parse(matchDocStr), [matchDocStr]);
 
@@ -39,6 +39,7 @@ export default function QuestionDetails({ matchDoc: matchDocStr }) {
           }
           const data = await response.json();
           setQuestion(data.data);
+          handleQuestionFound(data.data)
           setIsFetchingQuestion(false);
           console.log("Fetched question details (/questions/:id):-", data.data);
           return;
@@ -66,6 +67,7 @@ export default function QuestionDetails({ matchDoc: matchDocStr }) {
         const randomIndex = Math.floor(Math.random() * data.data.length);
 
         setQuestion(data.data[randomIndex]); // Assuming the first question is the one we want
+        handleQuestionFound(data.data[randomIndex])
         setIsFetchingQuestion(false);
         console.log("Fetched question details:", data.data[randomIndex]);
 
