@@ -36,7 +36,6 @@ export const MatchWait = () => {
     const newSocket = io('http://localhost:5000', { auth: { token } });
 
     newSocket.on('connect', () => {
-      console.log('Connected to the server');
       newSocket.emit('sendToken', token);
 
       // Build the query string with requesterId and receiverId
@@ -52,7 +51,6 @@ export const MatchWait = () => {
           return response.json();
         })
         .then((data) => {
-          console.log('Fetched user data:', data);
           const playersDocs = data;
 
           // Only emit beginMatch if:
@@ -60,7 +58,6 @@ export const MatchWait = () => {
           // 2. requesterId and receiverId are provided,
           // 3. And no match has been initiated already.
           if (currentUserId === requesterId && requesterId && receiverId) {
-            console.log('Emitting beginMatch with playersDocs:', playersDocs);
             newSocket.emit('beginMatch', {
               requesterId,
               receiverId,
@@ -77,13 +74,10 @@ export const MatchWait = () => {
     });
 
     const handleBeginMatch = (data) => {
-      console.log('beginMatch event received', data);
       if (data.match && data.match._id) {
-        console.log('matchId:', data.match._id);
         setMatchId(data.match._id);
         setMatchCreating(false);
       } else {
-        console.log('matchId:', data.createdMatch._id);
         setMatchId(data.createdMatch._id);
         setMatchCreating(false);
       }

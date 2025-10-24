@@ -18,7 +18,6 @@ export default function QuestionDetails({ matchDoc: matchDocStr, handleQuestionF
   const [question, setQuestion] = useState(null);
   const [isFetchingQuestion, setIsFetchingQuestion] = useState(true);
 
-  console.log("matchDoc in QuestionDetails:", matchDoc);
 
   useEffect(() => {
     const fetchQuestionDetails = async () => {
@@ -41,7 +40,6 @@ export default function QuestionDetails({ matchDoc: matchDocStr, handleQuestionF
           setQuestion(data.data);
           handleQuestionFound(data.data)
           setIsFetchingQuestion(false);
-          console.log("Fetched question details (/questions/:id):-", data.data);
           return;
         }
 
@@ -69,13 +67,11 @@ export default function QuestionDetails({ matchDoc: matchDocStr, handleQuestionF
         setQuestion(data.data[randomIndex]); // Assuming the first question is the one we want
         handleQuestionFound(data.data[randomIndex])
         setIsFetchingQuestion(false);
-        console.log("Fetched question details:", data.data[randomIndex]);
 
         // Update the match document with the fetched questionId
         if (data.data[randomIndex]) {
           const questionId = data.data[randomIndex]._id;
           await updateQuestionIdInDatabase(questionId);
-          console.log("Updated match with questionId:", questionId);
         }
       } catch (err) {
         console.error("Fetch error:", err);
@@ -108,7 +104,6 @@ export default function QuestionDetails({ matchDoc: matchDocStr, handleQuestionF
       }
 
       const data = await response.json();
-      console.log("Updated match with questionId:", data);
     } catch (err) {
       console.error("Update error:", err);
     }

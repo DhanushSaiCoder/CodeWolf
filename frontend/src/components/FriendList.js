@@ -65,7 +65,6 @@ export const FriendList = (props) => {
             .then(response => response.json())
             .then(data => {
                 setLoading(false);
-                console.log('Friend added:', data);
                 fetchNonFriendsData();
             })
             .catch(error => {
@@ -93,7 +92,6 @@ export const FriendList = (props) => {
                 setUserDoc(data)
                 data.friends.sort((a, b) => b.online - a.online);
                 setUserFriendsData(data.friends);
-                console.log("userFriendsData:", data.friends);
                 setUFLoading(false);
             })
             .catch(error => {
@@ -107,7 +105,6 @@ export const FriendList = (props) => {
 
         if (socket) {
             const handleStatusUpdate = ({ userId, status }) => {
-                console.log('Received statusUpdate:', userId, status);
                 setUserFriendsData((prevFriends) =>
                     prevFriends.map((friend) =>
                         friend.id.toString() === userId.toString() ? { ...friend, status } : friend
