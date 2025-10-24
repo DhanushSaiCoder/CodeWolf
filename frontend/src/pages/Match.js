@@ -30,6 +30,7 @@ export default function Match() {
   const query = useQuery();
   const matchId = query.get('matchId');
   const [matchDoc, setMatchDoc] = useState(null);
+  const [question, setQuestion] = useState(null)
 
   // When the component mounts, store matchId with the current start time
   useEffect(() => {
@@ -68,12 +69,13 @@ export default function Match() {
 
   const handleQuestionFound = (question) => {
     console.log("question in Match page: ", question)
+    setQuestion(question)
   }
 
   return (
     <div className='Match'>
       <MatchLeftColumn matchDoc={JSON.stringify(matchDoc)} matchId={matchId} handleQuestionFound={handleQuestionFound} />
-      <MatchRightColumn matchDoc={JSON.stringify(matchDoc)} />
+      <MatchRightColumn matchDoc={JSON.stringify(matchDoc)} question={question} />
     </div>
   );
 }
