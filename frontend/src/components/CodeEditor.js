@@ -2,20 +2,20 @@ import React, { useEffect, useState } from 'react';
 import "../styles/CodeEditor.css";
 import MonacoEditor from 'react-monaco-editor';
 
-export default function CodeEditor({ question }) {
+export default function CodeEditor({ question, matchDoc:matchObj }) {
   const [code, setCode] = useState("");
 
   // Update code state when editor content changes
   const onChange = (newValue) => {
     setCode(newValue);
-    localStorage.setItem("code", JSON.stringify({code, question_id: question._id}))
+    localStorage.setItem("code", JSON.stringify({code, match_id: matchObj._id}))
   };
 
   useEffect(() => {
     if(question==null || !JSON.parse(localStorage.getItem('code'))) return
 
     const codeLs = JSON.parse(localStorage.getItem('code'))
-    if(codeLs.question_id == question._id) setCode(codeLs.code)
+    if(codeLs.match_id == matchObj._id) setCode(codeLs.code)
   }, [question])
 
   const editorDidMount = (editor, monaco) => {

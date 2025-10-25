@@ -75,7 +75,7 @@ export default function Match() {
   return (
     <div className='Match'>
       <MatchLeftColumn matchDoc={JSON.stringify(matchDoc)} matchId={matchId} handleQuestionFound={handleQuestionFound} />
-      <MatchRightColumn matchDoc={JSON.stringify(matchDoc)} question={question} />
+      <MatchRightColumn  question={question} matchDoc={matchDoc} />
     </div>
   );
 }
