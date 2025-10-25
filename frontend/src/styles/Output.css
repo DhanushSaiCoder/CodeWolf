@@ -1,0 +1,52 @@
+.Output {
+    background: rgba(48, 14, 93, 0.2);
+    border-radius: 0 0 20px 20px;
+    display: flex;
+    flex-direction: column;
+    border: 0.5px solid rgba(208, 187, 187, 0.1);
+    min-height: 200px;
+}
+
+.Output_header {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+
+    justify-content: flex-start;
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+    font-size: 20px;
+    font-weight: normal;
+    color: #d5bcf5;
+    background: #300e5d70;
+    padding: 10px 20px;
+
+    position: relative;
+}
+
+.Output_header h3 span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif,
+        Helvetica, sans-serif;
+    color: #d5bcf5;
+    font-weight: bolder;
+}
+.Output_header h3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.Output_content {
+    padding: 10px 20px;
+    background: black;
+    color: #d5bcf5;
+
+    padding: 10px;
+    font-family: monospace;
+    border-radius: 8px;
+    height: 200px;
+    overflow-y: auto;
+}
