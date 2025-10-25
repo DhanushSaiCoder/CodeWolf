@@ -94,7 +94,7 @@ export default function CodeEditor({ question, matchDoc: matchObj }) {
     })
       .then(response => response.json())
       .then(data => {
-        console.log('code ran:', data);
+        console.log('code output:', data);
       })
       .catch(error => {
         console.error('Error running code:', error);
