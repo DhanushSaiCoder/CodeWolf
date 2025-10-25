@@ -4,7 +4,6 @@
     display: flex;
     flex-direction: column;
     border: 0.5px solid rgba(208, 187, 187, 0.1);
-    min-height: 200px;
 }
 
 .Output_header {
@@ -50,12 +49,26 @@
     height: 200px;
     overflow-y: auto;
 }
+.Output_content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.Output_content::-webkit-scrollbar-track {
+    border-radius: 10px;
+}
+
+.Output_content::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(86, 77, 77, 0.5); 
+    background-color:  #d5bcf540;
+;
+}
+
 #outputEle {
     color: #d5bcf5;
 
     padding: 10px;
     border-radius: 8px;
-    overflow-y: auto;
     white-space: pre-wrap; /* handles long lines */
     font-family: monospace;
     max-height: 250px;
