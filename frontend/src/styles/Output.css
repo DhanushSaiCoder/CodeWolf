@@ -50,3 +50,23 @@
     height: 200px;
     overflow-y: auto;
 }
+#outputEle {
+    color: #d5bcf5;
+
+    padding: 10px;
+    border-radius: 8px;
+    overflow-y: auto;
+    white-space: pre-wrap; /* handles long lines */
+    font-family: monospace;
+    max-height: 250px;
+}
+#errorEle{
+    color: #ff4511;
+
+    padding: 10px;
+    border-radius: 8px;
+    overflow-y: auto;
+    white-space: pre-wrap; /* handles long lines */
+    font-family: monospace;
+    max-height: 250px;
+}

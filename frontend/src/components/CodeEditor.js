@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import "../styles/CodeEditor.css";
 import MonacoEditor from 'react-monaco-editor';
 
-export default function CodeEditor({ question, matchDoc: matchObj }) {
+export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOutput }) {
   const [code, setCode] = useState("");
 
   // Update code state when editor content changes
@@ -94,7 +94,7 @@ export default function CodeEditor({ question, matchDoc: matchObj }) {
     })
       .then(response => response.json())
       .then(data => {
-        console.log('code output:', data);
+        handleCodeOutput(data)
       })
       .catch(error => {
         console.error('Error running code:', error);

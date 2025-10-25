@@ -1,6 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import "../styles/Output.css"
-const Output = () => {
+
+
+const Output = ({ output }) => {
+    const [error, setError] = useState(null)
+
+
+    useEffect(() => {
+        if(output && output.error != null) setError(output.error)
+        else setError(null)
+    }, [output])
+
     return (
         <div className='Output'>
             <div className='Output_header'>
@@ -12,7 +22,8 @@ const Output = () => {
             </div>
 
             <div className='Output_content'>
-                <p>here the output is displayed</p>
+                {error && <p id='errorEle'>{output?.error}</p>}
+                <pre id="outputEle"><code>{output?.output}</code></pre>
             </div>
         </div>
     );
