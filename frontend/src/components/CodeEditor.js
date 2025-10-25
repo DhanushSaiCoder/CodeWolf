@@ -2,20 +2,20 @@ import React, { useEffect, useState } from 'react';
 import "../styles/CodeEditor.css";
 import MonacoEditor from 'react-monaco-editor';
 
-export default function CodeEditor({ question, matchDoc:matchObj }) {
+export default function CodeEditor({ question, matchDoc: matchObj }) {
   const [code, setCode] = useState("");
 
   // Update code state when editor content changes
   const onChange = (newValue) => {
     setCode(newValue);
-    localStorage.setItem("code", JSON.stringify({code, match_id: matchObj._id}))
+    localStorage.setItem("code", JSON.stringify({ code, match_id: matchObj._id }))
   };
 
   useEffect(() => {
-    if(question==null || !JSON.parse(localStorage.getItem('code'))) return
+    if (question == null || !JSON.parse(localStorage.getItem('code'))) return
 
     const codeLs = JSON.parse(localStorage.getItem('code'))
-    if(codeLs.match_id == matchObj._id) setCode(codeLs.code)
+    if (codeLs.match_id == matchObj._id) setCode(codeLs.code)
   }, [question])
 
   const editorDidMount = (editor, monaco) => {
@@ -73,7 +73,33 @@ export default function CodeEditor({ question, matchDoc:matchObj }) {
 
   const handleRunCode = () => {
     // code runnning logic goes here
-    alert("code running...")
+    let url = process.env.REACT_APP_BACKEND_URL
+    switch (matchObj.language) {
+      case 'js':
+        url += '/run/js'
+        break
+      case 'java':
+        url += '/run/java'
+        break
+      case 'c':
+        url += '/run/c'
+        break
+    }
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ code: code, question_id: question._id })
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('code ran:', data);
+      })
+      .catch(error => {
+        console.error('Error running code:', error);
+      });
+
   }
 
 

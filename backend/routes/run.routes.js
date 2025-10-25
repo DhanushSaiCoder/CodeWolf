@@ -2,7 +2,9 @@ const express = require('express')
 const router = express.Router()
 
 router.post('/js', async (req, res) => {
-    res.send("got request")
+    const { code, question_id } = req.body
+
+    res.send({status: "code ran successfully"})
 })
 
-module.exports = router
+module.exports = router 
