@@ -1,17 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "../styles/CodeEditor.css";
 import MonacoEditor from 'react-monaco-editor';
 
-export default function CodeEditor(props) {
-
-  const [code, setCode] = useState(
-    'function hello() {\n  console.log("Hello, world!");\n}'
-  );
+export default function CodeEditor({ question, matchDoc: matchObj }) {
+  const [code, setCode] = useState("");
 
   // Update code state when editor content changes
   const onChange = (newValue) => {
     setCode(newValue);
+    localStorage.setItem("code", JSON.stringify({ code, match_id: matchObj._id }))
   };
+
+  useEffect(() => {
+    if (question == null || !JSON.parse(localStorage.getItem('code'))) return
+
+    const codeLs = JSON.parse(localStorage.getItem('code'))
+    if (codeLs.match_id == matchObj._id) setCode(codeLs.code)
+  }, [question])
 
   const editorDidMount = (editor, monaco) => {
     // Define and register the Night Owl theme
@@ -66,28 +71,61 @@ export default function CodeEditor(props) {
     automaticLayout: true,
   };
 
+  const handleRunCode = () => {
+    // code runnning logic goes here
+    let url = process.env.REACT_APP_BACKEND_URL
+    switch (matchObj.language) {
+      case 'js':
+        url += '/run/js'
+        break
+      case 'java':
+        url += '/run/java'
+        break
+      case 'c':
+        url += '/run/c'
+        break
+    }
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ code: code, question_id: question._id })
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('code output:', data);
+      })
+      .catch(error => {
+        console.error('Error running code:', error);
+      });
+
+  }
+
+
+
   return (
     <div className='CodeEditor'>
       <div className='CodeEditorHeader'>
         <h3>
-          <span>{"</>"}</span> Code
+          <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code-xml-icon lucide-code-xml"><path d="m18 16 4-4-4-4" /><path d="m6 8-4 4 4 4" /><path d="m14.5 4-5 16" /></svg></span> Code
         </h3>
-        <button className='runBtn'>Run</button>
+        <button onClick={handleRunCode} className='runBtn'>Run</button>
       </div>
       <div className='CodeEditorContent'>
-        <MonacoEditor
+        {question != null ? <MonacoEditor
           width="100%"
           height="100%"
           scrollbarWidth="none"
           borderRadius="20px"
-          language="javascript"
+          language={question?.question_programming_language}
           theme="night-owl"
           value={code}
           options={options}
           onChange={onChange}
           editorDidMount={editorDidMount}
           minimap={{ enabled: false }}
-        />
+        /> : <p>Loading...</p>}
       </div>
 
     </div>

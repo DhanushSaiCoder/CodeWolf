@@ -39,12 +39,10 @@ export const UserFriend = (props) => {
     const newSocket = io('http://localhost:5000', { auth: { token } });
 
     newSocket.on('connect', () => {
-      console.log('Connected to the server');
       newSocket.emit('sendToken', token);
     });
 
     newSocket.on('sendMatchRequest', (data) => {
-      console.log('Received match request:', data);
       setMatchRequestData(data);
 
       // Automatically reject the match request after 10 seconds if no action is taken
@@ -72,7 +70,6 @@ export const UserFriend = (props) => {
       const currentUserId = jwtDecode(token)._id;
       if (data.requesterId === currentUserId) {
         // Mark the corresponding opponent (data.userId) as rejected
-        console.log('request accepted: ', data)
         navigate(`/matchwait/?requesterId=${data.requesterId}&receiverId=${data.receiverId}&mode=${encodeURI(data.mode)}&difficulty=${data.difficulty}&language=${data.programmingLanguage}`)
 
       }
@@ -132,7 +129,6 @@ export const UserFriend = (props) => {
       requesterUsername: userDoc.username,
       requesterRating: userDoc.rating,
     };
-    console.log('Sending match request:', requestMatchPayload);
     if (socket) {
       socket.emit('requestMatch', requestMatchPayload);
     }
@@ -190,7 +186,6 @@ export const UserFriend = (props) => {
   // Handler functions for the match request component
   const handleAccept = () => {
     // Add your accept logic here (e.g., notify the server, redirect to match page, etc.)
-    console.log("Match accepted", matchRequestData);
 
     socket.emit('requestAccepted', matchRequestData);
     navigate(`/matchwait/?requesterId=${matchRequestData.requesterId}&receiverId=${matchRequestData.userId}&mode=${encodeURI(matchRequestData.mode)}&difficulty=${matchRequestData.difficulty}&language=${matchRequestData.programmingLanguage}`)

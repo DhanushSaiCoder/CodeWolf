@@ -5,8 +5,6 @@
     display: flex;
     flex-direction: column;
     border: 0.5px solid rgba(125, 124, 124, 0.1);
-
-
 }
 
 .CodeEditorHeader {
@@ -19,7 +17,7 @@
     border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
     font-size: 20px;
     font-weight: normal;
-    color: #D5BCF5;
+    color: #d5bcf5;
     border-radius: 20px 20px 0 0;
     background: #300e5d70;
     padding: 10px 20px;
@@ -28,16 +26,26 @@
 }
 
 .CodeEditorHeader h3 span {
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif, Helvetica, sans-serif;
-    font-weight: 450;
-    color: #3efc6a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif,
+        Helvetica, sans-serif;
+    color: #d5bcf5;
+    font-weight: bolder;
 }
-.CodeEditorContent{
+.CodeEditorHeader h3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.CodeEditorContent {
     width: 100%;
     height: calc(100% - 50px);
 }
 
-.runBtn{
+.runBtn {
     padding: 5px 20px;
     background: #35d359;
 
@@ -52,6 +60,6 @@
     position: absolute;
     right: 40px;
 }
-.runBtn:hover{
+.runBtn:hover {
     background: #3efc6a;
 }

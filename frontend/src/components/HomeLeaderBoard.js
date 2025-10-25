@@ -19,7 +19,6 @@ export const HomeLeaderBoard = () => {
                 return response.json();
             })
             .then(result => {
-                console.log('data: ', result);
                 setData(result); // Backend already sorts the data
             })
             .catch(error => {

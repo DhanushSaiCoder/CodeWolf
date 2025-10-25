@@ -12,6 +12,7 @@ const questionSchema = new mongoose.Schema({
     mode_slug: { type: String, required: true, lowercase: true, index: true },
 
     buggy_code: { type: String },
+    default_code: {type: String},
     hints: [{ type: String }],
     test_cases: [
         {
@@ -55,6 +56,7 @@ const validateQuestion = (question) => {
 
 
         buggy_code: Joi.string().allow(null, ''),
+        default_code: Joi.string().allow(null),
         hints: Joi.array().items(Joi.string()),
         test_cases: Joi.array().items(
             Joi.object({ input: Joi.string().required(), expected_output: Joi.string().required() })
