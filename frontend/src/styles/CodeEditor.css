@@ -13,7 +13,7 @@
     display: flex;
     align-items: center;
 
-    justify-content: flex-start;
+    justify-content: space-between;
     border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
     font-size: 20px;
     font-weight: normal;
@@ -44,8 +44,14 @@
     width: 100%;
     height: calc(100% - 50px);
 }
-
-.runBtn {
+.code_editor_header_buttonsDiv{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.runBtn,
+.submitBtn {
     padding: 5px 20px;
     background: #35d359;
 
@@ -56,10 +62,15 @@
     cursor: pointer;
     transition: all 0.23s ease-in-out;
     border: none;
-
-    position: absolute;
-    right: 40px;
+}
+.submitBtn:hover {
+    background: #3efc6a;
+}
+.runBtn {
+    background-color: #d5bcf5;
+    color: #300e5d;
 }
 .runBtn:hover {
-    background: #3efc6a;
+    background-color: #fff;
+    color: black;
 }
