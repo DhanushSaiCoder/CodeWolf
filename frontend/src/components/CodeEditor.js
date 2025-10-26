@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import "../styles/CodeEditor.css";
 import MonacoEditor from 'react-monaco-editor';
 
-export default function CodeEditor({ question, matchDoc: matchObj }) {
+export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOutput }) {
   const [code, setCode] = useState("");
 
   // Update code state when editor content changes
@@ -94,7 +94,7 @@ export default function CodeEditor({ question, matchDoc: matchObj }) {
     })
       .then(response => response.json())
       .then(data => {
-        console.log('code output:', data);
+        handleCodeOutput(data)
       })
       .catch(error => {
         console.error('Error running code:', error);
@@ -110,7 +110,10 @@ export default function CodeEditor({ question, matchDoc: matchObj }) {
         <h3>
           <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code-xml-icon lucide-code-xml"><path d="m18 16 4-4-4-4" /><path d="m6 8-4 4 4 4" /><path d="m14.5 4-5 16" /></svg></span> Code
         </h3>
-        <button onClick={handleRunCode} className='runBtn'>Run</button>
+        <div className='code_editor_header_buttonsDiv'>
+          <button onClick={handleRunCode} className='runBtn'>Run</button>
+          <button className='submitBtn'>Submit</button>
+        </div>
       </div>
       <div className='CodeEditorContent'>
         {question != null ? <MonacoEditor
