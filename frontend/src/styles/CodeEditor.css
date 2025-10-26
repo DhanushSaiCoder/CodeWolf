@@ -54,7 +54,8 @@
 .submitBtn {
     padding: 5px 20px;
     background: #35d359;
-
+    height: 35px;
+    width: 100px;
     color: #300e5d;
     border-radius: 5px;
     font-size: 16px;

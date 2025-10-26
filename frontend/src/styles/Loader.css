@@ -1,0 +1,32 @@
+.loader-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 14px;
+}
+
+.loader-dots div {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #300e5d;
+  animation: wave 1.4s infinite ease-in-out both;
+  margin: 0 3px;
+}
+
+.loader-dots div:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.loader-dots div:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes wave {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1.0);
+  }
+}

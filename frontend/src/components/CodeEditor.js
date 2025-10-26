@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import "../styles/CodeEditor.css";
 import MonacoEditor from 'react-monaco-editor';
+import Loader from './Loader';
 
 export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOutput }) {
   const [code, setCode] = useState("");
+  const [runningCode, setRunningCode] = useState(false)
 
   // Update code state when editor content changes
   const onChange = (newValue) => {
@@ -72,6 +74,7 @@ export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOut
   };
 
   const handleRunCode = () => {
+    setRunningCode(true)
     // code runnning logic goes here
     let url = process.env.REACT_APP_BACKEND_URL
     switch (matchObj.language) {
@@ -95,6 +98,7 @@ export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOut
       .then(response => response.json())
       .then(data => {
         console.log("code output data: ", data)
+        setRunningCode(false)
         handleCodeOutput(data)
 
       })
@@ -113,7 +117,9 @@ export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOut
           <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code-xml-icon lucide-code-xml"><path d="m18 16 4-4-4-4" /><path d="m6 8-4 4 4 4" /><path d="m14.5 4-5 16" /></svg></span> Code
         </h3>
         <div className='code_editor_header_buttonsDiv'>
-          <button onClick={handleRunCode} className='runBtn'>Run</button>
+          <button onClick={handleRunCode} className='runBtn'>
+            {!runningCode ? "Run" : <Loader />}
+          </button>
           <button className='submitBtn'>Submit</button>
         </div>
       </div>
