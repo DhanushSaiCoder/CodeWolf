@@ -21,11 +21,13 @@ export default function MatchRightColumn(props) {
     <div className='MatchRightColumn'>
       <CodeEditor matchDoc={matchDoc} question={question} handleCodeOutput={handleCodeOutput} />
       <HorizontalMenu handleToggleTab={handleToggleTab} />
+      <div className='output_or_testcases_section'>
       {
         tabToShow == "output" ?
-          (<Output output={output} />) :
-          (<TestCases />)
+        (<Output output={output} />) :
+        (<TestCases />)
       }
+      </div>
     </div>
   )
 }

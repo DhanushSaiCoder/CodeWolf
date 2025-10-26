@@ -8,4 +8,7 @@
     flex-direction: column;
     
 }
+.output_or_testcases_section{
+    min-height: 200px;
+}
 
