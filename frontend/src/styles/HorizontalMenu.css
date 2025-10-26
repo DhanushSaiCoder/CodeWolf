@@ -16,12 +16,12 @@
 }
 .horizontal_menu_button_active_background{
     position: absolute;
-    left: 0;
     background: #d5bcf540;
     width: 150px;
     height: 40px;
     border-radius: 5px;
     z-index: 7;
+    transition: all 0.2s ease-in-out;
 }
 .horizontal_menu_button_container{
     position: relative;
@@ -47,9 +47,6 @@
     cursor: pointer;
 }
 
-.activeMenuBtn {
-    font-weight: bold;
-}
 .activeMenuBtn:hover{
     background-color: inherit;
 }
