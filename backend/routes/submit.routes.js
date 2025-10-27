@@ -40,7 +40,7 @@ router.post('/js', async (req, res) => {
 });
 
 router.post('/c', async (req, res) => {
-
+  res.json(req.body)
 })
 
 
