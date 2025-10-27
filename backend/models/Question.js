@@ -7,17 +7,18 @@ const questionSchema = new mongoose.Schema({
     question_difficulty: { type: String, required: true, enum: ['easy', 'medium', 'hard'] },
     question_programming_language: { type: String, required: true },
     question_mode: { type: String, required: true },
-
+    function_name: { type: String, required: false },
+    parameters: [{ type: String, required: false }],
     // Slug for querying
     mode_slug: { type: String, required: true, lowercase: true, index: true },
 
     buggy_code: { type: String },
-    default_code: {type: String},
+    default_code: { type: String },
     hints: [{ type: String }],
     test_cases: [
         {
-            input: { type: String, required: true },
-            expected_output: { type: String, required: true }
+            input: { type: mongoose.Schema.Types.Mixed, required: true },
+            expected_output: { type: mongoose.Schema.Types.Mixed, required: true }
         }
     ],
     examples: [
@@ -34,7 +35,7 @@ const questionSchema = new mongoose.Schema({
 });
 
 // Pre-save hook to generate mode_slug from question_mode
-questionSchema.pre('save', function(next) {
+questionSchema.pre('save', function (next) {
     this.mode_slug = this.question_mode
         .trim()
         .split(/\s+/).join('-')
@@ -53,14 +54,20 @@ const validateQuestion = (question) => {
         question_programming_language: Joi.string().required(),
         question_mode: Joi.string().required(),
         mode_slug: Joi.string().optional(),
-
+        function_name: Joi.string().optional(),
+        parameters: Joi.array().items(Joi.string()),
 
         buggy_code: Joi.string().allow(null, ''),
         default_code: Joi.string().allow(null),
         hints: Joi.array().items(Joi.string()),
-        test_cases: Joi.array().items(
-            Joi.object({ input: Joi.string().required(), expected_output: Joi.string().required() })
-        ),
+        test_cases: Joi.array()
+            .items(
+                Joi.object({
+                    input: Joi.any().required(),
+                    expected_output: Joi.any().required(),
+                })
+            )
+            .required(),
         examples: Joi.array().items(
             Joi.object({ input: Joi.string().required(), output: Joi.string().required() })
         ),
