@@ -1,0 +1,26 @@
+.TestCases {
+    background: rgba(48, 14, 93, 0.2);
+    height: 200px;
+    padding: 10px 20px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 10px;
+
+    overflow-y: auto;
+}
+.TestCases div{
+    margin: 10px 0;
+}
+.console_like_divs{
+    background-color: black;
+    color: white;
+    font-family: monospace;
+    padding: 25px 20px;
+    min-width: 700px;
+}
+.console_like_divs p code{
+    color: #d5bcf5;
+}

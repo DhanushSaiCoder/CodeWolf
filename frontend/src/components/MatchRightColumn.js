@@ -30,7 +30,7 @@ export default function MatchRightColumn(props) {
       {
         tabToShow == "output" ?
         (<Output output={output} />) :
-        (<TestCases submitResults={submitResults}/>)
+        (<TestCases submitResults={submitResults} matchDoc={matchDoc}/>)
       }
       </div>
     </div>
