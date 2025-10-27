@@ -108,7 +108,34 @@ export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOut
 
   }
 
-
+  const handleSubmitCode = () => {
+    let url = process.env.REACT_APP_BACKEND_URL
+    switch (matchObj.language) {
+      case 'js':
+        url += '/submit/js'
+        break
+      case 'java':
+        url += '/submit/java'
+        break
+      case 'c':
+        url += '/submit/c'
+        break
+    }
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({code, question})
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log("code submit response: ", data)
+      })
+      .catch(error => {
+        console.error('Error running code:', error);
+      });
+  }
 
   return (
     <div className='CodeEditor'>
@@ -120,7 +147,7 @@ export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOut
           <button onClick={handleRunCode} className='runBtn'>
             {!runningCode ? "Run" : <Loader />}
           </button>
-          <button className='submitBtn'>Submit</button>
+          <button onClick={handleSubmitCode} className='submitBtn'>Submit</button>
         </div>
       </div>
       <div className='CodeEditorContent'>
