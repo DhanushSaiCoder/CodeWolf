@@ -26,6 +26,7 @@
 }
 .console_like_divs p code{
     color: #d5bcf5;
+    font-size: larger;
 }
 .submit_result_summary{
     padding: 10px 20px;
