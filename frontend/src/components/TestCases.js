@@ -11,7 +11,7 @@ const TestCases = ({submitResults}) => {
     return (
         <div>
             <p>this is testcases section</p>
-            <p>{results?.success ? "success" : "failure"}</p>
+            <p>{results?.all_PASS ? "success" : "failure"}</p>
         </div>
     );
 }
