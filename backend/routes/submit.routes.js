@@ -29,8 +29,12 @@ router.post('/js', async (req, res) => {
     try {
         const vm = new VM({ timeout: 1000, sandbox: {} });
         const results = vm.run(harness);
+        let all_PASS = true;
 
-        res.json({ success: true, results });
+        for(const testcase of results)
+          if(testcase.result != "PASS") all_PASS = false
+
+        res.json({ success: true, results, all_PASS });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }
