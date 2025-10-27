@@ -132,6 +132,7 @@ export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOut
       .then(response => response.json())
       .then(data => {
         setSubmittingCode(false)
+        console.log(data)
         handleSubmitResults(data)
       })
       .catch(error => {
