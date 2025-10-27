@@ -3,6 +3,9 @@ import "../styles/TestCases.css"
 
 const TestCases = ({ submitResults, matchDoc, questionDoc }) => {
     const [results, setResults] = useState(null)
+    const [totalTestCasesPassedCount, setTotalTestCasesPassedCount] = useState(-1)
+    const [firstFailedTestCase, setFirstFailedTestCase] = useState(-1)
+
     const test_cases = questionDoc.test_cases
 
     //"test_cases": [
@@ -16,10 +19,40 @@ const TestCases = ({ submitResults, matchDoc, questionDoc }) => {
     //       }
     //     }
     //   ],
+
+    function totalTestCasesPassed(submitResults, test_cases){
+        const results = submitResults.results
+        let count = 0;
+        for(const testcase of results){
+            if(testcase.result == "PASS") count++
+        }
+        return count
+    }
+
+    function findFirstFailedTestCase(submitResults, test_cases){
+        let index = 0;
+        for(const testcase of submitResults.results){
+            if(testcase.result == "FAIL") return index
+            index++
+        }
+        return -1
+    }
     
+    console.log("submitResults: ", submitResults)
+    console.log("test_cases: ", test_cases)
+
     useEffect(() => {
-        console.log("submit results: ", submitResults)
-        if (submitResults) setResults(submitResults)
+        if (submitResults) {
+            setTotalTestCasesPassedCount(totalTestCasesPassed(submitResults, test_cases))
+
+            const failedTestCaseIndex = findFirstFailedTestCase(submitResults, test_cases)
+            if(failedTestCaseIndex != -1) {
+                console.log("failed testcase: ", test_cases[failedTestCaseIndex])
+                setFirstFailedTestCase(test_cases[failedTestCaseIndex])
+            }
+            
+            setResults(submitResults)
+        }
     }, [submitResults])
 
     if(submitResults == null) return (
@@ -35,18 +68,18 @@ const TestCases = ({ submitResults, matchDoc, questionDoc }) => {
     )
     return (
         <div className='TestCases'>
-            <p className='submit_result_summary'>Only <strong>27/94</strong> testcases passed</p>
+            <p className='submit_result_summary'>Only <strong>{totalTestCasesPassedCount}/{test_cases.length}</strong> testcases passed</p>
             <div className='TestCases_failed_testCase_container'>
                 <p>Failed Testcase: </p>
                 <div className='TestCases_failed_testCase'>
                     <div className='TestCases_failed_testCase_input console_like_divs'>
-                        <p><strong>Input:</strong> <code>[3,6,1,0]</code></p>
+                        <p>Input: <code>{JSON.stringify(firstFailedTestCase.input)}</code></p>
                     </div>
                     <div className='TestCases_failed_testCase_expected_output console_like_divs'>
-                        <p><strong>Expected Output: </strong> <code>34</code></p>
+                        <p>Expected Output:  <code>{JSON.stringify(test_cases[findFirstFailedTestCase(submitResults, test_cases)].expected_output)}</code></p>
                     </div>
                     <div className='TestCases_failed_testCase_actual_output console_like_divs'>
-                        <p><strong>Actual Output: </strong> <code>33</code></p>
+                        <p>Actual Output:  <code>{JSON.stringify(submitResults.results[findFirstFailedTestCase(submitResults, test_cases)].output)}</code></p>
                     </div>
                 </div>
             </div>
