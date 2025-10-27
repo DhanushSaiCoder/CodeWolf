@@ -3,9 +3,10 @@ import "../styles/CodeEditor.css";
 import MonacoEditor from 'react-monaco-editor';
 import Loader from './Loader';
 
-export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOutput }) {
+export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOutput, handleSubmitResults }) {
   const [code, setCode] = useState("");
   const [runningCode, setRunningCode] = useState(false)
+  const [submittingCode, setSubmittingCode] = useState(false)
 
   // Update code state when editor content changes
   const onChange = (newValue) => {
@@ -108,7 +109,36 @@ export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOut
 
   }
 
-
+  const handleSubmitCode = () => {
+    setSubmittingCode(true)
+    let url = process.env.REACT_APP_BACKEND_URL
+    switch (matchObj.language) {
+      case 'js':
+        url += '/submit/js'
+        break
+      case 'java':
+        url += '/submit/java'
+        break
+      case 'c':
+        url += '/submit/c'
+        break
+    }
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({code, question})
+    })
+      .then(response => response.json())
+      .then(data => {
+        setSubmittingCode(false)
+        handleSubmitResults(data)
+      })
+      .catch(error => {
+        console.error('Error running code:', error);
+      });
+  }
 
   return (
     <div className='CodeEditor'>
@@ -120,7 +150,9 @@ export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOut
           <button onClick={handleRunCode} className='runBtn'>
             {!runningCode ? "Run" : <Loader />}
           </button>
-          <button className='submitBtn'>Submit</button>
+          <button onClick={handleSubmitCode} className='submitBtn'>
+            {!submittingCode ? "Submit" : <Loader/>}
+          </button>
         </div>
       </div>
       <div className='CodeEditorContent'>

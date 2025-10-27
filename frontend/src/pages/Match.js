@@ -68,7 +68,6 @@ export default function Match() {
   }, [matchId]);
 
   const handleQuestionFound = (question) => {
-    console.log("question in Match page: ", question)
     setQuestion(question)
   }
 

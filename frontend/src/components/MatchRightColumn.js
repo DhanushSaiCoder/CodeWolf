@@ -9,6 +9,7 @@ export default function MatchRightColumn(props) {
   const { matchDoc, question } = props;
   const [output, setOutput] = useState(null)
   const [tabToShow, setTabToShow] = useState("output")
+  const [submitResults, setSubmitResults] = useState(null)
 
   const handleCodeOutput = (output) => {
     setOutput(output)
@@ -17,15 +18,19 @@ export default function MatchRightColumn(props) {
   const handleToggleTab = (activeTab) => {
     setTabToShow(activeTab == "output" ? "testcases" : "output")
   }
+
+  const handleSubmitResults = (res) => {
+    setSubmitResults(res)
+  }
   return (
     <div className='MatchRightColumn'>
-      <CodeEditor matchDoc={matchDoc} question={question} handleCodeOutput={handleCodeOutput} />
+      <CodeEditor matchDoc={matchDoc} question={question} handleCodeOutput={handleCodeOutput} handleSubmitResults={handleSubmitResults} />
       <HorizontalMenu handleToggleTab={handleToggleTab} />
       <div className='output_or_testcases_section'>
       {
         tabToShow == "output" ?
         (<Output output={output} />) :
-        (<TestCases />)
+        (<TestCases submitResults={submitResults} matchDoc={matchDoc} questionDoc={question}/>)
       }
       </div>
     </div>

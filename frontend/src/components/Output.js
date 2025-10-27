@@ -17,7 +17,7 @@ const Output = ({ output }) => {
 
             <div className='Output_content'>
                 {error && <p id='errorEle'>{output?.error}</p>}
-                {error == "" && <pre id="outputEle"><code>{output?.output}</code></pre>}
+                {error!=output && <pre id="outputEle"><code>{output?.output}</code></pre>}
             </div>
         </div>
     );

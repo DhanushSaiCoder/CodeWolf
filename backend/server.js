@@ -17,6 +17,7 @@ const matchRoutes = require('./routes/matches');
 const friendsRoutes = require('./routes/friends');
 const questionsRoutes = require('./routes/questions.route');
 const runRoutes = require("./routes/run.routes")
+const submitRoutes = require('./routes/submit.routes')
 
 mongoose
   .connect(process.env.MONGO_URI)
@@ -30,7 +31,8 @@ app.use('/matches', matchRoutes);
 app.use('/friends', friendsRoutes);
 app.use('/questions', questionsRoutes);
 app.use('/run', runRoutes)
-
+app.use('/submit', submitRoutes)
+ 
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
