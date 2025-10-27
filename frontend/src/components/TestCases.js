@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import "../styles/TestCases.css"
 
-const TestCases = ({ submitResults, matchDoc }) => {
+const TestCases = ({ submitResults, matchDoc, questionDoc }) => {
     const [results, setResults] = useState(null)
-    const test_cases = matchDoc.test_cases
+    const test_cases = questionDoc.test_cases
 
     //"test_cases": [
     //     {
@@ -16,7 +16,7 @@ const TestCases = ({ submitResults, matchDoc }) => {
     //       }
     //     }
     //   ],
-
+    
     useEffect(() => {
         console.log("submit results: ", submitResults)
         if (submitResults) setResults(submitResults)
@@ -24,7 +24,7 @@ const TestCases = ({ submitResults, matchDoc }) => {
 
     return (
         <div className='TestCases'>
-            <p><strong>27/94</strong> Testcases passed</p>
+            <p className='submit_result_summary'>Only <strong>27/94</strong> testcases passed</p>
             <div className='TestCases_failed_testCase_container'>
                 <p>Failed Testcase: </p>
                 <div className='TestCases_failed_testCase'>
@@ -36,7 +36,6 @@ const TestCases = ({ submitResults, matchDoc }) => {
                     </div>
                     <div className='TestCases_failed_testCase_actual_output console_like_divs'>
                         <p><strong>Actual Output: </strong> <code>33</code></p>
-
                     </div>
                 </div>
             </div>
