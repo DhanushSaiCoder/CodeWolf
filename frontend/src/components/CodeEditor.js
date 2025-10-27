@@ -109,6 +109,7 @@ export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOut
   }
 
   const handleSubmitCode = () => {
+    console.log("question while submitting: ", question)
     let url = process.env.REACT_APP_BACKEND_URL
     switch (matchObj.language) {
       case 'js':
