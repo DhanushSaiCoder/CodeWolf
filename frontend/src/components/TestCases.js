@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-const TestCases = () => {
+const TestCases = ({submitResults}) => {
+    const [results, setResults] = useState(null)
+
+    useEffect(() => {
+        console.log("submit results: ", submitResults)
+        if(submitResults) setResults(submitResults)
+    }, [submitResults])
+
     return (
         <div>
-            <p>testcasese skdjf</p>
+            <p>this is testcases section</p>
+            <p>{results?.success ? "success" : "failure"}</p>
         </div>
     );
 }
