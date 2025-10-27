@@ -35,6 +35,9 @@
     width: 100%;
     text-align: center;
 }
+.success_testcases_summary{
+    background-color: #0fff73;
+}
 .TestCases::-webkit-scrollbar {
     width: 8px;
 }

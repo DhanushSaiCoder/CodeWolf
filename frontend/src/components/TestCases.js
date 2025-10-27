@@ -22,6 +22,17 @@ const TestCases = ({ submitResults, matchDoc, questionDoc }) => {
         if (submitResults) setResults(submitResults)
     }, [submitResults])
 
+    if(submitResults == null) return (
+        <div className='TestCases'>
+            <p>Submit to get testcases </p>
+        </div>
+    )
+
+    if(submitResults.all_PASS == true) return (
+        <div className='TestCases'>
+            <p className='submit_result_summary success_testcases_summary'>All testcases passed, <a href="/">click here</a> to return to home page.</p>
+        </div>
+    )
     return (
         <div className='TestCases'>
             <p className='submit_result_summary'>Only <strong>27/94</strong> testcases passed</p>
