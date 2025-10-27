@@ -38,8 +38,8 @@ const TestCases = ({ submitResults, matchDoc, questionDoc }) => {
         return -1
     }
     
-    console.log("submitResults: ", submitResults)
-    console.log("test_cases: ", test_cases)
+    // console.log("submitResults: ", submitResults)
+    // console.log("test_cases: ", test_cases)
 
     useEffect(() => {
         if (submitResults) {
@@ -47,7 +47,7 @@ const TestCases = ({ submitResults, matchDoc, questionDoc }) => {
 
             const failedTestCaseIndex = findFirstFailedTestCase(submitResults, test_cases)
             if(failedTestCaseIndex != -1) {
-                console.log("failed testcase: ", test_cases[failedTestCaseIndex])
+                // console.log("failed testcase: ", test_cases[failedTestCaseIndex])
                 setFirstFailedTestCase(test_cases[failedTestCaseIndex])
             }
             
