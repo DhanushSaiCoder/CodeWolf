@@ -39,98 +39,63 @@ router.post('/js', async (req, res) => {
   }
 });
 
-router.post('/c', async (req, res) => {
+
+router.post('/py', async (req, res) => {
   const { code, question } = req.body;
   const testcases = question.test_cases;
-  // example testcases data from db: 
+
+  //create header import statements
+  const extra_headers = question.extra_headers || [];
+  let headers_str = ``
+  if (extra_headers.length) {
+    for (const header of extra_headers) {
+      headers_str += `import ${header}\n`
+    }
+  }
+
+  // sample test cases: 
   // "test_cases": [
   //   {
   //     "input": [
   //       2
   //     ],
   //     "expected_output": "Even",
+  //     "_id": {
+  //       "$oid": "69005fdd5816f84cdb79f455"
+  //     }
   //   }
-  // ],
-  const extra_headers = question.extra_headers || [];
-  const function_return_type = question.function_return_type || "int";
+  // ]
 
-  let header_includes = "";
+  let test_cases_in_py = `\ntest_cases = [\n`;
 
-  if (extra_headers.length) {
-    header_includes = extra_headers
-      .map(header => `#include <${header}>`)
-      .join('\n');
+  for (const tc of testcases) {
+    const inputValue = Array.isArray(tc.input)
+      ? JSON.stringify(tc.input) // Convert array properly
+      : JSON.stringify([tc.input]); // Ensure it's always a list in Python
+
+    const expectedValue = JSON.stringify(tc.expected_output);
+
+    test_cases_in_py += `{\n    "input": ${inputValue},\n    "expected_output": ${expectedValue}\n  },\n`;
   }
 
-  const harness = `
-    #include <stdio.h>
-    #include <string.h>
-    //extra headers comes here
-    ${header_includes}
-    
-    // result struct
-    typedef struct
-    {
-        int test_case_number;
-        char result[10]; // "PASS" or "FAIL"
-        ${function_return_type} output;
-    } TestResult;
+  test_cases_in_py += `]`;
 
-    // user function comes here
-    ${code}
+  
 
-    int main(){
-      //we run the tests with testcases here
-      TestResult results[100];
+  //generate harness: use fields like- function_name, parameters, test_cases from question. 
+  let harness = `
+${headers_str}
 
-      int inputs[] = {2, 3, 10, 11};
-      const bool expected_outputs[] = {true, false, true, false};
+${code}
 
-      for (int i = 0; i < ${JSON.stringify(testcases.length)}; i++)
-      {
-          results[i].test_case_number = i + 1;
-          ${function_return_type} output = ${function_name}(inputs[i]);
-          results[i].output = output;
-          strcpy(results[i].result, output == expected_outputs[i] ? "PASS" : "FAIL");
-      }
-      
-      return 0;
-    }
+#--test code goes here--
+${test_cases_in_py}
 
-    
   `
+  //use piston api to run the code harness
 
-  // submitResults:
-  // {
-  //   "success": true,
-  //     "results": [
-  //       {
-  //         "test_case_number": 1,
-  //         "result": "PASS",
-  //         "output": true
-  //       },
-  //       {
-  //         "test_case_number": 2,
-  //         "result": "PASS",
-  //         "output": false
-  //       },
-  //       {
-  //         "test_case_number": 3,
-  //         "result": "PASS",
-  //         "output": true
-  //       },
-  //       {
-  //         "test_case_number": 4,
-  //         "result": "PASS",
-  //         "output": true
-  //       }
-  //     ],
-  //       "all_PASS": true
-  // }
-
-
-  res.json({ harness_code: harness })
+  // return the same json from /js route
+  res.send(JSON.stringify(harness))
 })
-
 
 module.exports = router

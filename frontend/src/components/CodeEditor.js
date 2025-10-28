@@ -120,6 +120,9 @@ export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOut
       case 'js':
         url += '/submit/js'
         break
+      case 'py':
+        url += '/submit/py'
+        break
       case 'java':
         url += '/submit/java'
         break
