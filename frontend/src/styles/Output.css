@@ -41,7 +41,7 @@
 .Output_content {
     padding: 10px 20px;
     background: black;
-    color: #d5bcf5;
+    color: #fff;
 
     padding: 10px;
     font-family: monospace;
@@ -65,7 +65,7 @@
 }
 
 #outputEle {
-    color: #d5bcf5;
+    color: #fff;
 
     padding: 10px;
     border-radius: 8px;

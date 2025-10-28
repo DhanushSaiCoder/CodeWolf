@@ -224,8 +224,7 @@ export const UserFriend = (props) => {
                     required
                   >
                     <option value="js">JavaScript</option>
-                    <option value="c">C</option>
-                    <option value="java">Java</option>
+                    <option value="py">Python</option>
                   </select>
                 </div>
                 <div className="formGroup">

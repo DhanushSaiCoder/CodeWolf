@@ -8,7 +8,10 @@ const questionSchema = new mongoose.Schema({
     question_programming_language: { type: String, required: true },
     question_mode: { type: String, required: true },
     function_name: { type: String, required: false },
+    function_return_type: {type: String, required: false},
     parameters: [{ type: String, required: false }],
+    extra_headers: [{type: String, required: false}],
+
     // Slug for querying
     mode_slug: { type: String, required: true, lowercase: true, index: true },
 
@@ -55,7 +58,9 @@ const validateQuestion = (question) => {
         question_mode: Joi.string().required(),
         mode_slug: Joi.string().optional(),
         function_name: Joi.string().optional(),
-        parameters: Joi.array().items(Joi.string()),
+        function_return_type: Joi.string().optional(),
+        parameters: Joi.array().items(Joi.string()).optional(),
+        extra_headers: Joi.array().items(Joi.string()).optional(),
 
         buggy_code: Joi.string().allow(null, ''),
         default_code: Joi.string().allow(null),
