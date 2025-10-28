@@ -82,12 +82,16 @@ export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOut
       case 'js':
         url += '/run/js'
         break
+      case 'py':
+        url += '/run/py'
+        break
       case 'java':
         url += '/run/java'
         break
       case 'c':
         url += '/run/c'
         break
+      
     }
     fetch(url, {
       method: 'POST',
@@ -99,6 +103,7 @@ export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOut
       .then(response => response.json())
       .then(data => {
         setRunningCode(false)
+        console.log("run output: ", data)
         handleCodeOutput(data)
 
       })
