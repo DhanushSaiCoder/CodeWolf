@@ -42,6 +42,15 @@ router.post('/js', async (req, res) => {
 router.post('/c', async (req, res) => {
   const { code, question } = req.body;
   const testcases = question.test_cases;
+  // example testcases data from db: 
+  // "test_cases": [
+  //   {
+  //     "input": [
+  //       2
+  //     ],
+  //     "expected_output": "Even",
+  //   }
+  // ],
   const extra_headers = question.extra_headers || [];
   const function_return_type = question.function_return_type || "int";
 
@@ -55,6 +64,7 @@ router.post('/c', async (req, res) => {
 
   const harness = `
     #include <stdio.h>
+    #include <string.h>
     //extra headers comes here
     ${header_includes}
     
@@ -72,6 +82,17 @@ router.post('/c', async (req, res) => {
     int main(){
       //we run the tests with testcases here
       TestResult results[100];
+
+      int inputs[] = {2, 3, 10, 11};
+      const bool expected_outputs[] = {true, false, true, false};
+
+      for (int i = 0; i < ${JSON.stringify(testcases.length)}; i++)
+      {
+          results[i].test_case_number = i + 1;
+          ${function_return_type} output = ${function_name}(inputs[i]);
+          results[i].output = output;
+          strcpy(results[i].result, output == expected_outputs[i] ? "PASS" : "FAIL");
+      }
       
       return 0;
     }
