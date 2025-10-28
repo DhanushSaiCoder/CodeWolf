@@ -40,7 +40,35 @@ router.post('/js', async (req, res) => {
 });
 
 router.post('/c', async (req, res) => {
-  res.json(req.body)
+  const { code, question } = req.body;
+  const testcases = question.test_cases;
+  const extra_headers = question.extra_headers || [];
+
+  let header_includes = "";
+
+  if (extra_headers.length) {
+    header_includes = extra_headers
+      .map(header => `#include <${header}>`)
+      .join('\n');
+  }
+
+  const harness = `
+    #include <stdio.h>
+    //extra headers comes here
+    ${header_includes}
+
+
+    int main(){
+      //we run the tests with testcases here
+      
+      return 0;
+    }
+
+    // user function comes here
+    ${code}
+  `
+
+  res.json({harness_code: harness})
 })
 
 
