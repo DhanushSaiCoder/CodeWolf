@@ -44,7 +44,7 @@ export default function QuestionDetails({ matchDoc: matchDocStr, handleQuestionF
         }
 
         // else get a random question based on mode, difficulty, and language
-        const filterStr = `mode_slug=${matchDoc.mode}&question_difficulty=${matchDoc.difficulty}&programming_language=${matchDoc.language === "js" ? "javascript" : matchDoc.language}`
+        const filterStr = `mode_slug=${matchDoc.mode}&question_difficulty=${matchDoc.difficulty}&programming_language=${matchDoc.language === "js" ? "javascript" : matchDoc.language === "py" ? "python": matchDoc.language}`
 
         const response = await fetch(
           `${process.env.REACT_APP_BACKEND_URL}/questions?${filterStr}`,
