@@ -43,6 +43,7 @@ router.post('/c', async (req, res) => {
   const { code, question } = req.body;
   const testcases = question.test_cases;
   const extra_headers = question.extra_headers || [];
+  const function_return_type = question.function_return_type || "int";
 
   let header_includes = "";
 
@@ -56,19 +57,58 @@ router.post('/c', async (req, res) => {
     #include <stdio.h>
     //extra headers comes here
     ${header_includes}
+    
+    // result struct
+    typedef struct
+    {
+        int test_case_number;
+        char result[10]; // "PASS" or "FAIL"
+        ${function_return_type} output;
+    } TestResult;
 
+    // user function comes here
+    ${code}
 
     int main(){
       //we run the tests with testcases here
+      TestResult results[100];
       
       return 0;
     }
 
-    // user function comes here
-    ${code}
+    
   `
 
-  res.json({harness_code: harness})
+  // submitResults:
+  // {
+  //   "success": true,
+  //     "results": [
+  //       {
+  //         "test_case_number": 1,
+  //         "result": "PASS",
+  //         "output": true
+  //       },
+  //       {
+  //         "test_case_number": 2,
+  //         "result": "PASS",
+  //         "output": false
+  //       },
+  //       {
+  //         "test_case_number": 3,
+  //         "result": "PASS",
+  //         "output": true
+  //       },
+  //       {
+  //         "test_case_number": 4,
+  //         "result": "PASS",
+  //         "output": true
+  //       }
+  //     ],
+  //       "all_PASS": true
+  // }
+
+
+  res.json({ harness_code: harness })
 })
 
 
