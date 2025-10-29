@@ -2,14 +2,17 @@ import React from 'react';
 import "../styles/YouWin.css"
 import youWinImg from "../images/youwin.png"
 
-const YouWin = () => {
+const YouWin = ({ handleCloseYouWin }) => {
     const handle_goHomeClick = () => {
         window.location.href = "/"
     }
     return (
-        <div className='youWin__container'>
+        <div onClick={handleCloseYouWin} className='youWin__container'>
             <div className='youWin'>
-                <div className='youWin_inner_div'>
+                <div onClick={handleCloseYouWin} className='youWin_inner_div'>
+                    <div className='closeYouWinBtn'>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+                    </div>
                     <p>You solved the challenge before your opponent.</p>
                     <img src={youWinImg} alt="youwinpic" id='youWin_img' />
                     <div className='youWin_rating_change_div'>

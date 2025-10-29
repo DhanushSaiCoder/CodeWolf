@@ -15,14 +15,10 @@ export default function Match() {
   const matchId = query.get('matchId');
   const [matchDoc, setMatchDoc] = useState(null);
   const [question, setQuestion] = useState(null)
-  const [matchLost, setMatchLost] = useState(false)
-  const [userWonMatch, setUserWonMatch] = useState(false)
+  const [matchLost, setMatchLost] = useState(JSON.parse(localStorage.getItem(`matchLost?${matchId}`)) || false)
+  const [userWonMatch, setUserWonMatch] = useState(JSON.parse(localStorage.getItem(`matchWon?${matchId}`)) || false)
 
   const socket = useSocket()
-
-  useEffect(() => {
-    setMatchLost(JSON.parse(localStorage.getItem(`matchLost?${matchId}`)) || false)
-  }, [])
 
   //useEffect with socket listener that listens to 'matchEnded' event fromt the server
   useEffect(() => {
@@ -90,13 +86,18 @@ export default function Match() {
   }
 
   const handleUserWonMatch = (userId) => {
+    localStorage.setItem(`matchWon?${matchId}`, true)
     setUserWonMatch(true)
+  }
+
+  const handleCloseYouWin = () => {
+    setUserWonMatch(false)
   }
 
   return (
     <>
       {matchLost && (<YouLose handle_continueSolvingClick={handle_continueSolvingClick} handle_goHomeClick={handle_goHomeClick} />)}
-      {userWonMatch && (<YouWin />)}
+      {userWonMatch && (<YouWin handleCloseYouWin={handleCloseYouWin}/>)}
       <div className='Match'>
         <MatchLeftColumn matchDoc={JSON.stringify(matchDoc)} matchId={matchId} handleQuestionFound={handleQuestionFound} />
         <MatchRightColumn question={question} matchDoc={matchDoc} handleUserWonMatch={handleUserWonMatch} />
