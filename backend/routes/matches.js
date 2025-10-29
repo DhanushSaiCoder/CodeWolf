@@ -33,7 +33,6 @@ router.post('/', async (req, res) => {
 
 // PATCH request to update a match document
 router.patch('/:id', async (req, res) => {
-    console.log("Updating match with ID:", req.params.id, "with data:", req.body)
 
     const match = await Match.findByIdAndUpdate(req.params.id, {
         questionId: req.body.questionId,

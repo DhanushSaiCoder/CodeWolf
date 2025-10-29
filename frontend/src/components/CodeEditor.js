@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react';
 import "../styles/CodeEditor.css";
 import MonacoEditor from 'react-monaco-editor';
 import Loader from './Loader';
+import { useSocket } from '../SocketContext';
+import { jwtDecode } from 'jwt-decode';
 
 export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOutput, handleSubmitResults }) {
   const [code, setCode] = useState("");
   const [runningCode, setRunningCode] = useState(false)
   const [submittingCode, setSubmittingCode] = useState(false)
+  const socket = useSocket();
+
 
   // Update code state when editor content changes
   const onChange = (newValue) => {
@@ -91,7 +95,7 @@ export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOut
       case 'c':
         url += '/run/c'
         break
-      
+
     }
     fetch(url, {
       method: 'POST',
@@ -135,14 +139,14 @@ export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOut
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({code, question})
+      body: JSON.stringify({ code, question })
     })
       .then(response => response.json())
       .then(data => {
         setSubmittingCode(false)
         console.log("submit results: ", data)
         handleSubmitResults(data)
-        if(data.all_PASS) {
+        if (data.all_PASS) {
           handleMatchFinish()
         }
       })
@@ -152,7 +156,13 @@ export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOut
   }
 
   const handleMatchFinish = () => {
-    alert("Match Finished")
+    const user_id = localStorage.getItem('token')
+    const {_id} = jwtDecode(user_id)
+
+    socket.emit("endMatch", {
+      match: matchObj,
+      winner_id: _id
+    })
   }
 
   return (
@@ -166,7 +176,7 @@ export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOut
             {!runningCode ? "Run" : <Loader />}
           </button>
           <button onClick={handleSubmitCode} className='submitBtn'>
-            {!submittingCode ? "Submit" : <Loader/>}
+            {!submittingCode ? "Submit" : <Loader />}
           </button>
         </div>
       </div>

@@ -26,8 +26,6 @@ router.post('/', async (req, res) => {
 // GET QUESTIONS WITH FLEXIBLE FILTERS
 router.get('/', async (req, res) => {
     try {
-        // Log full query for debugging
-        console.log('GET /questions req.query:', req.query);
 
         // Support multiple aliases
         const {
@@ -54,8 +52,8 @@ router.get('/', async (req, res) => {
         const lang = question_programming_language || programming_language || language;
         if (lang) filter.question_programming_language = lang;
 
-        console.log('Filter built:', filter);
 
+        
         const questions = await Question.find(filter);
 
         res.status(200).json({
