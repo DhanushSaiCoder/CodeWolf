@@ -3,7 +3,9 @@ import "../styles/YouWin.css"
 import youWinImg from "../images/youwin.png"
 
 const YouWin = () => {
-
+    const handle_goHomeClick = () => {
+        window.location.href = "/"
+    }
     return (
         <div className='youWin__container'>
             <div className='youWin'>
@@ -19,7 +21,7 @@ const YouWin = () => {
                         <p className='youWin_rating_diff'>(+13)</p>
                     </div>
                     <div className='youWin_cta_div'>
-                        <button className='youWin_cta_btn'>Go Home</button>
+                        <button onClick={handle_goHomeClick} className='youWin_cta_btn'>Go Home</button>
                         <button className='youWin_cta_btn youWin_cta_btn_positive'>Spectate Opponent</button>
                     </div>
                 </div>
