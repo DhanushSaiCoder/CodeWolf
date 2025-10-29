@@ -5,6 +5,7 @@ import { useSocket } from '../SocketContext';
 import MatchLeftColumn from '../components/MatchLeftColumn';
 import MatchRightColumn from '../components/MatchRightColumn';
 import YouLose from '../components/YouLose';
+import YouWin from '../components/YouWin';
 
 const useQuery = () => new URLSearchParams(useLocation().search);
 
@@ -15,6 +16,8 @@ export default function Match() {
   const [matchDoc, setMatchDoc] = useState(null);
   const [question, setQuestion] = useState(null)
   const [matchEnded, setMatchEnded] = useState(false)
+  const [userWonMatch, setUserWonMatch] = useState(false)
+
   const socket = useSocket()
 
   //useEffect with socket listener that listens to 'matchEnded' event fromt the server
@@ -71,7 +74,7 @@ export default function Match() {
 
   const handleQuestionFound = (question) => {
     setQuestion(question)
-  } 
+  }
 
   const handle_continueSolvingClick = () => {
     setMatchEnded(false)
@@ -81,12 +84,17 @@ export default function Match() {
     window.location.href = "/"
   }
 
+  const handleUserWonMatch = (userId) => {
+    setUserWonMatch(true)
+  }
+
   return (
     <>
-      {matchEnded && (<YouLose handle_continueSolvingClick={handle_continueSolvingClick} handle_goHomeClick={handle_goHomeClick}/>)}
+      {matchEnded && (<YouLose handle_continueSolvingClick={handle_continueSolvingClick} handle_goHomeClick={handle_goHomeClick} />)}
+      {userWonMatch && (<YouWin />)}
       <div className='Match'>
         <MatchLeftColumn matchDoc={JSON.stringify(matchDoc)} matchId={matchId} handleQuestionFound={handleQuestionFound} />
-        <MatchRightColumn question={question} matchDoc={matchDoc} />
+        <MatchRightColumn question={question} matchDoc={matchDoc} handleUserWonMatch={handleUserWonMatch} />
       </div>
     </>
   );

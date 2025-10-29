@@ -5,7 +5,7 @@ import Loader from './Loader';
 import { useSocket } from '../SocketContext';
 import { jwtDecode } from 'jwt-decode';
 
-export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOutput, handleSubmitResults }) {
+export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOutput, handleSubmitResults, handleUserWonMatch }) {
   const [code, setCode] = useState("");
   const [runningCode, setRunningCode] = useState(false)
   const [submittingCode, setSubmittingCode] = useState(false)
@@ -157,12 +157,14 @@ export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOut
 
   const handleMatchFinish = () => {
     const user_id = localStorage.getItem('token')
-    const {_id} = jwtDecode(user_id)
+    const { _id } = jwtDecode(user_id)
 
     socket.emit("endMatch", {
       match: matchObj,
       winner_id: _id
     })
+
+    handleUserWonMatch(_id)
   }
 
   return (

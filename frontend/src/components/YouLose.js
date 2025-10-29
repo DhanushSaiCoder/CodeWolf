@@ -16,7 +16,7 @@ const YouLose = ({handle_continueSolvingClick, handle_goHomeClick}) => {
                             </svg> */}
                             &#8902; 1422
                         </h1>
-                        <p className='rating_diff'>(-24)</p>
+                        <p className='youLose_rating_diff'>(-24)</p>
                     </div>
                     <div className='youlose_cta_div'>
                         <button onClick={handle_goHomeClick} className='youlose_cta_btn'>Go Home</button>

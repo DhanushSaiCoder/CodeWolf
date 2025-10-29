@@ -48,7 +48,7 @@
     justify-content: center;
     gap: 10px;
 }
-.rating_diff{
+.youLose_rating_diff{
     right: 0;
     color: #fc3503;
     font-weight: bold;

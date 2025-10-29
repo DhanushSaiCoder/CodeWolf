@@ -1,0 +1,82 @@
+.youWin__container {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 999;
+    background: rgba(0, 0, 0, 0.25783); /* semi-transparent */
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#youWin_img {
+    width: 250px;
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.youWin_inner_div {
+    position: relative;
+    width: 600px;
+    padding: 20px 20px;
+    padding-top: 180px;
+    border-radius: 20px;
+    background: #300e5d;
+    border: 0.5px solid rgba(125, 124, 124, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: column;
+    gap: 20px;
+}
+.youWin_rating_change_div {
+    width: 100%;
+    height: 80px;
+    border-radius: 10px;
+    background-color: #20093d;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.youWin_rating_change_div h1{
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    gap: 10px;
+}
+.youWin_rating_diff{
+    right: 0;
+    color: #7bfc03;
+    font-weight: bold;
+}
+.youWin_cta_div {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+.youWin_cta_btn {
+    all: unset;
+    width: 42%;
+    background-color: #d5bcf5;
+    padding: 15px 20px;
+    color: #0d0218;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.123s ease-out;
+}
+.youWin_cta_btn_positive{
+    background-color: #741af1;
+    color: #d5bcf5;
+}
+.youWin_cta_btn:hover{
+    transform: scale(.98);
+    cursor: pointer;
+}
