@@ -32,7 +32,7 @@ app.use('/friends', friendsRoutes);
 app.use('/questions', questionsRoutes);
 app.use('/run', runRoutes)
 app.use('/submit', submitRoutes)
- 
+
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
@@ -115,86 +115,110 @@ io.on('connection', (socket) => {
       programmingLanguage,
       difficulty,
     }) => {
-      // Log the match start
-      console.log(`Match started between ${requesterId} and ${receiverId}`);
-      console.log('playersDocs:', playersDocs);
+    // Log the match start
+    console.log(`Match started between ${requesterId} and ${receiverId}`);
+    console.log('playersDocs:', playersDocs);
 
-      // Get socket IDs for the players
-      const requesterSocketId = userSocketMap.get(requesterId);
-      const receiverSocketId = userSocketMap.get(receiverId);
+    // Get socket IDs for the players
+    const requesterSocketId = userSocketMap.get(requesterId);
+    const receiverSocketId = userSocketMap.get(receiverId);
 
-      // Helper function to extract player info from playersDocs
-      const getPlayerInfo = (id, key) => {
-        if (Array.isArray(playersDocs)) {
-          return playersDocs.find((player) => player._id === id) || {};
-        } else if (playersDocs && typeof playersDocs === 'object') {
-          return playersDocs[key] || {};
-        }
-        return {};
-      };
+    // Helper function to extract player info from playersDocs
+    const getPlayerInfo = (id, key) => {
+      if (Array.isArray(playersDocs)) {
+        return playersDocs.find((player) => player._id === id) || {};
+      } else if (playersDocs && typeof playersDocs === 'object') {
+        return playersDocs[key] || {};
+      }
+      return {};
+    };
 
-      const requesterInfo = getPlayerInfo(requesterId, 'requester');
-      const receiverInfo = getPlayerInfo(receiverId, 'receiver');
+    const requesterInfo = getPlayerInfo(requesterId, 'requester');
+    const receiverInfo = getPlayerInfo(receiverId, 'receiver');
 
-      // Build the match object
-      const matchObj = {
-        players: [
-          {
-            id: requesterId,
-            username: requesterInfo.username,
-            rating: requesterInfo.rating,
-          },
-          {
-            id: receiverId,
-            username: receiverInfo.username,
-            rating: receiverInfo.rating,
-          },
-        ],
-        difficulty,
-        mode,
-        language: programmingLanguage,
-        status: 'pending',
-      };
+    // Build the match object
+    const matchObj = {
+      players: [
+        {
+          id: requesterId,
+          username: requesterInfo.username,
+          rating: requesterInfo.rating,
+        },
+        {
+          id: receiverId,
+          username: receiverInfo.username,
+          rating: receiverInfo.rating,
+        },
+      ],
+      difficulty,
+      mode,
+      language: programmingLanguage,
+      status: 'pending',
+    };
 
-      // Create a new match
-      let createdMatch;
-      try {
-        const response = await fetch(`${process.env.BACKEND_URL}/matches`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(matchObj),
-        });
+    // Create a new match
+    let createdMatch;
+    try {
+      const response = await fetch(`${process.env.BACKEND_URL}/matches`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(matchObj),
+      });
 
-        if (!response.ok) {
-          const errorDetails = await response.text();
-          throw new Error(
-            `HTTP error! Status: ${response.status}. Details: ${errorDetails}`
-          );
-        }
-
-        createdMatch = await response.json();
-        console.log('Match created with ID:', createdMatch._id);
-      } catch (error) {
-        console.error('Error creating match:', error);
+      if (!response.ok) {
+        const errorDetails = await response.text();
+        throw new Error(
+          `HTTP error! Status: ${response.status}. Details: ${errorDetails}`
+        );
       }
 
-      // Prepare the list of players to notify
-      const players = [...new Set([requesterSocketId, receiverSocketId])].filter(Boolean);
-
-      // Build the payload with the new match details
-      const payload = {
-        requesterId,
-        receiverId,
-        ...(createdMatch && { createdMatch }),
-      };
-
-      // Notify the players if there are valid socket IDs
-      if (players.length > 0) {
-        console.log('Sending to players:', payload);
-        io.to(players).emit('beginMatch', payload);
-      }
+      createdMatch = await response.json();
+      console.log('Match created with ID:', createdMatch._id);
+    } catch (error) {
+      console.error('Error creating match:', error);
     }
+
+    // Prepare the list of players to notify
+    const players = [...new Set([requesterSocketId, receiverSocketId])].filter(Boolean);
+
+    // Build the payload with the new match details
+    const payload = {
+      requesterId,
+      receiverId,
+      ...(createdMatch && { createdMatch }),
+    };
+
+    // Notify the players if there are valid socket IDs
+    if (players.length > 0) {
+      console.log('Sending to players:', payload);
+      io.to(players).emit('beginMatch', payload);
+    }
+  }
   );
+
+  socket.on('endMatch', async (payload) => {
+    const { match, winner_id } = payload
+    const loser_id = match.players[0].id == winner_id ? match.players[1].id : match.players[0].id
+
+    // STEP 1: update the Match doc in the db - update status, winner & loser
+    const updatedMatch = await Match.findByIdAndUpdate(
+      match._id,
+      { status: "completed", winner: winner_id, loser: loser_id },
+      { new: true }
+    );
+
+    if (!updatedMatch) return res.status(404).json({ message: "Match not found" });
+
+    //STEP 2: Send "matchEnded" event to the other player(loser_id)
+    const loserSocketId = userSocketMap[loser_id]
+
+    socket.to(loserSocketId).emit('matchEnded', {
+      match: updatedMatch
+    })
+
+
+  })
+
 
   socket.on('disconnect', async () => {
     console.log('User disconnected');
