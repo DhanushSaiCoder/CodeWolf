@@ -4,33 +4,17 @@ import "../styles/Match.css";
 import { useSocket } from '../SocketContext';
 import MatchLeftColumn from '../components/MatchLeftColumn';
 import MatchRightColumn from '../components/MatchRightColumn';
+import YouLose from '../components/YouLose';
 
 const useQuery = () => new URLSearchParams(useLocation().search);
 
-const getMatchDoc = async (matchId) => {
-  try {
-    const response = await fetch(`http://localhost:5000/matches/${matchId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      }
-    });
-    if (!response.ok) {
-      throw new Error(`Error fetching match: ${response.statusText}`);
-    }
-    return await response.json();
-  } catch (err) {
-    console.error("Fetch error:", err);
-    return null;
-  }
-};
 
 export default function Match() {
   const query = useQuery();
   const matchId = query.get('matchId');
   const [matchDoc, setMatchDoc] = useState(null);
   const [question, setQuestion] = useState(null)
+  const [matchEnded, setMatchEnded] = useState(true)
   const socket = useSocket()
 
   //useEffect with socket listener that listens to 'matchEnded' event fromt the server
@@ -39,7 +23,7 @@ export default function Match() {
 
     const handleMatchEnded = ({ match }) => {
       console.log("Ended match data:", match);
-      alert("match ended");
+      setMatchEnded(true)
     };
 
     socket.on('matchEnded', handleMatchEnded);
@@ -90,9 +74,31 @@ export default function Match() {
   }
 
   return (
-    <div className='Match'>
-      <MatchLeftColumn matchDoc={JSON.stringify(matchDoc)} matchId={matchId} handleQuestionFound={handleQuestionFound} />
-      <MatchRightColumn  question={question} matchDoc={matchDoc} />
-    </div>
+    <>
+      {matchEnded && (<YouLose />)}
+      <div className='Match'>
+        <MatchLeftColumn matchDoc={JSON.stringify(matchDoc)} matchId={matchId} handleQuestionFound={handleQuestionFound} />
+        <MatchRightColumn question={question} matchDoc={matchDoc} />
+      </div>
+    </>
   );
 }
+
+const getMatchDoc = async (matchId) => {
+  try {
+    const response = await fetch(`http://localhost:5000/matches/${matchId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    if (!response.ok) {
+      throw new Error(`Error fetching match: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (err) {
+    console.error("Fetch error:", err);
+    return null;
+  }
+};
