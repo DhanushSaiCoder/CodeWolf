@@ -14,7 +14,7 @@ export default function Match() {
   const matchId = query.get('matchId');
   const [matchDoc, setMatchDoc] = useState(null);
   const [question, setQuestion] = useState(null)
-  const [matchEnded, setMatchEnded] = useState(true)
+  const [matchEnded, setMatchEnded] = useState(false)
   const socket = useSocket()
 
   //useEffect with socket listener that listens to 'matchEnded' event fromt the server
@@ -71,11 +71,19 @@ export default function Match() {
 
   const handleQuestionFound = (question) => {
     setQuestion(question)
+  } 
+
+  const handle_continueSolvingClick = () => {
+    setMatchEnded(false)
+  }
+
+  const handle_goHomeClick = () => {
+    window.location.href = "/"
   }
 
   return (
     <>
-      {matchEnded && (<YouLose />)}
+      {matchEnded && (<YouLose handle_continueSolvingClick={handle_continueSolvingClick} handle_goHomeClick={handle_goHomeClick}/>)}
       <div className='Match'>
         <MatchLeftColumn matchDoc={JSON.stringify(matchDoc)} matchId={matchId} handleQuestionFound={handleQuestionFound} />
         <MatchRightColumn question={question} matchDoc={matchDoc} />

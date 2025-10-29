@@ -2,7 +2,8 @@ import React from 'react';
 import "../styles/YouLose.css"
 import youLoseImg from "../images/youlose.png"
 
-const YouLose = () => {
+const YouLose = ({handle_continueSolvingClick, handle_goHomeClick}) => {
+    
     return (
         <div className='YouLose__container'>
             <div className='YouLose'>
@@ -18,8 +19,8 @@ const YouLose = () => {
                         <p className='rating_diff'>(-24)</p>
                     </div>
                     <div className='youlose_cta_div'>
-                        <button className='youlose_cta_btn'>Go Home</button>
-                        <button className='youlose_cta_btn youlose_cta_btn_positive'>Continue Solving</button>
+                        <button onClick={handle_goHomeClick} className='youlose_cta_btn'>Go Home</button>
+                        <button onClick={handle_continueSolvingClick}  className='youlose_cta_btn youlose_cta_btn_positive'>Continue Solving</button>
                     </div>
                 </div>
             </div>
