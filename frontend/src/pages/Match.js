@@ -99,15 +99,22 @@ export default function Match() {
   const handleTimeUp = () => {
     // MATCH END LOGIC...!
     if(socket)
-    socket.emit("drawMatch", { matchDoc })
+    socket.emit("drawMatch",matchDoc)
     setTimeUp(true)
   }
 
+  const handleClick_matchDraw_continueSolving = () => {
+    setTimeUp(false)
+  }
+
+  const handleClick_matchDraw_goHome = () => {
+    window.location.href = "/"
+  }
   return (
     <>
       {matchLost && (<YouLose handle_continueSolvingClick={handle_continueSolvingClick} handle_goHomeClick={handle_goHomeClick} />)}
       {userWonMatch && (<YouWin handleCloseYouWin={handleCloseYouWin} />)}
-      {timeUp && (<MatchDraw />)}
+      {timeUp && (<MatchDraw handleClick_matchDraw_continueSolving={handleClick_matchDraw_continueSolving} handleClick_matchDraw_goHome={handleClick_matchDraw_goHome}/>)}
       <div className='Match'>
         <MatchLeftColumn matchDoc={JSON.stringify(matchDoc)} matchId={matchId} handleTimeUp={handleTimeUp} handleQuestionFound={handleQuestionFound} />
         <MatchRightColumn question={question} matchDoc={matchDoc} handleUserWonMatch={handleUserWonMatch} />

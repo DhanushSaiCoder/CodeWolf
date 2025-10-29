@@ -210,7 +210,7 @@ io.on('connection', (socket) => {
     })
   })
 
-  socket.on("drawMatch",async ({matchDoc}) => {
+  socket.on("drawMatch",async (matchDoc) => {
     // update the match doc in db- set status to "completed"
     const match = await Match.findById(matchDoc._id)
     if(!match) return

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import "../styles/Timer.css";
 
 export default function Timer({ matchId, time = 1, handleTimeUp }) {
@@ -42,32 +42,59 @@ export default function Timer({ matchId, time = 1, handleTimeUp }) {
     return remaining > 0 ? remaining : 0;
   };
 
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+    const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const newTimeLeft = calculateTimeLeft();
-      if (newTimeLeft <= 0) {
-        clearInterval(interval);
-        setTimeLeft(0);
-      } else {
-        setTimeLeft(newTimeLeft);
-      }
-    }, 1000);
+    const timeUpCalled = useRef(false);
 
-    return () => clearInterval(interval);
-  }, [hour, min, sec, totalTime]);
-
-
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
-  const formattedTime = `${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
-
-  const sliderWidth = (timeLeft / totalTime) * 100;
   
-  if(timeLeft <= 0){
-    handleTimeUp()
-  }
+
+    useEffect(() => {
+
+      const interval = setInterval(() => {
+
+        const newTimeLeft = calculateTimeLeft();
+
+        if (newTimeLeft <= 0) {
+
+          clearInterval(interval);
+
+          setTimeLeft(0);
+
+          if (!timeUpCalled.current) {
+
+            handleTimeUp();
+
+            timeUpCalled.current = true;
+
+          }
+
+        } else {
+
+          setTimeLeft(newTimeLeft);
+
+        }
+
+      }, 1000);
+
+  
+
+      return () => clearInterval(interval);
+
+    }, [hour, min, sec, totalTime, handleTimeUp]);
+
+  
+
+  
+
+    const minutes = Math.floor(timeLeft / 60);
+
+    const seconds = timeLeft % 60;
+
+    const formattedTime = `${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+
+  
+
+    const sliderWidth = (timeLeft / totalTime) * 100;
   return (
     <div className='Timer'>
       <div className='sliderBackground'>
