@@ -15,8 +15,8 @@
     top: -100px;
     left: 50%;
     transform: translate(-50%);
-    animation: losePulse 1.5s ease-in-out infinite;
-    filter: drop-shadow(0 0 8px #5b21b6);
+    animation: losePulse 2s ease-in-out infinite;
+    /* filter: drop-shadow(0 0 8px #5b21b6); */
 }
 
 .youlose_inner_div {
@@ -81,14 +81,13 @@
     cursor: pointer;
 }
 @keyframes losePulse {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1) translate(-50%);
-    filter: drop-shadow(0 0 8px #5b21b660);
-  }
-  50% {
-    opacity: 0.85;
-    transform: scale(0.99) translate(-50%);
-    filter: drop-shadow(0 0 2px #312e8160);
-  }
+    0%,
+    100% {
+        transform: scale(1) translate(-50%);
+        filter: drop-shadow(0 0 0px #a855f760);
+    }
+    50% {
+        transform: scale(1.03) translate(-48%);
+        filter: drop-shadow(0 0 15px #a855f760);
+    }
 }
