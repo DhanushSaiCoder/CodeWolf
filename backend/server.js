@@ -32,7 +32,7 @@ app.use('/friends', friendsRoutes);
 app.use('/questions', questionsRoutes);
 app.use('/run', runRoutes)
 app.use('/submit', submitRoutes)
- 
+
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
@@ -50,7 +50,6 @@ const io = new Server(server, {
 const userSocketMap = new Map();
 
 io.on('connection', (socket) => {
-  console.log('A user connected');
   let userId; // Will store the user's ID
 
   // Retrieve the token from the handshake auth data
@@ -64,12 +63,10 @@ io.on('connection', (socket) => {
       socket.join(userId);
       updateUserStatus(userId, 'online');
     } catch (err) {
-      console.log('Invalid token on connection:', err.message);
       socket.disconnect();
       return;
     }
   } else {
-    console.log('No token provided');
     socket.disconnect();
     return;
   }
@@ -77,14 +74,12 @@ io.on('connection', (socket) => {
   // Listen for match request events and forward them to the target user
   socket.on('requestMatch', (data) => {
     const { userId: targetUserId } = data;
-    console.log(`Forwarding match request to user ID ${targetUserId}`);
     io.to(targetUserId).emit('sendMatchRequest', data);
   });
 
   // Listen for request rejection events
   socket.on('requestRejected', (data) => {
     const { requesterId } = data;
-    console.log(`Match request rejected by ${userId} for request from ${requesterId}`);
     // Forward the rejection to the requester
     io.to(requesterId).emit('requestRejected', {
       ...data,
@@ -96,7 +91,6 @@ io.on('connection', (socket) => {
   // Listen for request acceptance events
   socket.on('requestAccepted', (data) => {
     const { requesterId } = data;
-    console.log(`Match request accepted by ${userId} for request from ${requesterId}`);
     io.to(requesterId).emit('requestAccepted', {
       ...data,
       receiverId: userId,
@@ -115,93 +109,114 @@ io.on('connection', (socket) => {
       programmingLanguage,
       difficulty,
     }) => {
-      // Log the match start
-      console.log(`Match started between ${requesterId} and ${receiverId}`);
-      console.log('playersDocs:', playersDocs);
+    // Log the match start
 
-      // Get socket IDs for the players
-      const requesterSocketId = userSocketMap.get(requesterId);
-      const receiverSocketId = userSocketMap.get(receiverId);
+    // Get socket IDs for the players
+    const requesterSocketId = userSocketMap.get(requesterId);
+    const receiverSocketId = userSocketMap.get(receiverId);
 
-      // Helper function to extract player info from playersDocs
-      const getPlayerInfo = (id, key) => {
-        if (Array.isArray(playersDocs)) {
-          return playersDocs.find((player) => player._id === id) || {};
-        } else if (playersDocs && typeof playersDocs === 'object') {
-          return playersDocs[key] || {};
-        }
-        return {};
-      };
+    // Helper function to extract player info from playersDocs
+    const getPlayerInfo = (id, key) => {
+      if (Array.isArray(playersDocs)) {
+        return playersDocs.find((player) => player._id === id) || {};
+      } else if (playersDocs && typeof playersDocs === 'object') {
+        return playersDocs[key] || {};
+      }
+      return {};
+    };
 
-      const requesterInfo = getPlayerInfo(requesterId, 'requester');
-      const receiverInfo = getPlayerInfo(receiverId, 'receiver');
+    const requesterInfo = getPlayerInfo(requesterId, 'requester');
+    const receiverInfo = getPlayerInfo(receiverId, 'receiver');
 
-      // Build the match object
-      const matchObj = {
-        players: [
-          {
-            id: requesterId,
-            username: requesterInfo.username,
-            rating: requesterInfo.rating,
-          },
-          {
-            id: receiverId,
-            username: receiverInfo.username,
-            rating: receiverInfo.rating,
-          },
-        ],
-        difficulty,
-        mode,
-        language: programmingLanguage,
-        status: 'pending',
-      };
+    // Build the match object
+    const matchObj = {
+      players: [
+        {
+          id: requesterId,
+          username: requesterInfo.username,
+          rating: requesterInfo.rating,
+        },
+        {
+          id: receiverId,
+          username: receiverInfo.username,
+          rating: receiverInfo.rating,
+        },
+      ],
+      difficulty,
+      mode,
+      language: programmingLanguage,
+      status: 'pending',
+    };
 
-      // Create a new match
-      let createdMatch;
-      try {
-        const response = await fetch(`${process.env.BACKEND_URL}/matches`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(matchObj),
-        });
+    // Create a new match
+    let createdMatch;
+    try {
+      const response = await fetch(`${process.env.BACKEND_URL}/matches`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(matchObj),
+      });
 
-        if (!response.ok) {
-          const errorDetails = await response.text();
-          throw new Error(
-            `HTTP error! Status: ${response.status}. Details: ${errorDetails}`
-          );
-        }
-
-        createdMatch = await response.json();
-        console.log('Match created with ID:', createdMatch._id);
-      } catch (error) {
-        console.error('Error creating match:', error);
+      if (!response.ok) {
+        const errorDetails = await response.text();
+        throw new Error(
+          `HTTP error! Status: ${response.status}. Details: ${errorDetails}`
+        );
       }
 
-      // Prepare the list of players to notify
-      const players = [...new Set([requesterSocketId, receiverSocketId])].filter(Boolean);
-
-      // Build the payload with the new match details
-      const payload = {
-        requesterId,
-        receiverId,
-        ...(createdMatch && { createdMatch }),
-      };
-
-      // Notify the players if there are valid socket IDs
-      if (players.length > 0) {
-        console.log('Sending to players:', payload);
-        io.to(players).emit('beginMatch', payload);
-      }
+      createdMatch = await response.json();
+    } catch (error) {
+      console.error('Error creating match:', error);
     }
+
+    // Prepare the list of players to notify
+    const players = [...new Set([requesterSocketId, receiverSocketId])].filter(Boolean);
+
+    // Build the payload with the new match details
+    const payload = {
+      requesterId,
+      receiverId,
+      ...(createdMatch && { createdMatch }),
+    };
+
+    // Notify the players if there are valid socket IDs
+    if (players.length > 0) {
+      io.to(players).emit('beginMatch', payload);
+    }
+  }
   );
 
+  socket.on('endMatch', async (payload) => {
+    const { match, winner_id } = payload
+    const loser_id = match.players[0].id == winner_id ? match.players[1].id : match.players[0].id
+
+    let updatedMatch = match;
+
+    if (match.status != "completed") {
+      // STEP 1: update the Match doc in the db - update status, winner & loser
+      updatedMatch = await Match.findByIdAndUpdate(
+        match._id,
+        { status: "completed", winner: winner_id, loser: loser_id },
+        { new: true }
+      );
+    }
+
+    if (!updatedMatch) return res.status(404).json({ message: "Match not found (or) Match not found in the payload of the socket event ''endMatch''." });
+
+    //STEP 2: Send "matchEnded" event to the other player(get loserSocketId using loser_id from userSocketMap)
+    const loserSocketId = userSocketMap.get(loser_id)
+    socket.to(loserSocketId).emit('matchEnded', {
+      match: updatedMatch
+    })
+  })
+
+
   socket.on('disconnect', async () => {
-    console.log('User disconnected');
     if (userId) {
       await updateUserStatus(userId, 'offline');
       userSocketMap.delete(userId);
       socket.leave(userId);
+      console.log(`[USER_CONN_UPT] User ${userId} disconnected`)
 
       // Calculate the date/time for 30 minutes ago
       const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
@@ -216,7 +231,6 @@ io.on('connection', (socket) => {
           },
           { $set: { status: 'canceled' } }
         );
-        console.log(`Canceled pending matches for user ${userId} older than 30 minutes:`, result);
       } catch (error) {
         console.error(`Error canceling pending matches for user ${userId}:`, error);
       }
@@ -248,7 +262,6 @@ const updateUserStatus = async (userId, status) => {
         }
       );
 
-      console.log(`User ${user.username} is now ${status}`);
 
       // Emit status update to all connected clients
       io.emit('statusUpdate', { userId, status });

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import "../styles/Match.css";
-
+import { useSocket } from '../SocketContext';
 import MatchLeftColumn from '../components/MatchLeftColumn';
 import MatchRightColumn from '../components/MatchRightColumn';
 
@@ -31,6 +31,24 @@ export default function Match() {
   const matchId = query.get('matchId');
   const [matchDoc, setMatchDoc] = useState(null);
   const [question, setQuestion] = useState(null)
+  const socket = useSocket()
+
+  //useEffect with socket listener that listens to 'matchEnded' event fromt the server
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleMatchEnded = ({ match }) => {
+      console.log("Ended match data:", match);
+      alert("match ended");
+    };
+
+    socket.on('matchEnded', handleMatchEnded);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      socket.off('matchEnded', handleMatchEnded);
+    };
+  }, [socket]);
 
   // When the component mounts, store matchId with the current start time
   useEffect(() => {

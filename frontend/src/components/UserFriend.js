@@ -1,16 +1,16 @@
 // UserFriend.js
 import React, { useEffect, useState } from 'react';
-import io from 'socket.io-client';
 import { jwtDecode } from 'jwt-decode'; // Ensure proper import of jwt-decode
 import "../styles/UserFriend.css";
 import { NotUserFriend } from './NotUserFriend';
 import { MatchRequest } from './MatchRequest';
 import { useNavigate } from 'react-router-dom';
+import { useSocket } from '../SocketContext';
 
 export const UserFriend = (props) => {
   const navigate = useNavigate()
   const { userDoc, userFriendsData, UFloading: loading, setUFLoading: setLoading } = props;
-  const [socket, setSocket] = useState(null);
+  const socket = useSocket();
   const [popup, showPopup] = useState(false);
   const token = localStorage.getItem('token');
 
@@ -35,48 +35,47 @@ export const UserFriend = (props) => {
   const [sentRequests, setSentRequests] = useState({});
 
   useEffect(() => {
-    // Establish the socket connection
-    const newSocket = io('http://localhost:5000', { auth: { token } });
+    if (socket) {
+      socket.on('sendMatchRequest', (data) => {
+        setMatchRequestData(data);
 
-    newSocket.on('connect', () => {
-      newSocket.emit('sendToken', token);
-    });
+        // Automatically reject the match request after 10 seconds if no action is taken
+        setTimeout(() => {
+          if (data && socket) {
+            socket.emit('requestRejected', data);
+          }
+          setMatchRequestData(false);
+        }, 10000);
+      });
 
-    newSocket.on('sendMatchRequest', (data) => {
-      setMatchRequestData(data);
-
-      // Automatically reject the match request after 10 seconds if no action is taken
-      setTimeout(() => {
-        if (data && newSocket) {
-          newSocket.emit('requestRejected', data);
+      // Listen for rejection notifications from opponents (i.e. when your match request is rejected)
+      socket.on('requestRejected', (data) => {
+        // Ensure that the current user is the original requester
+        const currentUserId = jwtDecode(token)._id;
+        if (data.requesterId === currentUserId) {
+          // Mark the corresponding opponent (data.userId) as rejected
+          setRejectedOpponents(prev => ({ ...prev, [data.userId]: true }));
         }
-        setMatchRequestData(false);
-      }, 10000);
-    });
+      });
 
-    // Listen for rejection notifications from opponents (i.e. when your match request is rejected)
-    newSocket.on('requestRejected', (data) => {
-      // Ensure that the current user is the original requester
-      const currentUserId = jwtDecode(token)._id;
-      if (data.requesterId === currentUserId) {
-        // Mark the corresponding opponent (data.userId) as rejected
-        setRejectedOpponents(prev => ({ ...prev, [data.userId]: true }));
-      }
-    });
+      // Listen for rejection notifications from opponents (i.e. when your match request is rejected)
+      socket.on('requestAccepted', (data) => {
+        // Ensure that the current user is the original requester
+        const currentUserId = jwtDecode(token)._id;
+        if (data.requesterId === currentUserId) {
+          // Mark the corresponding opponent (data.userId) as rejected
+          navigate(`/matchwait/?requesterId=${data.requesterId}&receiverId=${data.receiverId}&mode=${encodeURI(data.mode)}&difficulty=${data.difficulty}&language=${data.programmingLanguage}`)
 
-    // Listen for rejection notifications from opponents (i.e. when your match request is rejected)
-    newSocket.on('requestAccepted', (data) => {
-      // Ensure that the current user is the original requester
-      const currentUserId = jwtDecode(token)._id;
-      if (data.requesterId === currentUserId) {
-        // Mark the corresponding opponent (data.userId) as rejected
-        navigate(`/matchwait/?requesterId=${data.requesterId}&receiverId=${data.receiverId}&mode=${encodeURI(data.mode)}&difficulty=${data.difficulty}&language=${data.programmingLanguage}`)
+        }
+      });
 
-      }
-    });
-    setSocket(newSocket);
-
-  }, [token]);
+      return () => {
+        socket.off('sendMatchRequest');
+        socket.off('requestRejected');
+        socket.off('requestAccepted');
+      };
+    }
+  }, [socket, token, navigate]);
 
   // Start (or reset) the countdown whenever a new match request is displayed
   useEffect(() => {

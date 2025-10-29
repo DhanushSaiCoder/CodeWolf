@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
-import io from 'socket.io-client';
 import { jwtDecode } from 'jwt-decode'; // adjust the import if necessary
 import "../styles/MatchWait.css";
+import { useSocket } from '../SocketContext';
 
 const useQuery = () => new URLSearchParams(useLocation().search);
 
@@ -20,6 +20,7 @@ export const MatchWait = () => {
   const [matchCreating, setMatchCreating] = useState(true);
   const [counter, setCounter] = useState(10);
   const navigate = useNavigate();
+  const socket = useSocket();
 
   // Decode the token to get the current user's ID
   let currentUserId = null;
@@ -33,11 +34,7 @@ export const MatchWait = () => {
   }
 
   useEffect(() => {
-    const newSocket = io('http://localhost:5000', { auth: { token } });
-
-    newSocket.on('connect', () => {
-      newSocket.emit('sendToken', token);
-
+    if (socket) {
       // Build the query string with requesterId and receiverId
       const queryParams = new URLSearchParams({ requesterId, receiverId }).toString();
       const url = `http://localhost:5000/auth/user?${queryParams}`;
@@ -58,7 +55,7 @@ export const MatchWait = () => {
           // 2. requesterId and receiverId are provided,
           // 3. And no match has been initiated already.
           if (currentUserId === requesterId && requesterId && receiverId) {
-            newSocket.emit('beginMatch', {
+            socket.emit('beginMatch', {
               requesterId,
               receiverId,
               playersDocs,
@@ -71,28 +68,26 @@ export const MatchWait = () => {
         .catch((error) => {
           console.error('Error fetching user data:', error);
         });
-    });
 
-    const handleBeginMatch = (data) => {
-      if (data.match && data.match._id) {
-        setMatchId(data.match._id);
-        setMatchCreating(false);
-      } else {
-        setMatchId(data.createdMatch._id);
-        setMatchCreating(false);
-      }
-    };
+      const handleBeginMatch = (data) => {
+        if (data.match && data.match._id) {
+          setMatchId(data.match._id);
+          setMatchCreating(false);
+        } else {
+          setMatchId(data.createdMatch._id);
+          setMatchCreating(false);
+        }
+      };
 
-    // Prevent duplicate listeners
-    newSocket.off('beginMatch', handleBeginMatch);
-    newSocket.on('beginMatch', handleBeginMatch);
+      // Prevent duplicate listeners
+      socket.off('beginMatch', handleBeginMatch);
+      socket.on('beginMatch', handleBeginMatch);
 
-    return () => {
-      newSocket.off('beginMatch', handleBeginMatch); // Cleanup listener on unmount
-      // Optionally disconnect socket here if needed:
-      // newSocket.disconnect();
-    };
-  }, [token, currentUserId, requesterId, receiverId]);
+      return () => {
+        socket.off('beginMatch', handleBeginMatch); // Cleanup listener on unmount
+      };
+    }
+  }, [socket, token, currentUserId, requesterId, receiverId, difficulty, mode, programmingLanguage]);
 
   // Countdown timer effect: once matchCreating becomes false, start the countdown.
   useEffect(() => {
