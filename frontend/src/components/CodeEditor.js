@@ -140,12 +140,19 @@ export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOut
       .then(response => response.json())
       .then(data => {
         setSubmittingCode(false)
-        console.log(data)
+        console.log("submit results: ", data)
         handleSubmitResults(data)
+        if(data.all_PASS) {
+          handleMatchFinish()
+        }
       })
       .catch(error => {
         console.error('Error running code:', error);
       });
+  }
+
+  const handleMatchFinish = () => {
+    alert("Match Finished")
   }
 
   return (
