@@ -1,3 +1,9 @@
+:root {
+    --float-duration: 6s; /* how long one cycle takes (lower = faster) */
+    --float-range: 12px; /* vertical travel distance */
+    --float-tilt: 2deg; /* slight rotation */
+}
+
 .youWin__container {
     width: 100vw;
     height: 100vh;
@@ -15,6 +21,8 @@
     top: -100px;
     left: 50%;
     transform: translate(-50%);
+    animation: pulse 1.8s ease-in-out infinite;
+    transform-origin: center;
 }
 
 .youWin_inner_div {
@@ -42,13 +50,13 @@
     justify-content: center;
     gap: 10px;
 }
-.youWin_rating_change_div h1{
+.youWin_rating_change_div h1 {
     display: flex;
-    align-items: center; 
+    align-items: center;
     justify-content: center;
     gap: 10px;
 }
-.youWin_rating_diff{
+.youWin_rating_diff {
     right: 0;
     color: #7bfc03;
     font-weight: bold;
@@ -58,7 +66,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    
 }
 .youWin_cta_btn {
     all: unset;
@@ -72,11 +79,23 @@
     justify-content: center;
     transition: all 0.123s ease-out;
 }
-.youWin_cta_btn_positive{
+.youWin_cta_btn_positive {
     background-color: #741af1;
     color: #d5bcf5;
 }
-.youWin_cta_btn:hover{
-    transform: scale(.98);
+.youWin_cta_btn:hover {
+    transform: scale(0.98);
     cursor: pointer;
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        transform: scale(1) translate(-50%);
+        filter: drop-shadow(0 0 0px #a855f760);
+    }
+    50% {
+        transform: scale(1.05) translate(-48%);
+        filter: drop-shadow(0 0 15px #a855f760);
+    }
 }
