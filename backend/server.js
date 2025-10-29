@@ -184,32 +184,30 @@ io.on('connection', (socket) => {
       io.to(players).emit('beginMatch', payload);
     }
   }
-  ); 
+  );
 
   socket.on('endMatch', async (payload) => {
     const { match, winner_id } = payload
     const loser_id = match.players[0].id == winner_id ? match.players[1].id : match.players[0].id
 
-    // STEP 1: update the Match doc in the db - update status, winner & loser
-    const updatedMatch = await Match.findByIdAndUpdate(
-      match._id,
-      { status: "completed", winner: winner_id, loser: loser_id },
-      { new: true }
-    );
+    let updatedMatch = match;
 
-    if (!updatedMatch) return res.status(404).json({ message: "Match not found" });
+    if (match.status != "completed") {
+      // STEP 1: update the Match doc in the db - update status, winner & loser
+      updatedMatch = await Match.findByIdAndUpdate(
+        match._id,
+        { status: "completed", winner: winner_id, loser: loser_id },
+        { new: true }
+      );
+    }
 
-    //STEP 2: Send "matchEnded" event to the other player(loser_id)
+    if (!updatedMatch) return res.status(404).json({ message: "Match not found (or) Match not found in the payload of the socket event ''endMatch''." });
+
+    //STEP 2: Send "matchEnded" event to the other player(get loserSocketId using loser_id from userSocketMap)
     const loserSocketId = userSocketMap.get(loser_id)
-
-    console.log("sending matchEnded event to user ID: ",loser_id)
-    console.log("sending matchEnded event to socket ID: ",loserSocketId)
-    console.log(userSocketMap)
     socket.to(loserSocketId).emit('matchEnded', {
       match: updatedMatch
     })
-
-
   })
 
 
