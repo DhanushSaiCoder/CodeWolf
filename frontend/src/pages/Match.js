@@ -6,6 +6,7 @@ import MatchLeftColumn from '../components/MatchLeftColumn';
 import MatchRightColumn from '../components/MatchRightColumn';
 import YouLose from '../components/YouLose';
 import YouWin from '../components/YouWin';
+import MatchDraw from '../components/MatchDraw';
 
 const useQuery = () => new URLSearchParams(useLocation().search);
 
@@ -17,6 +18,7 @@ export default function Match() {
   const [question, setQuestion] = useState(null)
   const [matchLost, setMatchLost] = useState(JSON.parse(localStorage.getItem(`matchLost?${matchId}`)) || false)
   const [userWonMatch, setUserWonMatch] = useState(JSON.parse(localStorage.getItem(`matchWon?${matchId}`)) || false)
+  const [timeUp, setTimeUp] = useState(false)
 
   const socket = useSocket()
 
@@ -94,12 +96,20 @@ export default function Match() {
     setUserWonMatch(false)
   }
 
+  const handleTimeUp = () => {
+    // MATCH END LOGIC...!
+    if(socket)
+    socket.emit("drawMatch", { matchDoc })
+    setTimeUp(true)
+  }
+
   return (
     <>
       {matchLost && (<YouLose handle_continueSolvingClick={handle_continueSolvingClick} handle_goHomeClick={handle_goHomeClick} />)}
-      {userWonMatch && (<YouWin handleCloseYouWin={handleCloseYouWin}/>)}
+      {userWonMatch && (<YouWin handleCloseYouWin={handleCloseYouWin} />)}
+      {timeUp && (<MatchDraw />)}
       <div className='Match'>
-        <MatchLeftColumn matchDoc={JSON.stringify(matchDoc)} matchId={matchId} handleQuestionFound={handleQuestionFound} />
+        <MatchLeftColumn matchDoc={JSON.stringify(matchDoc)} matchId={matchId} handleTimeUp={handleTimeUp} handleQuestionFound={handleQuestionFound} />
         <MatchRightColumn question={question} matchDoc={matchDoc} handleUserWonMatch={handleUserWonMatch} />
       </div>
     </>

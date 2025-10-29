@@ -210,6 +210,13 @@ io.on('connection', (socket) => {
     })
   })
 
+  socket.on("drawMatch",async ({matchDoc}) => {
+    // update the match doc in db- set status to "completed"
+    const match = await Match.findById(matchDoc._id)
+    if(!match) return
+    match.status = "completed"
+    await match.save()
+  })
 
   socket.on('disconnect', async () => {
     if (userId) {

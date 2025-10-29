@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "../styles/Timer.css";
 
-export default function Timer({ matchId, time = 15 }) {
+export default function Timer({ matchId, time = 1, handleTimeUp }) {
   let hour = 0, min = 0, sec = 0;
   const storedData = localStorage.getItem('matchStartData');
   
@@ -58,12 +58,16 @@ export default function Timer({ matchId, time = 15 }) {
     return () => clearInterval(interval);
   }, [hour, min, sec, totalTime]);
 
+
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
   const formattedTime = `${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
 
   const sliderWidth = (timeLeft / totalTime) * 100;
-
+  
+  if(timeLeft <= 0){
+    handleTimeUp()
+  }
   return (
     <div className='Timer'>
       <div className='sliderBackground'>
