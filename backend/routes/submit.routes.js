@@ -46,56 +46,94 @@ router.post('/py', async (req, res) => {
 
   //create header import statements
   const extra_headers = question.extra_headers || [];
-  let headers_str = ``
+  let imports_str = ``
   if (extra_headers.length) {
     for (const header of extra_headers) {
-      headers_str += `import ${header}\n`
+      imports_str += `import ${header}\n`
     }
   }
 
-  // sample test cases: 
-  // "test_cases": [
-  //   {
-  //     "input": [
-  //       2
-  //     ],
-  //     "expected_output": "Even",
-  //     "_id": {
-  //       "$oid": "69005fdd5816f84cdb79f455"
-  //     }
-  //   }
-  // ]
-
-  let test_cases_in_py = `\ntest_cases = [\n`;
-
-  for (const tc of testcases) {
-    const inputValue = Array.isArray(tc.input)
-      ? JSON.stringify(tc.input) // Convert array properly
-      : JSON.stringify([tc.input]); // Ensure it's always a list in Python
-
-    const expectedValue = JSON.stringify(tc.expected_output);
-
-    test_cases_in_py += `{\n    "input": ${inputValue},\n    "expected_output": ${expectedValue}\n  },\n`;
-  }
-
-  test_cases_in_py += `]`;
-
-  
 
   //generate harness: use fields like- function_name, parameters, test_cases from question. 
-  let harness = `
-${headers_str}
+  const harness = `
+import json
+${imports_str}
 
 ${code}
 
-#--test code goes here--
-${test_cases_in_py}
+test_cases = ${JSON.stringify(testcases)}
 
-  `
+results = []
+index = 1
+
+for t in test_cases:
+    try:
+        # Evaluate the input (e.g. "2", "(2,3)", "[1,2,3]")
+        inp = eval(t["input"])
+        if not isinstance(inp, tuple):
+            inp = (inp,)
+        result = ${question.function_name}(*inp)
+        pass_case = result == t["expected_output"]
+        results.append({
+            "test_case_number": index,
+            "result": "PASS" if pass_case else "FAIL",
+            "output": result
+        })
+    except Exception as e:
+        results.append({
+            "test_case_number": index,
+            "result": "ERROR",
+            "error": str(e)
+        })
+    index += 1
+
+print(json.dumps(results))
+`;
+
   //use piston api to run the code harness
+  try {
+    const response = await fetch("https://emkc.org/api/v2/piston/execute", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        language: "python",
+        version: "*",
+        files: [{ name: "main.py", content: harness }],
+      }),
+    });
 
-  // return the same json from /js route
-  res.send(JSON.stringify(harness))
+    const data = await response.json();
+
+    // Extract printed JSON results
+    let results = [];
+    try {
+      results = JSON.parse(data.run.output);
+    } catch {
+      results = [
+        {
+          test_case_number: 0,
+          result: "ERROR",
+          error: "Failed to parse output",
+          raw_output: data.run.output,
+        },
+      ];
+    }
+
+    // Compute all_PASS
+    const all_PASS = results.every((t) => t.result === "PASS");
+
+    res.json({
+      success: true,
+      all_PASS,
+      results,
+    });
+  } catch (err) {
+    console.error("Error executing Python code:", err.message);
+    res.status(500).json({
+      success: false,
+      error: "Python code execution failed",
+    });
+  }
 })
 
 module.exports = router
