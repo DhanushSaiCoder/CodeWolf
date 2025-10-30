@@ -5,7 +5,7 @@ import Loader from './Loader';
 import { useSocket } from '../SocketContext';
 import { jwtDecode } from 'jwt-decode';
 
-export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOutput, handleSubmitResults, handleUserWonMatch }) {
+export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOutput, handleSubmitResults, handleUserWonMatch, timeUp, matchLost, userWonMatch }) {
   const [code, setCode] = useState("");
   const [runningCode, setRunningCode] = useState(false)
   const [submittingCode, setSubmittingCode] = useState(false)
@@ -177,9 +177,11 @@ export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOut
           <button onClick={handleRunCode} className='runBtn'>
             {!runningCode ? "Run" : <Loader />}
           </button>
-          <button onClick={handleSubmitCode} className='submitBtn'>
-            {!submittingCode ? "Submit" : <Loader />}
-          </button>
+          {!timeUp && !userWonMatch && !matchLost && (
+            <button onClick={handleSubmitCode} className='submitBtn'>
+              {!submittingCode ? "Submit" : <Loader />}
+            </button>
+          )}
         </div>
       </div>
       <div className='CodeEditorContent'>
