@@ -19,6 +19,7 @@ export default function Match() {
   const [matchLost, setMatchLost] = useState(JSON.parse(localStorage.getItem(`matchLost?${matchId}`)) || false)
   const [userWonMatch, setUserWonMatch] = useState(JSON.parse(localStorage.getItem(`matchWon?${matchId}`)) || false)
   const [timeUp, setTimeUp] = useState(false)
+  const [showTimer, setShowTimer] = useState(true)
 
   const socket = useSocket()
 
@@ -105,6 +106,7 @@ export default function Match() {
     if(socket)
     socket.emit("drawMatch",matchDoc)
     setTimeUp(true)
+    setShowTimer(false)
   }
 
   const handleClick_matchDraw_continueSolving = () => {
@@ -120,7 +122,7 @@ export default function Match() {
       {userWonMatch && (<YouWin handleCloseYouWin={handleCloseYouWin} />)}
       {timeUp && (<MatchDraw handleClick_matchDraw_continueSolving={handleClick_matchDraw_continueSolving} handleClick_matchDraw_goHome={handleClick_matchDraw_goHome}/>)}
       <div className='Match'>
-        <MatchLeftColumn matchDoc={JSON.stringify(matchDoc)} matchId={matchId} handleTimeUp={handleTimeUp} handleQuestionFound={handleQuestionFound} />
+        <MatchLeftColumn showTimer={showTimer} matchDoc={JSON.stringify(matchDoc)} matchId={matchId} handleTimeUp={handleTimeUp} handleQuestionFound={handleQuestionFound} />
         <MatchRightColumn question={question} matchDoc={matchDoc} handleUserWonMatch={handleUserWonMatch} />
       </div>
     </>
