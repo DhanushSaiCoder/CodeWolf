@@ -123,6 +123,17 @@ export const MatchWait = () => {
     }
   }, [matchCreating, navigate]);
 
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
   // Determine the display text based on the counter value
   const getDisplayText = () => {
     if (counter === 3) return "GET";
