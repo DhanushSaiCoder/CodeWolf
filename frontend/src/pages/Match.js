@@ -96,6 +96,10 @@ export default function Match() {
     setUserWonMatch(false)
   }
 
+  const handleCloseYouLose = () => {
+    setMatchLost(false)
+  }
+
   const handleTimeUp = () => {
     // MATCH END LOGIC...!
     if(socket)
@@ -112,7 +116,7 @@ export default function Match() {
   }
   return (
     <>
-      {matchLost && (<YouLose handle_continueSolvingClick={handle_continueSolvingClick} handle_goHomeClick={handle_goHomeClick} />)}
+      {matchLost && (<YouLose handleCloseYouLose={handleCloseYouLose} handle_continueSolvingClick={handle_continueSolvingClick} handle_goHomeClick={handle_goHomeClick} />)}
       {userWonMatch && (<YouWin handleCloseYouWin={handleCloseYouWin} />)}
       {timeUp && (<MatchDraw handleClick_matchDraw_continueSolving={handleClick_matchDraw_continueSolving} handleClick_matchDraw_goHome={handleClick_matchDraw_goHome}/>)}
       <div className='Match'>

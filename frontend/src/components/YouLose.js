@@ -2,12 +2,15 @@ import React from 'react';
 import "../styles/YouLose.css"
 import youLoseImg from "../images/youlose.png"
 
-const YouLose = ({handle_continueSolvingClick, handle_goHomeClick}) => {
+const YouLose = ({handle_continueSolvingClick, handle_goHomeClick, handleCloseYouLose}) => {
     
     return (
         <div className='YouLose__container'>
             <div className='YouLose'>
                 <div className='youlose_inner_div'>
+                    <div onClick={handleCloseYouLose} className='closeYouWinBtn'>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+                    </div>
                     <p>Your opponent solved the challenge first.</p>
                     <img src={youLoseImg} alt="youlosepic" id='youlose_img' />
                     <div className='youlose_rating_change_div'>

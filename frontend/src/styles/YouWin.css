@@ -18,6 +18,12 @@
 .youWin__container:hover{
     cursor: pointer;
 }
+.youWin{
+    z-index: 1000;
+}
+.youWin:hover{
+    cursor: default;
+}
 #youWin_img {
     width: 250px;
     position: absolute;

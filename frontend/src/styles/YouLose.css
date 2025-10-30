@@ -80,6 +80,23 @@
     transform: scale(0.98);
     cursor: pointer;
 }
+
+.closeYouWinBtn {
+    width: 30px;
+    height: 30px;
+
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease-out;
+}
+
+.closeYouWinBtn:hover {
+    cursor: pointer;
+}
 @keyframes losePulse {
     0%,
     100% {
