@@ -20,6 +20,7 @@ const friendsRoutes = require('./routes/friends');
 const questionsRoutes = require('./routes/questions.route');
 const runRoutes = require("./routes/run.routes")
 const submitRoutes = require('./routes/submit.routes')
+const leaderboardRoutes = require('./routes/leaderboard');
 
 mongoose
   .connect(process.env.MONGO_URI)
@@ -34,6 +35,7 @@ app.use('/friends', friendsRoutes);
 app.use('/questions', questionsRoutes);
 app.use('/run', runRoutes)
 app.use('/submit', submitRoutes)
+app.use('/leaderboard', leaderboardRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
@@ -206,17 +208,17 @@ io.on('connection', (socket) => {
       // STEP 1: update the Match doc in the db - update status, winner & loser
       updatedMatch = await Match.findByIdAndUpdate(
         match._id,
-        { status: "completed", winner: winner_id, loser: loser_id },
+        { status: "completed", winner: winner_id, loser: loser_id, winner_rating_delta, loser_rating_delta },
         { new: true }
       );
     }
     if (!updatedMatch) return res.status(404).json({ message: "Match not found (or) Match not found in the payload of the socket event ''endMatch''." });
 
     //update winner's rating in db
-    await User.findByIdAndUpdate(winner_id, { $inc: { rating: winner_rating_delta } });
+    await User.findByIdAndUpdate(winner_id, { $inc: { rating: winner_rating_delta, problemsSolved: 1 } , last_rating: winner.rating});
     
     //update loser's rating in db
-    await User.findByIdAndUpdate(loser_id,  { $inc: { rating: loser_rating_delta } });
+    await User.findByIdAndUpdate(loser_id,  { $inc: { rating: loser_rating_delta } , last_rating: loser.rating});
 
     //STEP 2: Send "matchEnded" event to the other player(get loserSocketId using loser_id from userSocketMap)
     const loserSocketId = userSocketMap.get(loser_id)

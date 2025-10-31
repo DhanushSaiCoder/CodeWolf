@@ -11,8 +11,8 @@ const Nav = (props) => {
     <div className="Nav">
       <NavButton pos="first" to="home" currPage={currPage}/>
       <NavButton to="friends" currPage={currPage} />
-      <NavButton to="history" currPage={currPage} />
       <NavButton to="leaderboard" currPage={currPage} />
+      <NavButton to="history" currPage={currPage} />
       <NavButton pos="last" to="settings" currPage={currPage} />
 
       {/* Render the MatchRequest component */}

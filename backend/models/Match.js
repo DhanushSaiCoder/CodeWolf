@@ -28,10 +28,18 @@ const matchSchema = new mongoose.Schema({
         ref: 'User',
         default: null
     },
+    winner_rating_delta: {
+        type: Number, 
+        default: 0 
+    },
     loser: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         default: null
+    },
+    loser_rating_delta: {
+        type: Number, 
+        default: 0 
     },
     mode: {
         type: String,
@@ -64,7 +72,9 @@ function validateMatch(match) {
             rating: joi.number().required()
         })).required(),
         winner: joi.string().allow(null).default(null),
+        winner_rating_delta: joi.string().allow(null).default(0),
         loser: joi.string().allow(null).default(null),
+        loser_rating_delta: joi.string().allow(null).default(0),
         mode: joi.string().required(),
         language: joi.string().required(),
         difficulty: joi.string().required(),

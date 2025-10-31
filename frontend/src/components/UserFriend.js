@@ -9,10 +9,11 @@ import { useSocket } from '../SocketContext';
 
 export const UserFriend = (props) => {
   const navigate = useNavigate()
-  const { userDoc, userFriendsData, UFloading: loading, setUFLoading: setLoading } = props;
+  const { userDoc, userFriendsData, UFloading: loading, setUFLoading: setLoading, fetchUserFriend } = props;
   const socket = useSocket();
   const [popup, showPopup] = useState(false);
   const token = localStorage.getItem('token');
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Holds the friend you want to challenge (set when clicking a friend)
   const [selectedFriend, setSelectedFriend] = useState(null);
@@ -260,7 +261,19 @@ export const UserFriend = (props) => {
       )}
 
       <div className="data">
-        <h4>FRIENDS</h4>
+        <div className="friends-header">
+                    <h4>FRIENDS</h4>
+                    <button
+                      className={`refresh-button ${isRefreshing ? 'clicked' : ''}`}
+                      onClick={() => {
+                        setIsRefreshing(true);
+                        fetchUserFriend();
+                        setTimeout(() => setIsRefreshing(false), 500); // Match CSS transition duration
+                      }}
+                    >
+                      &#x21BB; {/* Unicode refresh icon */}
+                    </button>
+                  </div>
         {loading ? (
           <p>Loading...</p>
         ) : userFriendsData.length ? (

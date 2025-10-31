@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import Nav from '../components/Nav';
 import { useSocket } from '../SocketContext';
 import { jwtDecode } from 'jwt-decode';
+import Loader from './../components/Loader';
 
 const Leaderboard = () => {
   const navigate = useNavigate();
@@ -13,6 +14,24 @@ const Leaderboard = () => {
 
   const [matchRequestData, setMatchRequestData] = useState(null);
   const [rejectCountdown, setRejectCountdown] = useState(10);
+  const [leaderboardData, setLeaderboardData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/leaderboard`);
+        const data = await response.json();
+        setLeaderboardData(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching leaderboard:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchLeaderboard();
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -97,8 +116,34 @@ const Leaderboard = () => {
           onReject={handleReject}
         />
         {/* Leaderboard-specific content can go here */}
-        <div className="leaderboardContent">
-          {/* Your leaderboard content */}
+        <div className="leaderboardContent_container">
+          
+          <div className='leaderboardContent'>
+            {loading ? (
+              <Loader/>
+            ) : (
+              <table>
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>Username</th>
+                    <th>Rating</th>
+                    <th>Problems Solved</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {leaderboardData.map((user, index) => (
+                    <tr key={user._id}>
+                      <td>#{index + 1}</td>
+                      <td>{user.username}</td>
+                      <td>&#8902; {user.rating}</td>
+                      <td>{user.problemsSolved}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
         </div>
       </div>
     </div>
