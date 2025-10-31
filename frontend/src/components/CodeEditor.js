@@ -156,12 +156,27 @@ export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOut
   }
 
   const handleMatchFinish = () => {
+    //calculate solveTime
+    const finishTime = new Date();
+    const storedData = localStorage.getItem('matchStartData');
+    let solveTime = null;
+
+    if (storedData) {
+      const { matchId, hour, min, sec } = JSON.parse(storedData);
+      if (matchId === matchObj._id) {
+        const startTime = new Date();
+        startTime.setHours(hour, min, sec, 0);
+        solveTime = Math.floor((finishTime - startTime) / 1000);
+      }
+    }
+
     const user_id = localStorage.getItem('token')
     const { _id } = jwtDecode(user_id)
 
     socket.emit("endMatch", {
       match: matchObj,
-      winner_id: _id
+      winner_id: _id,
+      solveTime
     })
 
     handleUserWonMatch(_id)

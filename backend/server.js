@@ -9,6 +9,8 @@ const { User } = require('./models/User');
 const { Match } = require('./models/Match')
 const jwt = require('jsonwebtoken');
 
+const computeDelta = require("./computeDelta")
+
 dotenv.config();
 
 const port = process.env.PORT || 3001;
@@ -187,10 +189,16 @@ io.on('connection', (socket) => {
   );
 
   socket.on('endMatch', async (payload) => {
-    const { match, winner_id } = payload
+    const { match, winner_id, solveTime } = payload
     const loser_id = match.players[0].id == winner_id ? match.players[1].id : match.players[0].id
 
+    const winner = match.players[0].id == winner_id ? match.players[0] : match.players[1]
+    const loser = match.players[0].id == loser_id ? match.players[0] : match.players[1]
+
     let updatedMatch = match;
+    const delta = computeDelta(winner.rating, loser.rating, match.difficulty, solveTime, 'win', 1.0)
+
+    console.log("[USER_RaTNG_UPDT] winner rating +", delta)
 
     if (match.status != "completed") {
       // STEP 1: update the Match doc in the db - update status, winner & loser
@@ -210,10 +218,10 @@ io.on('connection', (socket) => {
     })
   })
 
-  socket.on("drawMatch",async (matchDoc) => {
+  socket.on("drawMatch", async (matchDoc) => {
     // update the match doc in db- set status to "completed"
     const match = await Match.findById(matchDoc._id)
-    if(!match) return
+    if (!match) return
     match.status = "completed"
     await match.save()
   })
