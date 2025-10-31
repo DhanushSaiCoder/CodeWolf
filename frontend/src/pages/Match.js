@@ -26,6 +26,8 @@ export default function Match() {
 
   const socket = useSocket()
 
+  const matchCompleted = timeUp || matchLost || userWonMatch;
+
   //useEffect with socket listener that listens to 'matchEnded' event fromt the server
   useEffect(() => {
     if (!socket) return;
@@ -102,7 +104,6 @@ export default function Match() {
   }
 
   const handle_continueSolvingClick = () => {
-    setMatchLost(false)
     setShowYouLose(false)
   }
 
@@ -144,7 +145,7 @@ export default function Match() {
       {showYouWin && (<YouWin handleCloseYouWin={handleCloseYouWin} />)}
       {showMatchDraw && (<MatchDraw handleClick_matchDraw_continueSolving={handleClick_matchDraw_continueSolving} handleClick_matchDraw_goHome={handleClick_matchDraw_goHome}/>)}
       <div className='Match'>
-        <MatchLeftColumn showTimer={showTimer} matchDoc={JSON.stringify(matchDoc)} matchId={matchId} handleTimeUp={handleTimeUp} handleQuestionFound={handleQuestionFound} />
+        <MatchLeftColumn showTimer={showTimer} matchDoc={JSON.stringify(matchDoc)} matchId={matchId} handleTimeUp={handleTimeUp} handleQuestionFound={handleQuestionFound} matchCompleted={matchCompleted} />
         <MatchRightColumn question={question} matchDoc={matchDoc} handleUserWonMatch={handleUserWonMatch} timeUp={timeUp} matchLost={matchLost} userWonMatch={userWonMatch}/>
       </div>
     </>
