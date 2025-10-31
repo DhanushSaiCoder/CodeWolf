@@ -50,8 +50,9 @@ export const HomeLeaderBoard = () => {
                         {data.slice(0, 10).map((u, index) => (
                             <li className={`lbUser ${index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'bronze' : ''}`} key={index}>
                                 <p>{index + 1}</p>
-                                <img className='hlbProfilePic' src={u.profilePic ? toLowQualityPic(u.profilePic) : profileImg} alt={u.username} />
-                                <p><b>{u.username}</b></p>
+                                <p className='hlb_profile_and_username'>
+                                    <img className='hlbProfilePic' src={u.profilePic ? toLowQualityPic(u.profilePic) : profileImg} alt={u.username} />
+                                    <b>{u.username}</b></p>
                                 {index < 3 && <img className='hlbBadge' height="35px" width="35px" src={medals[index]} alt={`${index + 1} place medal`} />}
                                 <div className='hlbRating'>
                                     <p><span className='starSymbol'>&#8902; </span>{u.rating}</p>

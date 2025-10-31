@@ -75,11 +75,12 @@
 }
 
 .hlbProfilePic {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
     object-fit: cover;
     margin-right: 10px;
+    border: 2px solid var(--main-50p);
 }
 .starSymbol{
     font-size: 30px;
@@ -117,6 +118,11 @@
     width: 40px;
     height: 40px;
     animation: spin 0.71s linear infinite;
+}
+.hlb_profile_and_username{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Spinner Animation */
