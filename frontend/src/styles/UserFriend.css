@@ -15,7 +15,7 @@
 }
 .data h4 {
     text-align: left;
-    width: 100%;
+    /* width: 100%; */
 }
 .UserFriend__container {
     width: 100%;
@@ -320,4 +320,34 @@ button[type="submit"]:hover {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+}
+
+.friends-header {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between heading and button */
+    width: 100%;
+    justify-content: space-between;
+}
+
+.refresh-button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--main); /* Adjust color as needed */
+    transition: transform 0.3s ease;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.refresh-button:hover {
+    /* transform: rotate(90deg); */
+}
+
+.refresh-button.clicked {
+    transform: rotate(360deg);
+    transition: transform 0.5s ease-out;
 }
