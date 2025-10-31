@@ -198,10 +198,9 @@ io.on('connection', (socket) => {
     let updatedMatch = match;
     const winner_rating_delta = computeDelta(winner.rating, loser.rating, match.difficulty, solveTime, 'win', 1.0)
     const loser_rating_delta = computeDelta(loser.rating, winner.rating, match.difficulty, solveTime, 'lose, 1.0')
-    
+
     console.log("[USER_RaTNG_UPDT] winner rating +", winner_rating_delta)
-    console.log("[USER_RaTNG_UPDT] loser rating -", loser_rating_delta)
-    //update user's rating in db
+    console.log("[USER_RaTNG_UPDT] loser rating ", loser_rating_delta)
 
     if (match.status != "completed") {
       // STEP 1: update the Match doc in the db - update status, winner & loser
@@ -211,13 +210,19 @@ io.on('connection', (socket) => {
         { new: true }
       );
     }
-
     if (!updatedMatch) return res.status(404).json({ message: "Match not found (or) Match not found in the payload of the socket event ''endMatch''." });
+
+    //update winner's rating in db
+    await User.findByIdAndUpdate(winner_id, { $inc: { rating: winner_rating_delta } });
+    
+    //update loser's rating in db
+    await User.findByIdAndUpdate(loser_id,  { $inc: { rating: loser_rating_delta } });
 
     //STEP 2: Send "matchEnded" event to the other player(get loserSocketId using loser_id from userSocketMap)
     const loserSocketId = userSocketMap.get(loser_id)
     socket.to(loserSocketId).emit('matchEnded', {
-      match: updatedMatch
+      match: updatedMatch,
+      loser_rating_delta
     })
   })
 

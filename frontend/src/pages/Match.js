@@ -23,6 +23,7 @@ export default function Match() {
   const [showYouLose, setShowYouLose] = useState(false)
   const [showYouWin, setShowYouWin] = useState(false)
   const [showMatchDraw, setShowMatchDraw] = useState(false)
+  const [loser_rating_delta, set_loser_rating_delta] = useState(0)
 
   const socket = useSocket()
 
@@ -32,9 +33,10 @@ export default function Match() {
   useEffect(() => {
     if (!socket) return;
 
-    const handleMatchEnded = ({ match }) => {
+    const handleMatchEnded = ({ match, loser_rating_delta }) => {
       console.log("Ended match data:", match);
       localStorage.setItem(`matchLost?${matchId}`, JSON.stringify(true))
+      set_loser_rating_delta(loser_rating_delta)
       setMatchLost(true)
     };
 
@@ -141,7 +143,7 @@ export default function Match() {
   }
   return (
     <> 
-      {showYouLose && (<YouLose handleCloseYouLose={handleCloseYouLose} handle_continueSolvingClick={handle_continueSolvingClick} handle_goHomeClick={handle_goHomeClick} />)}
+      {showYouLose && (<YouLose matchDoc={matchDoc} loser_rating_delta={loser_rating_delta} handleCloseYouLose={handleCloseYouLose} handle_continueSolvingClick={handle_continueSolvingClick} handle_goHomeClick={handle_goHomeClick} />)}
       {showYouWin && (<YouWin handleCloseYouWin={handleCloseYouWin} />)}
       {showMatchDraw && (<MatchDraw handleClick_matchDraw_continueSolving={handleClick_matchDraw_continueSolving} handleClick_matchDraw_goHome={handleClick_matchDraw_goHome}/>)}
       <div className='Match'>
