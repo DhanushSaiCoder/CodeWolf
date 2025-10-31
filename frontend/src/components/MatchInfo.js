@@ -1,6 +1,7 @@
 import React from 'react';
 import "../styles/MatchInfo.css";
 import Profile from "../images/profile.jpg";
+import { jwtDecode } from 'jwt-decode';
 
 export default function MatchInfo({ matchDoc }) {
     if (matchDoc == "null") return <div className='MatchInfo'>Loading...</div>;
@@ -13,6 +14,10 @@ export default function MatchInfo({ matchDoc }) {
         return <div className='MatchInfo'>Invalid Match Data</div>;
     }
 
+    const {_id} = jwtDecode(localStorage.getItem('token'))
+    const player = matchData.players[0].id == _id ? matchData.players[0] : matchData.players[1]
+    const opponent = matchData.players[0].id == _id ? matchData.players[1] : matchData.players[0]
+
     return (
         <div className='MatchInfo'>
             <div className='MIPlayerDetails'>
@@ -20,8 +25,8 @@ export default function MatchInfo({ matchDoc }) {
                 <div className='MIPlayerOneDetails bothPlayerDetails'>
                     <img className='profileImgs' src={Profile} alt="playerOne" width={75} height={75} />
                     <div>
-                        <h2>{matchData.players[0]?.username || "Unknown"}</h2>
-                        <p>★ {matchData.players[0]?.rating || "Unknown"}</p>
+                        <h2>{player?.username || "Unknown"}</h2>
+                        <p>★ {player?.rating || "Unknown"}</p>
                     </div>
                 </div>
 
@@ -34,8 +39,8 @@ export default function MatchInfo({ matchDoc }) {
                 <div className='MIPlayerTwoDetails bothPlayerDetails '>
                     <div>
 
-                        <h2>{matchData.players[1]?.username || "Unknown"}</h2>
-                        <p>★ {matchData.players[1]?.rating || "Unknown"}</p>
+                        <h2>{opponent?.username || "Unknown"}</h2>
+                        <p>★ {opponent?.rating || "Unknown"}</p>
 
                     </div>
                     <img className='profileImgs' src={Profile} alt="playerTwo" width={75} height={75} />
