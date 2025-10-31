@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../styles/SecuritySettings.css';
+import { Pen, Trash } from "lucide-react"
 
 const SecuritySettings = () => {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -76,9 +77,11 @@ const SecuritySettings = () => {
 
   return (
     <div className="security-settings">
-      <h3>Security Settings</h3>
       <form onSubmit={handlePasswordChange}>
-        <h4>Change Password</h4>
+        <div className='security-settings-changePasswordDiv'>
+          <Pen size={18}/>
+          <h4>Change Password</h4>
+        </div>
         {message.text && <p className={`message ${message.type}`}>{message.text}</p>}
         <div className="form-group">
           <label htmlFor="currentPassword">Current Password</label>
@@ -107,13 +110,13 @@ const SecuritySettings = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </div>
-        <button type="submit">Change Password</button>
+        <button className='changePwdBtn' type="submit">Change Password</button>
       </form>
       <div className="delete-account-section">
         <h4>Delete Account</h4>
         <p>Once you delete your account, there is no going back. Please be certain.</p>
-        <button className="delete-button" onClick={handleDeleteAccount}>
-          Delete Your Account
+        <button id='accDelBtn' className="security-settings__delete-button" onClick={handleDeleteAccount}>
+          <Trash size={18}/>Delete Your Account
         </button>
       </div>
 

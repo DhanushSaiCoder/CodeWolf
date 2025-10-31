@@ -4,15 +4,25 @@
 }
 
 .security-settings h3, .security-settings h4 {
-    margin-bottom: 20px;
-    color: var(--main-1);
+    color: var(--main);
     font-size: 1.5rem;
 }
 
 .security-settings h4 {
     font-size: 1.2rem;
 }
+.security-settings form{
+    width: 350px;
+}
+.security-settings-changePasswordDiv{
+    width: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
 
+    gap: 10px;
+    margin-bottom: 20px;
+}
 .form-group {
     margin-bottom: 20px;
 }
@@ -20,8 +30,8 @@
 .form-group label {
     display: block;
     margin-bottom: 8px;
-    font-weight: bold;
-    color: var(--main-1);
+    font-weight: normal;
+    color: var(--main);
 }
 
 .form-group input[type="password"] {
@@ -63,11 +73,16 @@
     border-top: 1px solid var(--main-50p);
 }
 
-.delete-button {
-    background-color: #dc3545;
+#accDelBtn {
+    background-color: #dc3545 ;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-weight: normal;
 }
 
-.delete-button:hover {
+#accDelBtn:hover {
     background-color: #c82333;
 }
 
@@ -108,5 +123,13 @@
     cursor: pointer;
     font-weight: bold;
 }
-
-
+.delete-account-section{
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 10px;
+    flex-direction: column;
+}
+.delete-button{
+    background-color: orangered;
+}
