@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    friends: [{
+    friends: [{ 
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
@@ -47,6 +47,10 @@ const userSchema = new mongoose.Schema({
     problemsSolved: {
         type: Number,
         default: 0
+    },
+    profilePic: {
+        type: String,
+        default: ''
     }
 }, { timestamps: true });
 

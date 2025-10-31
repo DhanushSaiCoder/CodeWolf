@@ -167,6 +167,28 @@ router.patch('/me/username', authenticateToken, async (req, res) => {
         console.error('Error updating username:', err);
         res.status(500).json({ message: 'An unexpected error occurred.' });
     }
+});  
+
+// Update profile picture
+router.patch('/me/profile-pic', authenticateToken, async (req, res) => {
+    const { profilePic } = req.body;
+
+    if (!profilePic) {
+        return res.status(400).json({ message: 'Profile picture URL is required.' });
+    }
+
+    try {
+        const updatedUser = await User.findByIdAndUpdate(
+            req.user._id,
+            { profilePic },
+            { new: true }
+        ).select('-password');
+
+        res.json(updatedUser);
+    } catch (err) {
+        console.error('Error updating profile picture:', err);
+        res.status(500).json({ message: 'An unexpected error occurred.' });
+    }
 });
 
 // Update password

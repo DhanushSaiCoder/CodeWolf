@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../styles/ProfileSettings.css';
-import profileImg from "../images/profile.jpg"
-import { SquarePen } from 'lucide-react';
+import profileImg from "../images/profile.jpg";
+import { SquarePen, Upload } from 'lucide-react';
+import uploadProfilePic from '../uploadProfilePic';
 
 const ProfileSettings = () => {
+  const [user, setUser] = useState(null);
   const [username, setUsername] = useState('');
-  const [profilePic, setProfilePic] = useState(null);
+  const [profilePic, setProfilePic] = useState('');
   const [message, setMessage] = useState('');
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -18,7 +21,9 @@ const ProfileSettings = () => {
           }
         });
         const data = await response.json();
+        setUser(data);
         setUsername(data.username);
+        setProfilePic(data.profilePic);
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -31,8 +36,28 @@ const ProfileSettings = () => {
     setUsername(e.target.value);
   };
 
-  const handleProfilePicChange = (e) => {
-    setProfilePic(e.target.files[0]);
+  const handleProfilePicChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      try {
+        const newProfilePicUrl = await uploadProfilePic(file);
+        setProfilePic(newProfilePicUrl);
+        
+        const token = localStorage.getItem('token');
+        await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/me/profile-pic`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ profilePic: newProfilePicUrl })
+        });
+
+      } catch (error) {
+        setMessage({ type: 'error', text: 'Failed to upload profile picture.' });
+        console.error('Error uploading profile picture:', error);
+      }
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -55,7 +80,7 @@ const ProfileSettings = () => {
       if (response.ok) {
         setMessage({ type: 'success', text: 'Username updated successfully!' });
       } else {
-        setMessage({ type: 'error', text: data.message || 'Failed to update username.' });
+        setMessage({ type: 'error',text: data.message || 'Failed to update username.' });
       }
     } catch (error) {
       setMessage({ type: 'error', text: 'An unexpected error occurred.' });
@@ -63,13 +88,30 @@ const ProfileSettings = () => {
     }
   };
 
+  const handleEditOrUploadClick = () => {
+    fileInputRef.current.click();
+  };
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="profile-settings">
       <div className='profile-settings_profileImageDiv'>
-        <img src={profileImg} alt="profile Image" className='profileSettings_profileImage'></img>
-        <button className='profile-settings_editProfileBtn'><SquarePen /> Edit</button>
+        <img src={profilePic || profileImg} alt="Profile" className='profileSettings_profileImage'></img>
+        <input
+          type="file"
+          ref={fileInputRef}
+          style={{ display: 'none' }}
+          onChange={handleProfilePicChange}
+          accept="image/*"
+        />
+        <button className='profile-settings_editProfileBtn' onClick={handleEditOrUploadClick}>
+          {profilePic ? <><SquarePen /> Edit</> : <><Upload /> Upload</>}
+        </button>
       </div>
-      <div profileSettings_formDiv>
+      <div className='profile-settings_formDiv'>
         <form onSubmit={handleSubmit}>
           <label htmlFor='profile-settings_usernameInp'>
             Username

@@ -21,6 +21,7 @@ const questionsRoutes = require('./routes/questions.route');
 const runRoutes = require("./routes/run.routes")
 const submitRoutes = require('./routes/submit.routes')
 const leaderboardRoutes = require('./routes/leaderboard');
+const uploadRoutes = require('./routes/upload');
 
 mongoose
   .connect(process.env.MONGO_URI)
@@ -36,6 +37,7 @@ app.use('/questions', questionsRoutes);
 app.use('/run', runRoutes)
 app.use('/submit', submitRoutes)
 app.use('/leaderboard', leaderboardRoutes);
+app.use('/api', uploadRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
@@ -276,19 +278,6 @@ const updateUserStatus = async (userId, status) => {
     if (user) {
       user.status = status;
       await user.save();
-
-      // Update the status in the friends arrays of other users
-      await User.updateMany(
-        {
-          'friends.id': userId, // Users who have this user in their friends array
-        },
-        {
-          $set: { 'friends.$[elem].status': status }, // Update the status field of the matching friend
-        },
-        {
-          arrayFilters: [{ 'elem.id': userId }], // Filter to match the specific friend in the array
-        }
-      );
 
 
       // Emit status update to all connected clients
