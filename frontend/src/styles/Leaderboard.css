@@ -27,7 +27,7 @@ table {
     width: 100%;
     border-collapse: collapse;
     color: var(--main);
-    font-family: 'Arial', sans-serif;
+    font-family: "Arial", sans-serif;
     font-size: 1rem;
 }
 
@@ -65,4 +65,18 @@ td {
     border-radius: 50%;
     object-fit: cover;
     margin-right: 10px;
+}
+.LB_profile_and_username {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+}
+.LB_profile_and_username img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+    border: 1.5px solid var(--main-50p);
 }
