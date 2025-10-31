@@ -110,7 +110,6 @@ io.on('connection', (socket) => {
     {
       requesterId,
       receiverId,
-      playersDocs,
       mode,
       programmingLanguage,
       difficulty,
@@ -121,31 +120,24 @@ io.on('connection', (socket) => {
     const requesterSocketId = userSocketMap.get(requesterId);
     const receiverSocketId = userSocketMap.get(receiverId);
 
-    // Helper function to extract player info from playersDocs
-    const getPlayerInfo = (id, key) => {
-      if (Array.isArray(playersDocs)) {
-        return playersDocs.find((player) => player._id === id) || {};
-      } else if (playersDocs && typeof playersDocs === 'object') {
-        return playersDocs[key] || {};
-      }
-      return {};
-    };
-
-    const requesterInfo = getPlayerInfo(requesterId, 'requester');
-    const receiverInfo = getPlayerInfo(receiverId, 'receiver');
+    // Fetch full user documents for requester and receiver
+    const requester = await User.findById(requesterId).select('username rating profilePic');
+    const receiver = await User.findById(receiverId).select('username rating profilePic');
 
     // Build the match object
     const matchObj = {
       players: [
         {
           id: requesterId,
-          username: requesterInfo.username,
-          rating: requesterInfo.rating,
+          username: requester.username,
+          rating: requester.rating,
+          profilePic: requester.profilePic,
         },
         {
           id: receiverId,
-          username: receiverInfo.username,
-          rating: receiverInfo.rating,
+          username: receiver.username,
+          rating: receiver.rating,
+          profilePic: receiver.profilePic,
         },
       ],
       difficulty,

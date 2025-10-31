@@ -21,6 +21,10 @@ const matchSchema = new mongoose.Schema({
         rating: {
             type: Number,
             required: true
+        },
+        profilePic: {
+            type: String,
+            optional: true
         }
     }],
     winner: {
@@ -69,7 +73,8 @@ function validateMatch(match) {
         players: joi.array().items(joi.object({
             id: joi.string().required(),
             username: joi.string().required(),
-            rating: joi.number().required()
+            rating: joi.number().required(),
+            profilePic: joi.string().allow('').optional()
         })).required(),
         winner: joi.string().allow(null).default(null),
         winner_rating_delta: joi.string().allow(null).default(0),
