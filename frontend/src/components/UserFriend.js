@@ -264,18 +264,18 @@ export const UserFriend = (props) => {
 
       <div className="data">
         <div className="friends-header">
-                    <h4>FRIENDS</h4>
-                    <button
-                      className={`refresh-button ${isRefreshing ? 'clicked' : ''}`}
-                      onClick={() => {
-                        setIsRefreshing(true);
-                        fetchUserFriend();
-                        setTimeout(() => setIsRefreshing(false), 500); // Match CSS transition duration
-                      }}
-                    >
-                      &#x21BB; {/* Unicode refresh icon */}
-                    </button>
-                  </div>
+          <h4>FRIENDS</h4>
+          <button
+            className={`refresh-button ${isRefreshing ? 'clicked' : ''}`}
+            onClick={() => {
+              setIsRefreshing(true);
+              fetchUserFriend();
+              setTimeout(() => setIsRefreshing(false), 500); // Match CSS transition duration
+            }}
+          >
+            &#x21BB; {/* Unicode refresh icon */}
+          </button>
+        </div>
         {loading ? (
           <p>Loading...</p>
         ) : userFriendsData.length ? (
@@ -293,14 +293,17 @@ export const UserFriend = (props) => {
                 key={userFriend._id}
               >
                 <p>{index + 1}</p>
-                <img className='UF_profilePic' src={userFriend.profilePic ? toLowQualityPic(userFriend.profilePic) : profileImg} alt={userFriend.username} />
+
                 <div className="UserFriend__userDetails">
-                  <div>
-                    <h3 className="UserFriend__username">{userFriend.username}</h3>
-                    <p>
-                      <span className="userFriend__rating">&#8902; </span>
-                      {userFriend.rating}
-                    </p>
+                  <div className='UF_profile_and_username_and_rating'>
+                    <img className='UF_profilePic' src={userFriend.profilePic ? toLowQualityPic(userFriend.profilePic) : profileImg} alt={userFriend.username} />
+                    <div className='UF_profile_and_rating'>
+                      <h3 className="UserFriend__username">{userFriend.username}</h3>
+                      <p>
+                        <span className="userFriend__rating">&#8902; </span>
+                        {userFriend.rating}
+                      </p>
+                    </div>
                   </div>
                 </div>
                 {userFriend.status === "online" ? (

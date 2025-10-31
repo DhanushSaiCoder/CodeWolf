@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import "../styles/NotUserFriend.css";
-import addFriend from "../images/add-friend.png";
 import profileImg from '../images/profile.jpg';
 import { toLowQualityPic } from '../images/toLowQualityPic';
+import {UserPlus} from "lucide-react"
 
 export const NotUserFriend = (props) => {
     const { loading, handleAddFriend, notUserFriendsData, setLoading, fetchNonFriendsData } = props;
@@ -32,10 +32,9 @@ export const NotUserFriend = (props) => {
             <h4 style={{ marginBottom: "10px" }}>ADD FRIENDS</h4>
             <div className='NUF_data'>
                 {notUserFriendsData.map((notUserFriend, index) => (
-                    <div className="UserFriend__container" key={notUserFriend._id}>
-                        <p>{index + 1}</p>
-                        <img className='NUF_profilePic' src={notUserFriend.profilePic ? toLowQualityPic(notUserFriend.profilePic) : profileImg} alt={notUserFriend.username} />
+                    <div className="NotUserFriend__container" key={notUserFriend._id}>
                         <div className='NotUserFriend__userDetails'>
+                            <img className='NUF_profilePic' src={notUserFriend.profilePic ? toLowQualityPic(notUserFriend.profilePic) : profileImg} alt={notUserFriend.username} />
                             <div>
                                 <h3 className='NotUserFriend__username'>{notUserFriend.username}</h3>
                                 <p><span className='NotUserFriend__rating'>&#8902; </span>{notUserFriend.rating}</p>
@@ -47,7 +46,7 @@ export const NotUserFriend = (props) => {
                             disabled={!notUserFriend.status}
                             onClick={() => handleAddFriend(notUserFriend._id)}
                         >
-                            <img src={addFriend} alt="add friend icon" />
+                            <UserPlus size={"1.3rem"}/>
                         </button>
                     </div>
                 ))}

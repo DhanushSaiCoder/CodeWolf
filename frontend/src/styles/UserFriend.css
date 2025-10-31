@@ -43,11 +43,12 @@
 }
 
 .UF_profilePic {
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     object-fit: cover;
     margin-right: 10px;
+    border: 3.5px solid var(--main-50p)
 }
 
 .UserFriend__onlineBadge,
@@ -297,7 +298,7 @@ button[type="submit"]:hover {
     opacity: 0;
     transition: transform 300ms ease-in, opacity 300ms ease-in;
 }
-.rejectedLabel{
+.rejectedLabel {
     color: orangered;
 }
 
@@ -315,7 +316,8 @@ button[type="submit"]:hover {
     position: relative;
 }
 .quickMatchBtn {
-    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out,
+        box-shadow 0.3s ease-in-out;
 }
 
 .quickMatchBtn:hover {
@@ -323,7 +325,7 @@ button[type="submit"]:hover {
     transform: translateY(-3px); /* Move the button upwards */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-.buttons_rejectedTxtDiv{
+.buttons_rejectedTxtDiv {
     width: auto;
     display: flex;
     align-items: center;
@@ -351,11 +353,17 @@ button[type="submit"]:hover {
     align-items: center;
     justify-content: center;
 }
-
-.refresh-button:hover {
-    /* transform: rotate(90deg); */
+.UF_profile_and_rating{
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
 }
-
+.UF_profile_and_username_and_rating{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
 .refresh-button.clicked {
     transform: rotate(360deg);
     transition: transform 0.5s ease-out;
