@@ -213,10 +213,10 @@ io.on('connection', (socket) => {
     if (!updatedMatch) return res.status(404).json({ message: "Match not found (or) Match not found in the payload of the socket event ''endMatch''." });
 
     //update winner's rating in db
-    await User.findByIdAndUpdate(winner_id, { $inc: { rating: winner_rating_delta } });
+    await User.findByIdAndUpdate(winner_id, { $inc: { rating: winner_rating_delta } , last_rating: winner.rating});
     
     //update loser's rating in db
-    await User.findByIdAndUpdate(loser_id,  { $inc: { rating: loser_rating_delta } });
+    await User.findByIdAndUpdate(loser_id,  { $inc: { rating: loser_rating_delta } , last_rating: loser.rating});
 
     //STEP 2: Send "matchEnded" event to the other player(get loserSocketId using loser_id from userSocketMap)
     const loserSocketId = userSocketMap.get(loser_id)
