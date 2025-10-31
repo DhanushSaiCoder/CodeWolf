@@ -1,0 +1,72 @@
+.profile-settings {
+    padding: 20px;
+    color: var(--main);
+}
+
+.profile-settings h3 {
+    margin-bottom: 20px;
+    color: var(--main-1);
+    font-size: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--main-1);
+}
+
+.form-group input[type="text"],
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    background-color: rgba(var(--divBg), 0.5);
+    border: 1px solid var(--main-50p);
+    border-radius: 5px;
+    color: var(--main);
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="file"]:focus {
+    outline: none;
+    border-color: var(--main-1);
+    box-shadow: 0 0 5px var(--main-50p);
+}
+
+.profile-settings button[type="submit"] {
+    background-color: var(--main-2);
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.profile-settings button[type="submit"]:hover {
+    background-color: var(--dark);
+}
+
+.message {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 4px;
+    color: white;
+}
+
+.message.success {
+    background-color: #28a745;
+}
+
+.message.error {
+    background-color: #dc3545;
+}
+
