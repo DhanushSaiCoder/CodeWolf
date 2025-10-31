@@ -24,6 +24,7 @@ export default function Match() {
   const [showYouWin, setShowYouWin] = useState(false)
   const [showMatchDraw, setShowMatchDraw] = useState(false)
   const [loser_rating_delta, set_loser_rating_delta] = useState(0)
+  const [winnerRatingChange, setWinnerRatingChange] = useState(null)
 
   const socket = useSocket()
 
@@ -141,14 +142,18 @@ export default function Match() {
   const handleClick_matchDraw_goHome = () => {
     window.location.href = "/"
   }
+
+  const handleGotWinnerRatingChange =(rating, delta) => {
+    setWinnerRatingChange([rating, delta])
+  }
   return (
     <> 
       {showYouLose && (<YouLose matchDoc={matchDoc} loser_rating_delta={loser_rating_delta} handleCloseYouLose={handleCloseYouLose} handle_continueSolvingClick={handle_continueSolvingClick} handle_goHomeClick={handle_goHomeClick} />)}
-      {showYouWin && (<YouWin handleCloseYouWin={handleCloseYouWin} />)}
+      {showYouWin && (<YouWin winnerRatingChange={winnerRatingChange || [0,0]} handleCloseYouWin={handleCloseYouWin} />)}
       {showMatchDraw && (<MatchDraw handleClick_matchDraw_continueSolving={handleClick_matchDraw_continueSolving} handleClick_matchDraw_goHome={handleClick_matchDraw_goHome}/>)}
       <div className='Match'>
         <MatchLeftColumn showTimer={showTimer} matchDoc={JSON.stringify(matchDoc)} matchId={matchId} handleTimeUp={handleTimeUp} handleQuestionFound={handleQuestionFound} matchCompleted={matchCompleted} />
-        <MatchRightColumn question={question} matchDoc={matchDoc} handleUserWonMatch={handleUserWonMatch} timeUp={timeUp} matchLost={matchLost} userWonMatch={userWonMatch}/>
+        <MatchRightColumn question={question} matchDoc={matchDoc} handleUserWonMatch={handleUserWonMatch} timeUp={timeUp} matchLost={matchLost} userWonMatch={userWonMatch} handleGotWinnerRatingChange={handleGotWinnerRatingChange}/>
       </div>
     </>
   );

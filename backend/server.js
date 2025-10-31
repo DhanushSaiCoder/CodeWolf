@@ -188,7 +188,7 @@ io.on('connection', (socket) => {
   }
   );
 
-  socket.on('endMatch', async (payload) => {
+  socket.on('endMatch', async (payload, callback) => {
     const { match, winner_id, solveTime } = payload
     const loser_id = match.players[0].id == winner_id ? match.players[1].id : match.players[0].id
 
@@ -224,6 +224,9 @@ io.on('connection', (socket) => {
       match: updatedMatch,
       loser_rating_delta
     })
+
+    //STEP 3: Send winner_rating_delta to winner
+    callback({winner_rating: winner.rating ,winner_rating_delta})
   })
 
   socket.on("drawMatch", async (matchDoc) => {
