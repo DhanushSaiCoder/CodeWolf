@@ -7,6 +7,8 @@ import Nav from '../components/Nav';
 import { useSocket } from '../SocketContext';
 import { jwtDecode } from 'jwt-decode';
 import Loader from './../components/Loader';
+import profileImg from '../images/profile.jpg';
+import { toLowQualityPic } from '../images/toLowQualityPic';
 
 const Leaderboard = () => {
   const navigate = useNavigate();
@@ -135,7 +137,7 @@ const Leaderboard = () => {
                   {leaderboardData.map((user, index) => (
                     <tr key={user._id}>
                       <td>#{index + 1}</td>
-                      <td>{user.username}</td>
+                      <td><img className='leaderboardProfilePic' src={user.profilePic ? toLowQualityPic(user.profilePic) : profileImg} alt={user.username} />{user.username}</td>
                       <td>&#8902; {user.rating}</td>
                       <td>{user.problemsSolved}</td>
                     </tr>

@@ -49,7 +49,7 @@ router.get('/nonfriends', authenticateToken, async (req, res) => {
         const user = await User.findById(req.user._id);
         const friends = user.friends.map(friendId => friendId);
         friends.push(req.user._id);
-        const users = await User.find({ _id: { $nin: friends } }, '_id username rating status').lean();
+        const users = await User.find({ _id: { $nin: friends } }, '_id username rating status profilePic').lean();
         res.status(200).json(users);
     } catch (err) {
         console.error('Error fetching users:', err);
@@ -60,7 +60,7 @@ router.get('/nonfriends', authenticateToken, async (req, res) => {
 router.get('/users', async (req, res) => {
     try {
         // Fetch top 10 users, selecting only 'username' and 'rating', and sort by rating in descending order
-        const users = await User.find({}, '_id username rating')
+        const users = await User.find({}, '_id username rating profilePic')
             .sort({ rating: -1 }) // Sort by rating in descending order
             .limit(10) // Limit the results to the top 10 users
             .lean();

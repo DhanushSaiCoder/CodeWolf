@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
     const leaderboard = await User.find()
       .sort({ rating: -1 })
       .limit(10)
-      .select('username rating problemsSolved'); // Select the fields to return
+      .select('username rating problemsSolved profilePic'); // Select the fields to return
 
     res.json(leaderboard);
   } catch (err) {

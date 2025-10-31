@@ -6,6 +6,8 @@ import { NotUserFriend } from './NotUserFriend';
 import { MatchRequest } from './MatchRequest';
 import { useNavigate } from 'react-router-dom';
 import { useSocket } from '../SocketContext';
+import profileImg from '../images/profile.jpg';
+import { toLowQualityPic } from '../images/toLowQualityPic';
 
 export const UserFriend = (props) => {
   const navigate = useNavigate()
@@ -291,6 +293,7 @@ export const UserFriend = (props) => {
                 key={userFriend._id}
               >
                 <p>{index + 1}</p>
+                <img className='UF_profilePic' src={userFriend.profilePic ? toLowQualityPic(userFriend.profilePic) : profileImg} alt={userFriend.username} />
                 <div className="UserFriend__userDetails">
                   <div>
                     <h3 className="UserFriend__username">{userFriend.username}</h3>

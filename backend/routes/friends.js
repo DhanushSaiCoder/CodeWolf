@@ -59,7 +59,7 @@ router.post('/', authenticateToken, async (req, res) => {
 // Route to get the user's friends list
 router.get('/list', authenticateToken, async (req, res) => {
   try {
-    const user = await User.findById(req.user._id).populate('friends', 'username rating status _id');
+    const user = await User.findById(req.user._id).populate('friends', 'username rating status _id profilePic');
     if (!user) return res.status(404).send('User not found');
 
     res.json({ friends: user.friends });

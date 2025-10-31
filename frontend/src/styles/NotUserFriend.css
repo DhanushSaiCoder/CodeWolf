@@ -28,6 +28,15 @@
 .NotUserFriend__userDetails{
     width: 45%;
 }
+
+.NUF_profilePic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
 .NotUserFriend__rating{
     font-size: 20px;
 }
