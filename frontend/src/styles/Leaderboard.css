@@ -1,0 +1,21 @@
+.leaderboardContent_container {
+    min-width: 60vw;
+    min-height: 200px;
+    background-color: rgba(var(--divBg));
+    margin-top: 20px;
+    border-radius: 10px;
+}
+.leaderboard_header {
+    width: 100%;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 20px;
+    background-color: rgba(var(--divBg));
+    border-radius: 10px 10px 0 0;
+    border-bottom: 1px solid #d5bcf50c;
+}
+.leaderboardContent {
+    padding: 20px;
+}

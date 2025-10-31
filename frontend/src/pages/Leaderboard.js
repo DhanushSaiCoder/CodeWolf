@@ -97,8 +97,14 @@ const Leaderboard = () => {
           onReject={handleReject}
         />
         {/* Leaderboard-specific content can go here */}
-        <div className="leaderboardContent">
+        <div className="leaderboardContent_container">
           {/* Your leaderboard content */}
+          <div className='leaderboard_header'>
+            <h2>LEADERBOARD</h2>
+          </div>
+          <div className='leaderboardContent'>
+            
+          </div>
         </div>
       </div>
     </div>
