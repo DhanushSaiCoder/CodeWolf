@@ -196,9 +196,12 @@ io.on('connection', (socket) => {
     const loser = match.players[0].id == loser_id ? match.players[0] : match.players[1]
 
     let updatedMatch = match;
-    const delta = computeDelta(winner.rating, loser.rating, match.difficulty, solveTime, 'win', 1.0)
-
-    console.log("[USER_RaTNG_UPDT] winner rating +", delta)
+    const winner_rating_delta = computeDelta(winner.rating, loser.rating, match.difficulty, solveTime, 'win', 1.0)
+    const loser_rating_delta = computeDelta(loser.rating, winner.rating, match.difficulty, solveTime, 'lose, 1.0')
+    
+    console.log("[USER_RaTNG_UPDT] winner rating +", winner_rating_delta)
+    console.log("[USER_RaTNG_UPDT] loser rating -", loser_rating_delta)
+    //update user's rating in db
 
     if (match.status != "completed") {
       // STEP 1: update the Match doc in the db - update status, winner & loser
