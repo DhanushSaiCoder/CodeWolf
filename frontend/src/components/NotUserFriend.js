@@ -42,7 +42,7 @@ export const NotUserFriend = (props) => {
                         <button
                             className='inviteFriendBtn quickMatchBtn NotUserFriendQuickMatchBtn'
                             disabled={!notUserFriend.status}
-                            onClick={() => handleAddFriend(notUserFriend._id, notUserFriend.username, notUserFriend.rating)}
+                            onClick={() => handleAddFriend(notUserFriend._id)}
                         >
                             <img src={addFriend} alt="add friend icon" />
                         </button>

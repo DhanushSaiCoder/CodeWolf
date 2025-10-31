@@ -1,28 +1,6 @@
 const mongoose = require("mongoose");
 const joi = require("joi");
 
-const friendSchema = new mongoose.Schema({
-    id: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true
-    },
-    username: {
-        type: String,
-        required: true,
-        trim: true,
-    },
-    rating: {
-        type: Number,
-        required: true,
-        min: 0
-    },
-    status: {
-        type: String,
-        default: 'offline',
-        enum: ['online', 'offline', 'inMatch']
-    }
-});
-
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -42,10 +20,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    friends: {
-        type: [friendSchema],
-        default: []
-    },
+    friends: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     role: {
         type: String,
         default: 'user',

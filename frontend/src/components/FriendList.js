@@ -47,7 +47,7 @@ export const FriendList = (props) => {
             });
     };
 
-    const handleAddFriend = (id, username, rating) => {
+    const handleAddFriend = (id) => {
         setLoading(true);
 
         fetch(`${process.env.REACT_APP_BACKEND_URL}/friends`, {
@@ -57,9 +57,7 @@ export const FriendList = (props) => {
                 'authorization': `Bearer ${localStorage.getItem('token')}`
             },
             body: JSON.stringify({
-                id: id,
-                username: username,
-                rating: rating,
+                id: id
             })
         })
             .then(response => response.json())
@@ -80,7 +78,8 @@ export const FriendList = (props) => {
     const fetchUserFriend = () => {
         setUFLoading(true);
 
-        fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/me`, {
+        // Fetch the populated friends list
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/friends/list`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -89,15 +88,31 @@ export const FriendList = (props) => {
         })
             .then(response => response.json())
             .then(data => {
-                setUserDoc(data)
-                data.friends.sort((a, b) => b.online - a.online);
-                setUserFriendsData(data.friends);
+                // The response is { friends: [...] }
+                const sortedFriends = data.friends.sort((a, b) => (b.status === 'online') - (a.status === 'online'));
+                setUserFriendsData(sortedFriends);
                 setUFLoading(false);
             })
             .catch(error => {
-                console.error('Error:', error);
+                console.error('Error fetching friends:', error);
                 setUFLoading(false);
             });
+        
+        // Also fetch the main user document for other purposes if needed
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/me`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            setUserDoc(data);
+        })
+        .catch(error => {
+            console.error('Error fetching user doc:', error);
+        });
     };
 
     useEffect(() => {
@@ -107,7 +122,7 @@ export const FriendList = (props) => {
             const handleStatusUpdate = ({ userId, status }) => {
                 setUserFriendsData((prevFriends) =>
                     prevFriends.map((friend) =>
-                        friend.id.toString() === userId.toString() ? { ...friend, status } : friend
+                        friend._id.toString() === userId.toString() ? { ...friend, status } : friend
                     )
                 );
             };
