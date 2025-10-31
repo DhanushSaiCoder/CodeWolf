@@ -1,11 +1,28 @@
 const express = require('express')
 const router = express.Router()
 const { validateMatch, Match } = require('../models/Match')
+const authenticateToken = require('../middleware/authenticateToken');
 
 router.get('/', async (req, res) => {
     const matches = await Match.find()
     res.send(matches)
 })
+
+router.get('/history', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const matches = await Match.find({
+            'players.id': userId
+        })
+        .populate('players.id', 'username rating') // Populate player details
+        .sort({ createdAt: -1 }); // Sort by newest first
+
+        res.json(matches);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 
 router.get('/:id', async (req, res) => {
     const match = await Match.findById(req.params.id)
