@@ -1,11 +1,9 @@
 .SettingsContainer{
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
     flex-wrap: nowrap;
     gap: 20px;
-    height: calc(100vh - 75px);
-
 
 
 }
@@ -15,6 +13,7 @@
 }
 
 .settingsContent{
+    margin-top: 20px;
     width: calc(80vw - 40px);
     height: calc(100% - 40px);
     display: flex;

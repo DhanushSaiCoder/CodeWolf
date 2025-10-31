@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/ProfileSettings.css';
+import profileImg from "../images/profile.jpg"
+import { SquarePen } from 'lucide-react';
 
 const ProfileSettings = () => {
   const [username, setUsername] = useState('');
@@ -63,29 +65,18 @@ const ProfileSettings = () => {
 
   return (
     <div className="profile-settings">
-      <h3>Profile Settings</h3>
-      <form onSubmit={handleSubmit}>
-        {message && <p className={`message ${message.type}`}>{message.text}</p>}
-        <div className="form-group">
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={handleUsernameChange}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="profilePic">Profile Picture</label>
-          <input
-            type="file"
-            id="profilePic"
-            accept="image/*"
-            onChange={handleProfilePicChange}
-          />
-        </div>
-        <button type="submit">Save Changes</button>
-      </form>
+      <div className='profile-settings_profileImageDiv'>
+        <img src={profileImg} alt="profile Image" className='profileSettings_profileImage'></img>
+        <button className='profile-settings_editProfileBtn'><SquarePen /> Edit</button>
+      </div>
+      <div profileSettings_formDiv>
+        <form>
+          <label htmlFor='profile-settings_usernameInp'>
+            Username
+            <input id='profile-settings_usernameInp' className='profile-settings_usernameInp' type="text" placeholder={username || "Username"} />
+          </label>
+        </form>
+      </div>
     </div>
   );
 };
