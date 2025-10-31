@@ -1,0 +1,148 @@
+.profile-settings {
+    padding: 20px;
+    color: var(--main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.profile-settings h3 {
+    margin-bottom: 20px;
+    color: var(--main-1);
+    font-size: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--main-1);
+}
+
+.form-group input[type="text"],
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    background-color: rgba(var(--divBg), 0.5);
+    border: 1px solid var(--main-50p);
+    border-radius: 5px;
+    color: var(--main);
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="file"]:focus {
+    outline: none;
+    border-color: var(--main-1);
+    box-shadow: 0 0 5px var(--main-50p);
+}
+
+.profile-settings button[type="submit"] {
+    background-color: var(--main-2);
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.profile-settings button[type="submit"]:hover {
+    background-color: var(--dark);
+}
+
+.message {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 4px;
+    color: white;
+}
+
+.message.success {
+    background-color: #28a745;
+}
+
+.message.error {
+    background-color: #dc3545;
+}
+
+.profileSettings_profileImage{
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    border: 8px solid var(--main-50p);
+}
+.profile-settings_profileImageDiv{
+    position: relative;
+}
+.profile-settings{
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 40px;
+}
+.profile-settings_editProfileBtn{
+    position: absolute;
+    bottom: 40px;
+    right: 10px;
+    background-color: var(--darker);
+    border-radius: 5px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1px solid var(--main-50p);
+    color: var(--main);
+    font-weight: bold;
+    transition: all .13s ease-out;
+}
+.profile-settings_editProfileBtn:hover{
+    cursor: pointer;
+    background-color: var(--dark);
+}/* Container label styling */
+label[for='profile-settings_usernameInp'] {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--main);
+    letter-spacing: 0.3px;
+    cursor: text;
+}
+
+.profile-settings_usernameInp {
+    width: 350px;
+    padding: 10px 20px;
+    background-color: rgba(var(--divBg), 0.5);
+    border: 1px solid var(--main-50p);
+    border-radius: 8px; /* slight modern curvature */
+    color: var(--main);
+    font-size: 1rem;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.15s ease;
+}
+
+.profile-settings_usernameInp:hover {
+    border-color: var(--main-1);
+}
+
+.profile-settings_usernameInp:focus {
+    outline: none;
+    border-color: var(--main-1);
+    box-shadow: 0 0 8px var(--main-50p);
+    transform: scale(1.01);
+}
+
+.profile-settings_usernameInp::placeholder {
+    color: rgba(var(--main), 0.6);
+    font-weight: 400;
+}

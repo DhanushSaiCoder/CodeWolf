@@ -1,0 +1,135 @@
+.security-settings {
+    padding: 20px;
+    color: var(--main);
+}
+
+.security-settings h3, .security-settings h4 {
+    color: var(--main);
+    font-size: 1.5rem;
+}
+
+.security-settings h4 {
+    font-size: 1.2rem;
+}
+.security-settings form{
+    width: 350px;
+}
+.security-settings-changePasswordDiv{
+    width: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: normal;
+    color: var(--main);
+}
+
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    background-color: rgba(var(--divBg), 0.5);
+    border: 1px solid var(--main-50p);
+    border-radius: 5px;
+    color: var(--main);
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input[type="password"]:focus {
+    outline: none;
+    border-color: var(--main-1);
+    box-shadow: 0 0 5px var(--main-50p);
+}
+
+.security-settings button {
+    background-color: var(--main-2);
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.security-settings button:hover {
+    background-color: var(--dark);
+}
+
+.delete-account-section {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--main-50p);
+}
+
+#accDelBtn {
+    background-color: #dc3545 ;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-weight: normal;
+}
+
+#accDelBtn:hover {
+    background-color: #c82333;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal {
+    background-color: var(--darker);
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid var(--main-50p);
+}
+
+.modal h4 {
+    font-size: 1.5rem;
+}
+
+.modal-buttons {
+    margin-top: 20px;
+}
+
+.modal-buttons button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+.delete-account-section{
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 10px;
+    flex-direction: column;
+}
+.delete-button{
+    background-color: orangered;
+}

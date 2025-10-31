@@ -142,4 +142,99 @@ router.post('/login', async (req, res) => {
     res.header('auth-token', token).send({ token: token })
 })
 
+// Update username
+router.patch('/me/username', authenticateToken, async (req, res) => {
+    const { username } = req.body;
+
+    if (!username || username.length < 3) {
+        return res.status(400).json({ message: 'Username must be at least 3 characters long.' });
+    }
+
+    try {
+        const existingUser = await User.findOne({ username });
+        if (existingUser && existingUser._id.toString() !== req.user._id) {
+            return res.status(400).json({ message: 'Username is already taken.' });
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(
+            req.user._id,
+            { username },
+            { new: true }
+        ).select('-password');
+
+        res.json(updatedUser);
+    } catch (err) {
+        console.error('Error updating username:', err);
+        res.status(500).json({ message: 'An unexpected error occurred.' });
+    }
+});  
+
+// Update profile picture
+router.patch('/me/profile-pic', authenticateToken, async (req, res) => {
+    const { profilePic } = req.body;
+
+    if (!profilePic) {
+        return res.status(400).json({ message: 'Profile picture URL is required.' });
+    }
+
+    try {
+        const updatedUser = await User.findByIdAndUpdate(
+            req.user._id,
+            { profilePic },
+            { new: true }
+        ).select('-password');
+
+        res.json(updatedUser);
+    } catch (err) {
+        console.error('Error updating profile picture:', err);
+        res.status(500).json({ message: 'An unexpected error occurred.' });
+    }
+});
+
+// Update password
+router.patch('/me/password', authenticateToken, async (req, res) => {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword || newPassword.length < 6) {
+        return res.status(400).json({ message: 'All fields are required and new password must be at least 6 characters long.' });
+    }
+
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Incorrect current password.' });
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+        user.password = hashedPassword;
+        await user.save();
+
+        res.json({ message: 'Password updated successfully.' });
+    } catch (err) {
+        console.error('Error updating password:', err);
+        res.status(500).json({ message: 'An unexpected error occurred.' });
+    }
+});
+
+// Delete account
+router.delete('/me', authenticateToken, async (req, res) => {
+    try {
+        const user = await User.findByIdAndDelete(req.user._id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+        res.json({ message: 'Account deleted successfully.' });
+    } catch (err) {
+        console.error('Error deleting account:', err);
+        res.status(500).json({ message: 'An unexpected error occurred.' });
+    }
+});
+
 module.exports = router

@@ -14,16 +14,26 @@ export default function MatchInfo({ matchDoc }) {
         return <div className='MatchInfo'>Invalid Match Data</div>;
     }
 
-    const {_id} = jwtDecode(localStorage.getItem('token'))
+    const { _id } = jwtDecode(localStorage.getItem('token'))
     const player = matchData.players[0].id == _id ? matchData.players[0] : matchData.players[1]
     const opponent = matchData.players[0].id == _id ? matchData.players[1] : matchData.players[0]
+
+    const player_lowQualityPic = player.profilePic?.replace(
+        "/upload/",
+        "/upload/q_auto:low,w_100,h_100,c_fill/"
+    );
+
+    const opponent_lowQualityPic = opponent.profilePic?.replace(
+        "/upload/",
+        "/upload/q_auto:low,w_100,h_100,c_fill/"
+    )
 
     return (
         <div className='MatchInfo'>
             <div className='MIPlayerDetails'>
                 {/* Player One */}
                 <div className='MIPlayerOneDetails bothPlayerDetails'>
-                    <img className='profileImgs' src={Profile} alt="playerOne" width={75} height={75} />
+                    <img className='profileImgs' src={player_lowQualityPic || Profile} alt="playerOne" width={75} height={75} />
                     <div>
                         <h2>{player?.username || "Unknown"}</h2>
                         <p>★ {player?.rating || "Unknown"}</p>
@@ -43,7 +53,7 @@ export default function MatchInfo({ matchDoc }) {
                         <p>★ {opponent?.rating || "Unknown"}</p>
 
                     </div>
-                    <img className='profileImgs' src={Profile} alt="playerTwo" width={75} height={75} />
+                    <img className='profileImgs' src={opponent_lowQualityPic || Profile} alt="playerTwo" width={75} height={75} />
                 </div>
             </div>
         </div>

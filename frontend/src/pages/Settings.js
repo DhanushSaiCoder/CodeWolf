@@ -7,12 +7,16 @@ import Nav from '../components/Nav';
 import { useSocket } from '../SocketContext';
 import { jwtDecode } from 'jwt-decode';
 
+import ProfileSettings from '../components/ProfileSettings';
+import SecuritySettings from '../components/SecuritySettings';
+
 const Settings = () => {
   const navigate = useNavigate();
   const socket = useSocket();
 
   const [matchRequestData, setMatchRequestData] = useState(null);
   const [rejectCountdown, setRejectCountdown] = useState(10);
+  const [activeTab, setActiveTab] = useState('profile');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -98,7 +102,24 @@ const Settings = () => {
           />
         </div>
         <div className='settingsContent'>
-          <p>this is settings, section</p>
+          <div className="settings-tabs">
+            <button 
+              className={`tab-button ${activeTab === 'profile' ? 'active' : ''}`}
+              onClick={() => setActiveTab('profile')}
+            >
+              Profile
+            </button>
+            <button 
+              className={`tab-button ${activeTab === 'security' ? 'active' : ''}`}
+              onClick={() => setActiveTab('security')}
+            >
+              Security
+            </button>
+          </div>
+          <div className="settings-tab-content">
+            {activeTab === 'profile' && <ProfileSettings />}
+            {activeTab === 'security' && <SecuritySettings />}
+          </div>
         </div>
       </div>
     </div>
