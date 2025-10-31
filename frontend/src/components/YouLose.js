@@ -4,6 +4,9 @@ import { jwtDecode } from 'jwt-decode';
 import youLoseImg from "../images/youlose.png"
 
 const YouLose = ({ matchDoc, loser_rating_delta, handle_continueSolvingClick, handle_goHomeClick, handleCloseYouLose }) => {
+    if (!matchDoc) {
+        return null; // Or a loading indicator
+    }
     const { _id: userId } = jwtDecode(localStorage.getItem('token'))
     const player_rating = matchDoc.players[0].id == userId ? matchDoc.players[0].rating : matchDoc.players[1].rating
 

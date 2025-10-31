@@ -23,8 +23,8 @@ export default function Match() {
   const [showYouLose, setShowYouLose] = useState(false)
   const [showYouWin, setShowYouWin] = useState(false)
   const [showMatchDraw, setShowMatchDraw] = useState(false)
-  const [loser_rating_delta, set_loser_rating_delta] = useState(0)
-  const [winnerRatingChange, setWinnerRatingChange] = useState(null)
+  const [loser_rating_delta, set_loser_rating_delta] = useState(JSON.parse(localStorage.getItem(`loserRatingDelta?${matchId}`)) || 0)
+  const [winnerRatingChange, setWinnerRatingChange] = useState(JSON.parse(localStorage.getItem(`winnerRatingChange?${matchId}`)) || null)
 
   const socket = useSocket()
 
@@ -37,6 +37,7 @@ export default function Match() {
     const handleMatchEnded = ({ match, loser_rating_delta }) => {
       console.log("Ended match data:", match);
       localStorage.setItem(`matchLost?${matchId}`, JSON.stringify(true))
+      localStorage.setItem(`loserRatingDelta?${matchId}`, JSON.stringify(loser_rating_delta))
       set_loser_rating_delta(loser_rating_delta)
       setMatchLost(true)
     };
@@ -143,8 +144,10 @@ export default function Match() {
     window.location.href = "/"
   }
 
-  const handleGotWinnerRatingChange =(rating, delta) => {
-    setWinnerRatingChange([rating, delta])
+  const handleGotWinnerRatingChange = (rating, delta) => {
+    const newWinnerRatingChange = [rating, delta];
+    setWinnerRatingChange(newWinnerRatingChange);
+    localStorage.setItem(`winnerRatingChange?${matchId}`, JSON.stringify(newWinnerRatingChange));
   }
   return (
     <> 
