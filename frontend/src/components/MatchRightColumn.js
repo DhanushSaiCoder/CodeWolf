@@ -16,7 +16,7 @@ export default function MatchRightColumn(props) {
   }
 
   const handleToggleTab = (activeTab) => {
-    setTabToShow(activeTab == "output" ? "testcases" : "output")
+    setTabToShow(activeTab)
   }
 
   const handleSubmitResults = (res) => {
