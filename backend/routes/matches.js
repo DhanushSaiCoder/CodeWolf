@@ -11,13 +11,20 @@ router.get('/', async (req, res) => {
 router.get('/history', authenticateToken, async (req, res) => {
     try {
         const userId = req.user._id;
-        const matches = await Match.find({
-            'players.id': userId
-        })
-        .populate('players.id', 'username rating') // Populate player details
-        .sort({ createdAt: -1 }); // Sort by newest first
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
 
-        res.json(matches);
+        const totalMatches = await Match.countDocuments({ 'players.id': userId });
+        const totalPages = Math.ceil(totalMatches / limit);
+
+        const matches = await Match.find({ 'players.id': userId })
+            .populate('players.id', 'username rating')
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
+
+        res.json({ matches, totalPages, currentPage: page });
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');

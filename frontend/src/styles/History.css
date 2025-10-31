@@ -4,6 +4,8 @@
     background-color: rgba(var(--divBg));
     margin-top: 20px;
     border-radius: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
 .history_header {
@@ -19,10 +21,16 @@
 }
 
 .historyContent {
-    padding: 20px;
     height: calc(100vh - 150px);
-
-    overflow-y: scroll;
+    padding: 20px;
+    flex-grow: 1;
+    position: relative;
+}
+.pagination-controls{
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
 }
 
 table {
@@ -85,4 +93,46 @@ td {
 
 .rating-draw {
     color: #6c757d;
+}
+
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    padding-bottom: 20px; /* Added padding to the bottom */
+}
+
+.pagination-controls button {
+    background-color: var(--main-1); /* Use a vibrant color from your palette */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 8px;
+    cursor: pointer;
+    border-radius: 5px; /* Pill shape */
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.pagination-controls button:hover:not(:disabled) {
+    background-color: var(--dark); /* Slightly darker on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.pagination-controls button:disabled {
+    background-color: var(--main-50p);
+    color: var(--main);
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+.pagination-controls span {
+    margin: 0 15px;
+    color: var(--main);
+    font-size: 1.1rem;
+    font-weight: bold;
 }

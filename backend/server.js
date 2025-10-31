@@ -208,7 +208,7 @@ io.on('connection', (socket) => {
       // STEP 1: update the Match doc in the db - update status, winner & loser
       updatedMatch = await Match.findByIdAndUpdate(
         match._id,
-        { status: "completed", winner: winner_id, loser: loser_id },
+        { status: "completed", winner: winner_id, loser: loser_id, winner_rating_delta, loser_rating_delta },
         { new: true }
       );
     }

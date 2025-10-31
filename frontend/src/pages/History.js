@@ -15,18 +15,23 @@ const History = () => {
   const [rejectCountdown, setRejectCountdown] = useState(10);
   const [historyData, setHistoryData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const limit = 10;
 
   useEffect(() => {
     const fetchHistory = async () => {
+      setLoading(true);
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/matches/history`, {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/matches/history?page=${page}&limit=${limit}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
         const data = await response.json();
-        setHistoryData(data);
+        setHistoryData(data.matches);
+        setTotalPages(data.totalPages);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching history:', error);
@@ -35,7 +40,7 @@ const History = () => {
     };
 
     fetchHistory();
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -139,8 +144,8 @@ const History = () => {
                     const currentUser = jwtDecode(localStorage.getItem('token'));
                     const opponent = match.players.find(p => p.id._id !== currentUser._id);
                     const result = match.winner === currentUser._id ? 'Win' : match.loser === currentUser._id ? 'Loss' : 'Draw';
-                    const ratingChange = result === 'Win' ? 25 : result === 'Loss' ? -25 : 0; // This is a placeholder, need to get actual rating change
-
+                    const ratingChange = match.winner === currentUser._id ? match.winner_rating_delta || "N/A" : match.loser_rating_delta || "N/A"; // This is a placeholder, need to get actual rating change
+                    
                     return (
                       <tr key={match._id}>
                         <td>{opponent ? opponent.id.username : 'N/A'}</td>
@@ -153,6 +158,15 @@ const History = () => {
                 </tbody>
               </table>
             )}
+            <div className="pagination-controls">
+              <button onClick={() => setPage(page - 1)} disabled={page === 1}>
+                Previous
+              </button>
+              <span>Page {page} of {totalPages}</span>
+              <button onClick={() => setPage(page + 1)} disabled={page === totalPages}>
+                Next
+              </button>
+            </div>
           </div>
         </div>
       </div>
