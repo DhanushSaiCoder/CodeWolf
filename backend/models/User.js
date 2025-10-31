@@ -43,6 +43,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'offline',
         enum: ['online', 'offline', 'inMatch']
+    },
+    problemsSolved: {
+        type: Number,
+        default: 0
     }
 }, { timestamps: true });
 
@@ -57,7 +61,8 @@ function validateUser(user) {
         role: joi.string().default('user').valid('user', 'admin').optional(),
         rating: joi.number().min(0).default(1000).optional(),
         last_rating: joi.number().min(0).default(1000).optional(),
-        status: joi.string().default('offline').valid('online', 'offline', 'inMatch').optional()
+        status: joi.string().default('offline').valid('online', 'offline', 'inMatch').optional(),
+        problemsSolved: joi.number().default(0).optional()
     });
     return schema.validate(user);
 }

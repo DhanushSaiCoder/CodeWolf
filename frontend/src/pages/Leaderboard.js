@@ -13,6 +13,24 @@ const Leaderboard = () => {
 
   const [matchRequestData, setMatchRequestData] = useState(null);
   const [rejectCountdown, setRejectCountdown] = useState(10);
+  const [leaderboardData, setLeaderboardData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/leaderboard`);
+        const data = await response.json();
+        setLeaderboardData(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching leaderboard:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchLeaderboard();
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -98,12 +116,32 @@ const Leaderboard = () => {
         />
         {/* Leaderboard-specific content can go here */}
         <div className="leaderboardContent_container">
-          {/* Your leaderboard content */}
-          <div className='leaderboard_header'>
-            <h2>LEADERBOARD</h2>
-          </div>
+          
           <div className='leaderboardContent'>
-            
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              <table>
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>Username</th>
+                    <th>Rating</th>
+                    <th>Problems Solved</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {leaderboardData.map((user, index) => (
+                    <tr key={user._id}>
+                      <td>#{index + 1}</td>
+                      <td>{user.username}</td>
+                      <td>{user.rating}</td>
+                      <td>{user.problemsSolved}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </div>

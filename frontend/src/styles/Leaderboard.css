@@ -19,3 +19,39 @@
 .leaderboardContent {
     padding: 20px;
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--main);
+    font-family: 'Arial', sans-serif;
+    font-size: 1rem;
+}
+
+th {
+    background-color: var(--darker);
+    color: var(--main-1);
+    padding: 15px 10px;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid var(--main-1);
+}
+
+tr {
+    border-bottom: 1px solid var(--dark);
+}
+
+tr:nth-child(even) {
+    background-color: rgba(var(--divBg), 0.5);
+}
+
+tr:hover {
+    background-color: var(--dark);
+    cursor: pointer;
+}
+
+td {
+    padding: 12px 10px;
+    vertical-align: middle;
+}

@@ -20,6 +20,7 @@ const friendsRoutes = require('./routes/friends');
 const questionsRoutes = require('./routes/questions.route');
 const runRoutes = require("./routes/run.routes")
 const submitRoutes = require('./routes/submit.routes')
+const leaderboardRoutes = require('./routes/leaderboard');
 
 mongoose
   .connect(process.env.MONGO_URI)
@@ -34,6 +35,7 @@ app.use('/friends', friendsRoutes);
 app.use('/questions', questionsRoutes);
 app.use('/run', runRoutes)
 app.use('/submit', submitRoutes)
+app.use('/leaderboard', leaderboardRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
