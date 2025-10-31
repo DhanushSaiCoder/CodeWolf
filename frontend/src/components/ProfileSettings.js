@@ -70,12 +70,25 @@ const ProfileSettings = () => {
         <button className='profile-settings_editProfileBtn'><SquarePen /> Edit</button>
       </div>
       <div profileSettings_formDiv>
-        <form>
+        <form onSubmit={handleSubmit}>
           <label htmlFor='profile-settings_usernameInp'>
             Username
-            <input id='profile-settings_usernameInp' className='profile-settings_usernameInp' type="text" placeholder={username || "Username"} />
+            <input
+              id='profile-settings_usernameInp'
+              className='profile-settings_usernameInp'
+              type="text"
+              value={username}
+              onChange={handleUsernameChange}
+              placeholder={username}
+            />
           </label>
+          <button type="submit" className="profile-settings_saveButton">Save Changes</button>
         </form>
+        {message && (
+          <p className={`profile-settings_message ${message.type === 'success' ? 'success' : 'error'}`}>
+            {message.text}
+          </p>
+        )}
       </div>
     </div>
   );
