@@ -23,6 +23,8 @@ export default function Match() {
   const [showYouLose, setShowYouLose] = useState(false)
   const [showYouWin, setShowYouWin] = useState(false)
   const [showMatchDraw, setShowMatchDraw] = useState(false)
+  const [loser_rating_delta, set_loser_rating_delta] = useState(JSON.parse(localStorage.getItem(`loserRatingDelta?${matchId}`)) || 0)
+  const [winnerRatingChange, setWinnerRatingChange] = useState(JSON.parse(localStorage.getItem(`winnerRatingChange?${matchId}`)) || null)
 
   const socket = useSocket()
 
@@ -32,9 +34,11 @@ export default function Match() {
   useEffect(() => {
     if (!socket) return;
 
-    const handleMatchEnded = ({ match }) => {
+    const handleMatchEnded = ({ match, loser_rating_delta }) => {
       console.log("Ended match data:", match);
       localStorage.setItem(`matchLost?${matchId}`, JSON.stringify(true))
+      localStorage.setItem(`loserRatingDelta?${matchId}`, JSON.stringify(loser_rating_delta))
+      set_loser_rating_delta(loser_rating_delta)
       setMatchLost(true)
     };
 
@@ -139,14 +143,20 @@ export default function Match() {
   const handleClick_matchDraw_goHome = () => {
     window.location.href = "/"
   }
+
+  const handleGotWinnerRatingChange = (rating, delta) => {
+    const newWinnerRatingChange = [rating, delta];
+    setWinnerRatingChange(newWinnerRatingChange);
+    localStorage.setItem(`winnerRatingChange?${matchId}`, JSON.stringify(newWinnerRatingChange));
+  }
   return (
     <> 
-      {showYouLose && (<YouLose handleCloseYouLose={handleCloseYouLose} handle_continueSolvingClick={handle_continueSolvingClick} handle_goHomeClick={handle_goHomeClick} />)}
-      {showYouWin && (<YouWin handleCloseYouWin={handleCloseYouWin} />)}
+      {showYouLose && (<YouLose matchDoc={matchDoc} loser_rating_delta={loser_rating_delta} handleCloseYouLose={handleCloseYouLose} handle_continueSolvingClick={handle_continueSolvingClick} handle_goHomeClick={handle_goHomeClick} />)}
+      {showYouWin && (<YouWin winnerRatingChange={winnerRatingChange || [0,0]} handleCloseYouWin={handleCloseYouWin} />)}
       {showMatchDraw && (<MatchDraw handleClick_matchDraw_continueSolving={handleClick_matchDraw_continueSolving} handleClick_matchDraw_goHome={handleClick_matchDraw_goHome}/>)}
       <div className='Match'>
         <MatchLeftColumn showTimer={showTimer} matchDoc={JSON.stringify(matchDoc)} matchId={matchId} handleTimeUp={handleTimeUp} handleQuestionFound={handleQuestionFound} matchCompleted={matchCompleted} />
-        <MatchRightColumn question={question} matchDoc={matchDoc} handleUserWonMatch={handleUserWonMatch} timeUp={timeUp} matchLost={matchLost} userWonMatch={userWonMatch}/>
+        <MatchRightColumn question={question} matchDoc={matchDoc} handleUserWonMatch={handleUserWonMatch} timeUp={timeUp} matchLost={matchLost} userWonMatch={userWonMatch} handleGotWinnerRatingChange={handleGotWinnerRatingChange}/>
       </div>
     </>
   );

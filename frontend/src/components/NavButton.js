@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Home, Users, History, Trophy, Settings } from 'lucide-react';
 
 import "../styles/NavButton.css";
 
@@ -15,12 +16,21 @@ const NavButton = (props) => {
 
     if (currPage === to) btnClassName += " activeBtn";
 
+    const iconMapping = {
+        home: <Home />,
+        friends: <Users />,
+        history: <History />,
+        leaderboard: <Trophy />,
+        settings: <Settings />
+    };
+
     return (
         <button
             className={btnClassName}
             onClick={() => { navigate(toUrl) }}
         >
-            {to.toUpperCase()}
+            {iconMapping[to]}
+            <span className="nav-text">{to.toUpperCase()}</span>
         </button>
     );
 }

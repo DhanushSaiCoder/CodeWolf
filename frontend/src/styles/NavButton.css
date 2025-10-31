@@ -16,7 +16,7 @@
 
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .NavButton:hover{
@@ -33,11 +33,7 @@
 .activeBtn:hover{
     background-color: var(--main);
 }
-svg{
+.NavButton svg{
     height: 25px;
-    margin: 0;
-    margin-right: -7px;
-}
-.unIcon{
-    color: var(--main);
+    margin-right: 15px;
 }

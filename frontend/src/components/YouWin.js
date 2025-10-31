@@ -2,7 +2,7 @@ import React from 'react';
 import "../styles/YouWin.css"
 import youWinImg from "../images/youwin.png"
 
-const YouWin = ({ handleCloseYouWin }) => {
+const YouWin = ({ handleCloseYouWin, winnerRatingChange }) => {
     const handle_goHomeClick = () => {
         window.location.href = "/"
     }
@@ -19,9 +19,9 @@ const YouWin = ({ handleCloseYouWin }) => {
                         <h1>
                             {/* <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 25 25" fill="none" stroke="#fc3503" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trending-down-icon lucide-trending-down"><path d="M16 17h6v-6" /><path d="m22 17-8.5-8.5-5 5L2 7" />
                                 </svg> */}
-                            &#8902; 1422
+                            &#8902; {winnerRatingChange[0] + winnerRatingChange[1]}
                         </h1>
-                        <p className='youWin_rating_diff'>(+13)</p>
+                        <p className='youWin_rating_diff'>(+{winnerRatingChange[1]})</p>
                     </div>
                     <div className='youWin_cta_div'>
                         <button onClick={handle_goHomeClick} className='youWin_cta_btn'>Go Home</button>

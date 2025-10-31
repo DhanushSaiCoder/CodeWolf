@@ -5,7 +5,7 @@ import Loader from './Loader';
 import { useSocket } from '../SocketContext';
 import { jwtDecode } from 'jwt-decode';
 
-export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOutput, handleSubmitResults, handleUserWonMatch, timeUp, matchLost, userWonMatch }) {
+export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOutput, handleSubmitResults, handleUserWonMatch, timeUp, matchLost, userWonMatch, handleGotWinnerRatingChange }) {
   const [code, setCode] = useState("");
   const [runningCode, setRunningCode] = useState(false)
   const [submittingCode, setSubmittingCode] = useState(false)
@@ -156,12 +156,30 @@ export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOut
   }
 
   const handleMatchFinish = () => {
+    //calculate solveTime
+    const finishTime = new Date();
+    const storedData = localStorage.getItem('matchStartData');
+    let solveTime = null;
+
+    if (storedData) {
+      const { matchId, hour, min, sec } = JSON.parse(storedData);
+      if (matchId === matchObj._id) {
+        const startTime = new Date();
+        startTime.setHours(hour, min, sec, 0);
+        solveTime = Math.floor((finishTime - startTime) / 1000);
+      }
+    }
+
     const user_id = localStorage.getItem('token')
     const { _id } = jwtDecode(user_id)
 
     socket.emit("endMatch", {
       match: matchObj,
-      winner_id: _id
+      winner_id: _id,
+      solveTime
+    }, (response) => {
+      const {winner_rating, winner_rating_delta} = response
+      handleGotWinnerRatingChange(winner_rating, winner_rating_delta)
     })
 
     handleUserWonMatch(_id)

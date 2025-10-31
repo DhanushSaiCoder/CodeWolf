@@ -1,6 +1,6 @@
 // Nav.js
 import React from 'react';
-import "../styles/Nav.css";
+import "../styles/Nav.css"; 
 import NavButton from './NavButton';
 import { MatchRequest } from '../components/MatchRequest';
 

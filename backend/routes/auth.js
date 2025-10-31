@@ -47,7 +47,7 @@ router.get('/user', async (req, res) => {
 router.get('/nonfriends', authenticateToken, async (req, res) => {
     try {
         const user = await User.findById(req.user._id);
-        const friends = user.friends.map(friend => friend.id);
+        const friends = user.friends.map(friendId => friendId);
         friends.push(req.user._id);
         const users = await User.find({ _id: { $nin: friends } }, '_id username rating status').lean();
         res.status(200).json(users);

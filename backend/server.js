@@ -9,6 +9,8 @@ const { User } = require('./models/User');
 const { Match } = require('./models/Match')
 const jwt = require('jsonwebtoken');
 
+const computeDelta = require("./computeDelta")
+
 dotenv.config();
 
 const port = process.env.PORT || 3001;
@@ -186,11 +188,19 @@ io.on('connection', (socket) => {
   }
   );
 
-  socket.on('endMatch', async (payload) => {
-    const { match, winner_id } = payload
+  socket.on('endMatch', async (payload, callback) => {
+    const { match, winner_id, solveTime } = payload
     const loser_id = match.players[0].id == winner_id ? match.players[1].id : match.players[0].id
 
+    const winner = match.players[0].id == winner_id ? match.players[0] : match.players[1]
+    const loser = match.players[0].id == loser_id ? match.players[0] : match.players[1]
+
     let updatedMatch = match;
+    const winner_rating_delta = computeDelta(winner.rating, loser.rating, match.difficulty, solveTime, 'win', 1.0)
+    const loser_rating_delta = computeDelta(loser.rating, winner.rating, match.difficulty, solveTime, 'lose, 1.0')
+
+    console.log("[USER_RaTNG_UPDT] winner rating +", winner_rating_delta)
+    console.log("[USER_RaTNG_UPDT] loser rating ", loser_rating_delta)
 
     if (match.status != "completed") {
       // STEP 1: update the Match doc in the db - update status, winner & loser
@@ -200,20 +210,29 @@ io.on('connection', (socket) => {
         { new: true }
       );
     }
-
     if (!updatedMatch) return res.status(404).json({ message: "Match not found (or) Match not found in the payload of the socket event ''endMatch''." });
+
+    //update winner's rating in db
+    await User.findByIdAndUpdate(winner_id, { $inc: { rating: winner_rating_delta } });
+    
+    //update loser's rating in db
+    await User.findByIdAndUpdate(loser_id,  { $inc: { rating: loser_rating_delta } });
 
     //STEP 2: Send "matchEnded" event to the other player(get loserSocketId using loser_id from userSocketMap)
     const loserSocketId = userSocketMap.get(loser_id)
     socket.to(loserSocketId).emit('matchEnded', {
-      match: updatedMatch
+      match: updatedMatch,
+      loser_rating_delta
     })
+
+    //STEP 3: Send winner_rating_delta to winner
+    callback({winner_rating: winner.rating ,winner_rating_delta})
   })
 
-  socket.on("drawMatch",async (matchDoc) => {
+  socket.on("drawMatch", async (matchDoc) => {
     // update the match doc in db- set status to "completed"
     const match = await Match.findById(matchDoc._id)
-    if(!match) return
+    if (!match) return
     match.status = "completed"
     await match.save()
   })

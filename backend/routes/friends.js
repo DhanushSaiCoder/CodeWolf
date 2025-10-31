@@ -6,22 +6,20 @@ const authenticateToken = require('../middleware/authenticateToken');
 const Joi = require('joi');
 const mongoose = require('mongoose');
 
-// Define validation schema
-const friendSchema = Joi.object({
+// Define validation schema for adding a friend - only ID is needed.
+const addFriendSchema = Joi.object({
   id: Joi.string().required(),
-  username: Joi.string().required(),
-  rating: Joi.number().required(),
 });
 
 // Route to add a friend
 router.post('/', authenticateToken, async (req, res) => {
   // Validate request body
-  const { error } = friendSchema.validate(req.body);
+  const { error } = addFriendSchema.validate(req.body);
   if (error) {
     return res.status(400).send(`Invalid request: ${error.details[0].message}`);
   }
 
-  const { id, username, rating } = req.body;
+  const { id } = req.body;
 
   try {
     // Get the logged-in user's document
@@ -38,33 +36,20 @@ router.post('/', authenticateToken, async (req, res) => {
     }
 
     // Prevent duplicate friends
-    const alreadyFriends = user.friends.some((friend) => friend.id.equals(id));
+    const alreadyFriends = user.friends.some((friendId) => friendId.equals(id));
     if (alreadyFriends) {
       return res.status(400).send('User is already your friend');
     }
 
-    // Prepare the friend object with the current status
-    const friend = {
-      id: new mongoose.Types.ObjectId(id),
-      username: username,
-      rating: rating,
-      status: otherUser.status || 'offline', // Get the current status or default to 'offline'
-    };
-
-    // Add friend to user's friends array
-    user.friends.push(friend);
+    // Add friend's ID to user's friends array
+    user.friends.push(otherUser._id);
     await user.save();
 
-    // Add the user to the other user's friends array
-    otherUser.friends.push({
-      id: user._id,
-      username: user.username,
-      rating: user.rating,
-      status: user.status || 'offline',
-    });
+    // Add user's ID to the other user's friends array
+    otherUser.friends.push(user._id);
     await otherUser.save();
 
-    res.send(user);
+    res.send(user); // Responding with the updated user doc
   } catch (err) {
     console.error('Error adding friend:', err);
     res.status(500).send('Internal server error');
@@ -74,7 +59,7 @@ router.post('/', authenticateToken, async (req, res) => {
 // Route to get the user's friends list
 router.get('/list', authenticateToken, async (req, res) => {
   try {
-    const user = await User.findById(req.user._id).select('friends');
+    const user = await User.findById(req.user._id).populate('friends', 'username rating status _id');
     if (!user) return res.status(404).send('User not found');
 
     res.json({ friends: user.friends });

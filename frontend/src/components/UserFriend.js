@@ -104,7 +104,7 @@ export const UserFriend = (props) => {
   const configureMatch = (user) => {
     setRejectedOpponents(prev => {
       const newObj = { ...prev };
-      delete newObj[user.id];
+      delete newObj[user._id];
       return newObj;
     });
     setSelectedFriend(user);
@@ -118,7 +118,7 @@ export const UserFriend = (props) => {
       return;
     }
     const newMatchDetails = {
-      userId: selectedFriend.id,
+      userId: selectedFriend._id,
       ...matchSettings,
     };
     const requestMatchPayload = {
@@ -133,12 +133,12 @@ export const UserFriend = (props) => {
     }
 
     // Mark that a request has been sent to this friend
-    setSentRequests(prev => ({ ...prev, [selectedFriend.id]: true }));
+    setSentRequests(prev => ({ ...prev, [selectedFriend._id]: true }));
     // Reset the button text after 10 seconds
     setTimeout(() => {
       setSentRequests(prev => {
         const newState = { ...prev };
-        delete newState[selectedFriend.id];
+        delete newState[selectedFriend._id];
         return newState;
       });
     }, 10000);
@@ -152,13 +152,13 @@ export const UserFriend = (props) => {
     // Clear previous rejection for this opponent when sending a new match request
     setRejectedOpponents(prev => {
       const newObj = { ...prev };
-      delete newObj[user.id];
+      delete newObj[user._id];
       return newObj;
     });
     // Mark that a request is sent
-    setSentRequests(prev => ({ ...prev, [user.id]: true }));
+    setSentRequests(prev => ({ ...prev, [user._id]: true }));
     const quickMatchDetails = {
-      userId: user.id,
+      userId: user._id,
       programmingLanguage: 'js',
       difficulty: 'easy',
       mode: 'quick-debug',
@@ -176,7 +176,7 @@ export const UserFriend = (props) => {
     setTimeout(() => {
       setSentRequests(prev => {
         const newState = { ...prev };
-        delete newState[user.id];
+        delete newState[user._id];
         return newState;
       });
     }, 10000);
@@ -275,7 +275,7 @@ export const UserFriend = (props) => {
                     ? "UserFriend__container onlineUF"
                     : "UserFriend__container offlineUF"
                 }
-                key={userFriend.id}
+                key={userFriend._id}
               >
                 <p>{index + 1}</p>
                 <div className="UserFriend__userDetails">
@@ -302,13 +302,13 @@ export const UserFriend = (props) => {
 
                   <button
                     className="UFModeBtns quickMatchBtn UserFriendQuickMatchBtn"
-                    disabled={userFriend.status !== "online" || sentRequests[userFriend.id]}
+                    disabled={userFriend.status !== "online" || sentRequests[userFriend._id]}
                     onClick={() => configureMatch(userFriend)}
                   >
-                    <b>{sentRequests[userFriend.id] ? "REQUEST SENT" : "QUICK MATCH"}</b>
+                    <b>{sentRequests[userFriend._id] ? "REQUEST SENT" : "QUICK MATCH"}</b>
                   </button>
                   {/* Display "Rejected" below the QUICK MATCH button if this friend rejected your request */}
-                  {rejectedOpponents[userFriend.id] && (
+                  {rejectedOpponents[userFriend._id] && (
                     <p className="rejectedLabel">Rejected</p>
                   )}
                 </div>
