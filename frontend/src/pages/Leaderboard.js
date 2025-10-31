@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import Nav from '../components/Nav';
 import { useSocket } from '../SocketContext';
 import { jwtDecode } from 'jwt-decode';
+import Loader from './../components/Loader';
 
 const Leaderboard = () => {
   const navigate = useNavigate();
@@ -119,7 +120,7 @@ const Leaderboard = () => {
           
           <div className='leaderboardContent'>
             {loading ? (
-              <p>Loading...</p>
+              <Loader/>
             ) : (
               <table>
                 <thead>
@@ -135,7 +136,7 @@ const Leaderboard = () => {
                     <tr key={user._id}>
                       <td>#{index + 1}</td>
                       <td>{user.username}</td>
-                      <td>{user.rating}</td>
+                      <td>&#8902; {user.rating}</td>
                       <td>{user.problemsSolved}</td>
                     </tr>
                   ))}
