@@ -60,6 +60,11 @@
         align-items: center !important;
         justify-content: center !important;
     }
+    .homeHistoryContainer{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
     .modesContainer {
         flex-direction: column; /* Ensure modes stack vertically */
