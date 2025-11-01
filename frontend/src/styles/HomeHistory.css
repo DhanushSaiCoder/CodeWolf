@@ -4,24 +4,21 @@
     box-sizing: border-box;
 }
 
-.homeLeaderBoardContainer {
+.homeHistoryContainer {
     border-radius: 10px;
 }
 
-.HomeLeaderBoard {
+.HomeHistory {
     position: relative;
-    margin-top: 20px;
-
     width: 25vw;
     height: calc(100vh - 200px);
-
     border-radius: 10px;
     padding: 10px 20px;
-
     overflow-y: scroll;
     scrollbar-width: thin;
     scrollbar-color: var(--main-50p) transparent;
     scroll-behavior: smooth;
+    margin-top: 20px;
     background-image: linear-gradient(
         to bottom,
         hsla(266, 74%, 41%, 0.2),
@@ -29,12 +26,12 @@
     );
 }
 
-.HomeLeaderBoard::-webkit-scrollbar-thumb {
+.HomeHistory::-webkit-scrollbar-thumb {
     background-color: rgba(63, 101, 134, 0.5);
     border-radius: 10px;
 }
 
-.HomeLeaderBoardHeader {
+.HomeHistoryHeader {
     width: 100%;
     height: 50px;
     text-align: center;
@@ -43,12 +40,12 @@
     justify-content: center;
 }
 
-.homeLeaderBoardContent {
+.homeHistoryContent {
     width: 100%;
     height: auto;
 }
 
-.lbUser {
+.historyItem {
     width: 100%;
     height: 60px;
     border-radius: 5px;
@@ -58,29 +55,35 @@
         hsla(266, 74%, 41%, 0.2)
     );
     box-shadow: inset 0 8px 6px -6px hsla(266, 74%, 81%, 0.12);
-    margin: 4px;
+    margin: 3px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 30px;
-
+    gap: 20px;
     padding: 0 20px;
-
     position: relative;
 }
 
-.hlbRating {
-    width: 70px;
+.historyResult {
     position: absolute;
-    opacity: 0.6;
     right: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
-.hlbBadge {
-    margin-left: 10px;
+.historyResult.win {
+    color: #4caf50; /* Green for win */
 }
 
-.hlbProfilePic {
+.historyResult.loss {
+    color: #f44336; /* Red for loss */
+}
+
+.historyResult.draw {
+    color: #9e9e9e; /* Gray for draw */
+}
+
+.h-profile-pic {
     width: 35px;
     height: 35px;
     border-radius: 50%;
@@ -88,15 +91,19 @@
     margin-right: 10px;
     border: 2px solid var(--main-50p);
 }
-.starSymbol {
-    font-size: 30px;
-    color: var(--main);
+
+.h_profile_and_username {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
 .showMoreBtn {
     position: absolute;
     left: 50%;
+    bottom: 10px;
     transform: translateX(-50%);
-    margin: 10px;
+    margin-top: 10px;
     padding: 5px 10px;
     border: none;
     background-color: var(--main-1);
@@ -105,30 +112,27 @@
     transition: all 0.3s ease-in-out;
     cursor: pointer;
 }
+
 .showMoreBtn:hover {
     background-color: var(--main);
 }
+
 /* Spinner Container */
 .spinner-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 25vh; /* Adjust height as needed */
+    height: 25vh; /* Adjusted height */
 }
 
 /* Spinner */
 .spinner {
-    border: 4px solid rgba(255, 255, 255, 0.3); /* Light outer b order */
+    border: 4px solid rgba(255, 255, 255, 0.3); /* Light outer border */
     border-top: 4px solid var(--main); /* Main color for the spinning part */
     border-radius: 50%;
     width: 40px;
     height: 40px;
     animation: spin 0.71s linear infinite;
-}
-.hlb_profile_and_username {
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 /* Spinner Animation */
