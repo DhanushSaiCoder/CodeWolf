@@ -44,7 +44,7 @@
     width: 100%;
     height: calc(100% - 50px);
 }
-.code_editor_header_buttonsDiv{
+.code_editor_header_buttonsDiv {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,4 +74,10 @@
 .runBtn:hover {
     background-color: #fff;
     color: black;
+}
+
+@media (max-width: 768px) {
+    .CodeEditor {
+        background: rgba(48, 14, 93, 0.2);
+    }
 }

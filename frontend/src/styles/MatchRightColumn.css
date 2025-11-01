@@ -12,3 +12,9 @@
     min-height: 200px;
 }
 
+@media (max-width: 768px) {
+  .MatchRightColumn {
+    width: 100%;
+  }
+}
+

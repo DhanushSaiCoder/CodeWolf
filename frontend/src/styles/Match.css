@@ -3,13 +3,50 @@
     height: 100%;
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
     align-items: flex-start;
-    padding: 20px;
-    gap: 20px;
+    gap: 10px;
     border-radius: 10px;
     transition: all 0.3s;
+    padding: 20px;
+    gap: 20px;
+}
 
-    
+.match-mobile-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--main-50p, rgba(255, 255, 255, 0.2)); /* Fallback color */
+    width: 100%; /* Ensure it takes full width on mobile */
+    justify-content: space-around; /* Distribute buttons evenly */
+}
+
+.match-tab-button {
+    padding: 15px 20px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: var(--main, #fff); /* Fallback color */
+    font-size: 1rem;
+    transition: background-color 0.3s;
+    flex-grow: 1; /* Allow buttons to grow and fill space */
+    text-align: center; /* Center text in buttons */
+}
+
+.match-tab-button.active {
+    background-color: var(--main-50p, rgba(255, 255, 255, 0.2)); /* Fallback color */
+    border-bottom: 2px solid var(--main-1, #007bff); /* Fallback color */
+}
+
+@media (max-width: 768px) {
+  .Match {
+    flex-direction: column;
+    align-items: stretch; /* Stretch items to fill the width */
+    gap: 0;
+    padding: 0;
+  }
+
+  .match-tab-button {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
 }

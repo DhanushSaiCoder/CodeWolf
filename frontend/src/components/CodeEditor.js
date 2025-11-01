@@ -5,7 +5,7 @@ import Loader from './Loader';
 import { useSocket } from '../SocketContext';
 import { jwtDecode } from 'jwt-decode';
 
-export default function CodeEditor({ question, matchDoc: matchObj, handleCodeOutput, handleSubmitResults, handleUserWonMatch, timeUp, matchLost, userWonMatch, handleGotWinnerRatingChange }) {
+export default function CodeEditor({ question,isMobile , matchDoc: matchObj, handleCodeOutput, handleSubmitResults, handleUserWonMatch, timeUp, matchLost, userWonMatch, handleGotWinnerRatingChange }) {
   const [code, setCode] = useState("");
   const [runningCode, setRunningCode] = useState(false)
   const [submittingCode, setSubmittingCode] = useState(false)
