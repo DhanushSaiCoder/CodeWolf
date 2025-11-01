@@ -6,10 +6,12 @@
 
 .homeHistoryContainer {
     border-radius: 10px;
+    max-height: calc(100vh - 150px);
+    position: relative;
+
 }
 
 .HomeHistory {
-    position: relative;
     width: 25vw;
     border-radius: 10px;
     padding: 10px 20px;
@@ -24,6 +26,8 @@
         hsla(266, 74%, 21%, 0.2)
     );
     padding-bottom: 80px;
+    max-height: calc(100vh - 150px);
+
 }
 
 .HomeHistory::-webkit-scrollbar-thumb {
