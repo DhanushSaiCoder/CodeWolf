@@ -191,11 +191,11 @@ const History = () => {
             )}
             <div className="pagination-controls">
               <button onClick={() => setPage(page - 1)} disabled={page === 1}>
-                Previous
+                &lt; Previous
               </button>
-              <span>Page {page} of {totalPages}</span>
+              <span>{page} / {totalPages}</span>
               <button onClick={() => setPage(page + 1)} disabled={page === totalPages}>
-                Next
+                Next &gt;
               </button>
             </div>
           </div>
