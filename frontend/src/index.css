@@ -21,7 +21,7 @@ body {
     color: #d5bcf5;
 }
 a, button, input, select, textarea {
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: transparent !important;
 }
 
 code {

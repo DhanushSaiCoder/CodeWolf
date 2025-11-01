@@ -135,15 +135,16 @@ const Leaderboard = () => {
             {loading ? (
               <Loader/>
             ) : (
-              <table>
-                <thead>
-                  <tr>
-                    <th>Rank</th>
-                    <th>Username</th>
-                    <th>Rating</th>
-                    <th>Problems Solved</th>
-                  </tr>
-                </thead>
+              <div id='table-responsive-wrapper' className="table-responsive-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Rank</th>
+                      <th>Username</th>
+                      <th>Rating</th>
+                      <th>Problems Solved</th>
+                    </tr>
+                  </thead>
                 <tbody>
                   {leaderboardData.map((user, index) => (
                     <tr key={user._id}>
@@ -155,6 +156,7 @@ const Leaderboard = () => {
                   ))}
                 </tbody>
               </table>
+              </div>
             )}
           </div>
         </div>

@@ -165,6 +165,7 @@
 @media (max-width: 768px) {
     .FriendList {
         width: 100%;
+        margin-top: 20px;
         height: 100%;
     }
     .friendListHeader {
@@ -173,7 +174,6 @@
         gap: 15px;
         padding: 15px;
         justify-content: center;
-        margin-top: 20px;
     }
     .inputDiv {
         width: 100%;

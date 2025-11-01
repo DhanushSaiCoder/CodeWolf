@@ -141,51 +141,53 @@ const History = () => {
             {loading ? (
               <p>Loading...</p>
             ) : (
-              <table>
-                <thead>
-                  <tr>
-                    <th>Opponent</th>
-                    <th>Result</th>
-                    <th>Rating Change</th>
-                    <th>Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {historyData.map((match) => {
-                    const currentUser = jwtDecode(localStorage.getItem('token'));
-                    const opponent = match.players.find(p => p.id._id !== currentUser._id);
-                    const result = match.winner === currentUser._id ? 'Win' : match.loser === currentUser._id ? 'Loss' : 'Draw';
-                    const ratingChange = match.winner === currentUser._id ? match.winner_rating_delta || "N/A" : match.loser_rating_delta || "N/A"; // This is a placeholder, need to get actual rating change
+              <div className='history_page_table_wrapper'>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Opponent</th>
+                      <th>Result</th>
+                      <th>Rating Change</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {historyData.map((match) => {
+                      const currentUser = jwtDecode(localStorage.getItem('token'));
+                      const opponent = match.players.find(p => p.id._id !== currentUser._id);
+                      const result = match.winner === currentUser._id ? 'Win' : match.loser === currentUser._id ? 'Loss' : 'Draw';
+                      const ratingChange = match.winner === currentUser._id ? match.winner_rating_delta || "N/A" : match.loser_rating_delta || "N/A"; // This is a placeholder, need to get actual rating change
 
-                    const formatRelativeTime = (dateString) => {
-                      const date = new Date(dateString);
-                      const now = new Date();
-                      const seconds = Math.round((now.getTime() - date.getTime()) / 1000);
-                      const minutes = Math.round(seconds / 60);
-                      const hours = Math.round(minutes / 60);
-                      const days = Math.round(hours / 24);
-                      const months = Math.round(days / 30);
-                      const years = Math.round(days / 365);
+                      const formatRelativeTime = (dateString) => {
+                        const date = new Date(dateString);
+                        const now = new Date();
+                        const seconds = Math.round((now.getTime() - date.getTime()) / 1000);
+                        const minutes = Math.round(seconds / 60);
+                        const hours = Math.round(minutes / 60);
+                        const days = Math.round(hours / 24);
+                        const months = Math.round(days / 30);
+                        const years = Math.round(days / 365);
 
-                      if (seconds < 60) return `${seconds} seconds ago`;
-                      if (minutes < 60) return `${minutes} minutes ago`;
-                      if (hours < 24) return `${hours} hours ago`;
-                      if (days < 30) return `${days} days ago`;
-                      if (months < 12) return `${months} months ago`;
-                      return `${years} years ago`;
-                    };
+                        if (seconds < 60) return `${seconds} seconds ago`;
+                        if (minutes < 60) return `${minutes} minutes ago`;
+                        if (hours < 24) return `${hours} hours ago`;
+                        if (days < 30) return `${days} days ago`;
+                        if (months < 12) return `${months} months ago`;
+                        return `${years} years ago`;
+                      };
 
-                    return (
-                      <tr key={match._id}>
-                        <td>{opponent ? opponent.id.username : 'N/A'}</td>
-                        <td className={`result-${result.toLowerCase()}`}>{result}</td>
-                        <td className={`rating-${result.toLowerCase()}`}>{ratingChange > 0 ? `+${ratingChange}` : ratingChange}</td>
-                        <td>{formatRelativeTime(match.createdAt)}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                      return (
+                        <tr key={match._id}>
+                          <td>{opponent ? opponent.id.username : 'N/A'}</td>
+                          <td className={`result-${result.toLowerCase()}`}>{result}</td>
+                          <td className={`rating-${result.toLowerCase()}`}>{ratingChange > 0 ? `+${ratingChange}` : ratingChange}</td>
+                          <td>{formatRelativeTime(match.createdAt)}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             )}
             <div className="pagination-controls">
               <button onClick={() => setPage(page - 1)} disabled={page === 1}>
