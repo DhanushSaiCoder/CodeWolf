@@ -53,8 +53,9 @@ export const HomeLeaderBoard = () => {
                                 <p>{index + 1}</p>
                                 <p className='hlb_profile_and_username'>
                                     <ImageWithLoader className='hlbProfilePic' src={u.profilePic ? toLowQualityPic(u.profilePic) : profileImg} alt={u.username} />
-                                    <b>{u.username}</b></p>
-                                {index < 3 && <img className='hlbBadge' height="35px" width="35px" src={medals[index]} alt={`${index + 1} place medal`} />}
+                                    <b>{u.username}</b>
+                                    {index < 3 && <img className='hlbBadge' height="35px" width="35px" src={medals[index]} alt={`${index + 1} place medal`} />}</p>
+
                                 <div className='hlbRating'>
                                     <p><span className='starSymbol'>&#8902; </span>{u.rating}</p>
                                 </div>
