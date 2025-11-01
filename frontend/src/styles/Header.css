@@ -15,8 +15,7 @@
     width: 100vw;
     height: 75px;
     padding: 10px 30px;
-    background-color: #300e5d36;
-    border-bottom: 1px solid var(--div);
+    border-bottom: 1px solid var(--main-50p);
 
     display: flex;
     align-items: center;
