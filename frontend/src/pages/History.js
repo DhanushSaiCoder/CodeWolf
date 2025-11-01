@@ -11,6 +11,7 @@ const History = () => {
   const navigate = useNavigate();
   const socket = useSocket();
 
+  const [isNavOpen, setIsNavOpen] = useState(false);
   const [matchRequestData, setMatchRequestData] = useState(null);
   const [rejectCountdown, setRejectCountdown] = useState(10);
   const [historyData, setHistoryData] = useState([]);
@@ -18,6 +19,14 @@ const History = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const limit = 10;
+
+  const toggleNav = () => {
+    setIsNavOpen(!isNavOpen);
+  };
+
+  const closeNav = () => {
+    setIsNavOpen(false);
+  };
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -116,7 +125,7 @@ const History = () => {
 
   return (
     <div className='Home'>
-      <Header />
+      <Header onNavToggle={toggleNav} />
       <div className='homeContent'>
         <Nav
           currPage="history"
@@ -124,6 +133,8 @@ const History = () => {
           rejectCountdown={rejectCountdown}
           onAccept={handleAccept}
           onReject={handleReject}
+          isOpen={isNavOpen}
+          onClose={closeNav}
         />
         <div className="historyContent_container">
           <div className='historyContent'>

@@ -14,10 +14,19 @@ const Leaderboard = () => {
   const navigate = useNavigate();
   const socket = useSocket();
 
+  const [isNavOpen, setIsNavOpen] = useState(false);
   const [matchRequestData, setMatchRequestData] = useState(null);
   const [rejectCountdown, setRejectCountdown] = useState(10);
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const toggleNav = () => {
+    setIsNavOpen(!isNavOpen);
+  };
+
+  const closeNav = () => {
+    setIsNavOpen(false);
+  };
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
@@ -108,7 +117,7 @@ const Leaderboard = () => {
 
   return (
     <div className='Home'>
-      <Header />
+      <Header onNavToggle={toggleNav} />
       <div className='homeContent'>
         <Nav
           currPage="leaderboard"
@@ -116,6 +125,8 @@ const Leaderboard = () => {
           rejectCountdown={rejectCountdown}
           onAccept={handleAccept}
           onReject={handleReject}
+          isOpen={isNavOpen}
+          onClose={closeNav}
         />
         {/* Leaderboard-specific content can go here */}
         <div className="leaderboardContent_container">

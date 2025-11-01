@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Friends.css';
 import Header from '../components/Header';
@@ -10,6 +10,15 @@ import { useSocket } from '../SocketContext'; // Import useSocket
 const Friends = () => {
     const navigate = useNavigate();
     const socket = useSocket(); // Access the socket
+    const [isNavOpen, setIsNavOpen] = useState(false);
+
+    const toggleNav = () => {
+        setIsNavOpen(!isNavOpen);
+    };
+
+    const closeNav = () => {
+        setIsNavOpen(false);
+    };
 
     useEffect(() => {
         if (!localStorage.getItem('token')) {
@@ -28,9 +37,9 @@ const Friends = () => {
 
     return (
         <div className='Friends'>
-            <Header />
+            <Header onNavToggle={toggleNav} />
             <div className='friendsContent'>
-                <Nav currPage="friends" />
+                <Nav currPage="friends" isOpen={isNavOpen} onClose={closeNav} />
                 <div className='friendListDiv'>
                     <FriendList />
                 </div>

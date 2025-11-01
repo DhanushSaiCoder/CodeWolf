@@ -14,9 +14,18 @@ const Settings = () => {
   const navigate = useNavigate();
   const socket = useSocket();
 
+  const [isNavOpen, setIsNavOpen] = useState(false);
   const [matchRequestData, setMatchRequestData] = useState(null);
   const [rejectCountdown, setRejectCountdown] = useState(10);
   const [activeTab, setActiveTab] = useState('profile');
+
+  const toggleNav = () => {
+    setIsNavOpen(!isNavOpen);
+  };
+
+  const closeNav = () => {
+    setIsNavOpen(false);
+  };
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -90,7 +99,7 @@ const Settings = () => {
 
   return (
     <div className='Settings'>
-      <Header />
+      <Header onNavToggle={toggleNav} />
       <div className='SettingsContainer'>
         <div className='settingsNavDiv'>
           <Nav
@@ -99,6 +108,8 @@ const Settings = () => {
             rejectCountdown={rejectCountdown}
             onAccept={handleAccept}
             onReject={handleReject}
+            isOpen={isNavOpen}
+            onClose={closeNav}
           />
         </div>
         <div className='settingsContent'>
