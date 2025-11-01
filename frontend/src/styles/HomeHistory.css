@@ -11,7 +11,6 @@
 .HomeHistory {
     position: relative;
     width: 25vw;
-    height: calc(100vh - 200px);
     border-radius: 10px;
     padding: 10px 20px;
     overflow-y: scroll;
@@ -24,6 +23,7 @@
         hsla(266, 74%, 41%, 0.2),
         hsla(266, 74%, 21%, 0.2)
     );
+    padding-bottom: 80px;
 }
 
 .HomeHistory::-webkit-scrollbar-thumb {

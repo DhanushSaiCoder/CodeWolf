@@ -62,7 +62,7 @@ export const HomeLeaderBoard = () => {
                     </ol>
                 )}
                 {!loading && (
-                    <button className='showMoreBtn' onClick={() => navigate('/leaderboard')}>
+                    <button id='showMoreBtn' className='showMoreBtn' onClick={() => navigate('/leaderboard')}>
                         Show More
                     </button>
                 )

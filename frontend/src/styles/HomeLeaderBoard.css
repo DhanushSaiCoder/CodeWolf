@@ -13,7 +13,6 @@
     margin-top: 20px;
 
     width: 25vw;
-    height: calc(100vh - 200px);
 
     border-radius: 10px;
     padding: 10px 20px;
@@ -27,6 +26,8 @@
         hsla(266, 74%, 41%, 0.2),
         hsla(266, 74%, 21%, 0.2)
     );
+    padding-bottom: 80px;
+
 }
 
 .HomeLeaderBoard::-webkit-scrollbar-thumb {
@@ -96,9 +97,9 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    bottom: -20px;
     margin: 10px;
     padding: 5px 10px;
-    border: none;
     background-color: var(--main-1);
     color: var(--darkest);
     border-radius: 5px;
