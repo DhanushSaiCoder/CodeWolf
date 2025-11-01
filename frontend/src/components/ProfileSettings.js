@@ -3,6 +3,7 @@ import '../styles/ProfileSettings.css';
 import profileImg from "../images/profile.jpg";
 import { SquarePen, Upload } from 'lucide-react';
 import uploadProfilePic from '../uploadProfilePic';
+import ImageWithLoader from './ImageWithLoader';
 
 const ProfileSettings = () => {
   const [user, setUser] = useState(null);
@@ -99,7 +100,7 @@ const ProfileSettings = () => {
   return (
     <div className="profile-settings">
       <div className='profile-settings_profileImageDiv'>
-        <img src={profilePic || profileImg} alt="Profile" className='profileSettings_profileImage'></img>
+        <ImageWithLoader src={profilePic || profileImg} alt="Profile" className='profileSettings_profileImage'></ImageWithLoader>
         <input
           type="file"
           ref={fileInputRef}

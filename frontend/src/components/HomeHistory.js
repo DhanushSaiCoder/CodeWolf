@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import '../styles/HomeHistory.css';
 import profileImg from '../images/profile.jpg';
-import { toLowQualityPic } from '../images/toLowQualityPic';
+import ImageWithLoader from './ImageWithLoader';
+import { toLowQualityPic } from './../images/toLowQualityPic';
 
 export const HomeHistory = () => {
     const navigate = useNavigate();
@@ -97,7 +98,7 @@ export const HomeHistory = () => {
                             return (
                                 <li className='historyItem' key={match._id}>
                                     <p className='h_profile_and_username'>
-                                        <img className='h-profile-pic' src={opponent.profilePic ? toLowQualityPic(opponent.profilePic) : profileImg} alt={opponent.username} />
+                                        <ImageWithLoader className='h-profile-pic' src={opponent.profilePic ? toLowQualityPic(opponent.profilePic) : profileImg} alt={opponent.username} />
                                         <b>{opponent.username}</b>
                                     </p>
                                     <div className={`historyResult ${result}`}>

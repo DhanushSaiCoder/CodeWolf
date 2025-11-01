@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSocket } from '../SocketContext';
 import profileImg from '../images/profile.jpg';
 import { toLowQualityPic } from '../images/toLowQualityPic';
+import ImageWithLoader from './ImageWithLoader';
 
 export const UserFriend = (props) => {
   const navigate = useNavigate()
@@ -296,7 +297,7 @@ export const UserFriend = (props) => {
 
                 <div className="UserFriend__userDetails">
                   <div className='UF_profile_and_username_and_rating'>
-                    <img className='UF_profilePic' src={userFriend.profilePic ? toLowQualityPic(userFriend.profilePic) : profileImg} alt={userFriend.username} />
+                    <ImageWithLoader className='UF_profilePic' src={userFriend.profilePic ? toLowQualityPic(userFriend.profilePic) : profileImg} alt={userFriend.username} />
                     <div className='UF_profile_and_rating'>
                       <h3 className="UserFriend__username">{userFriend.username}</h3>
                       <p>

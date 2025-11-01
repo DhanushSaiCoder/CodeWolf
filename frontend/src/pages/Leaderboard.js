@@ -9,6 +9,7 @@ import { jwtDecode } from 'jwt-decode';
 import Loader from './../components/Loader';
 import profileImg from '../images/profile.jpg';
 import { toLowQualityPic } from '../images/toLowQualityPic';
+import ImageWithLoader from '../components/ImageWithLoader';
 
 const Leaderboard = () => {
   const navigate = useNavigate();
@@ -149,7 +150,7 @@ const Leaderboard = () => {
                   {leaderboardData.map((user, index) => (
                     <tr key={user._id}>
                       <td>#{index + 1}</td>
-                      <td className='LB_profile_and_username'><img className='leaderboardProfilePic' src={user.profilePic ? toLowQualityPic(user.profilePic) : profileImg} alt={user.username} />{user.username}</td>
+                      <td className='LB_profile_and_username'><ImageWithLoader className='leaderboardProfilePic' src={user.profilePic ? toLowQualityPic(user.profilePic) : profileImg} alt={user.username} />{user.username}</td>
                       <td>&#8902; {user.rating}</td>
                       <td>{user.problemsSolved}</td>
                     </tr>
