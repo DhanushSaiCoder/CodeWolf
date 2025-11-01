@@ -133,3 +133,21 @@
 .delete-button{
     background-color: orangered;
 }
+
+.delete-account-message {
+    word-break: break-word;
+}
+
+@media (max-width: 768px) {
+    .security-settings form {
+        width: 100%;
+    }
+
+    .security-settings-changePasswordDiv {
+        width: 100%;
+    }
+
+    .modal {
+        width: 90%;
+    }
+}

@@ -114,7 +114,7 @@ const SecuritySettings = () => {
       </form>
       <div className="delete-account-section">
         <h4>Delete Account</h4>
-        <p>Once you delete your account, there is no going back. Please be certain.</p>
+        <p className="delete-account-message">Once you delete your account, there is no going back. Please be certain.</p>
         <button id='accDelBtn' className="security-settings__delete-button" onClick={handleDeleteAccount}>
           <Trash size={18}/>Delete Your Account
         </button>
