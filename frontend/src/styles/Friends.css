@@ -27,3 +27,10 @@
 
     gap: 20px;
 }
+
+@media (max-width: 768px) {
+    .friendListDiv {
+        width: 100vw;
+        padding: 0 10px;
+    }
+}

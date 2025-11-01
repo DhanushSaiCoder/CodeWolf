@@ -68,3 +68,112 @@
     background-color: var(--main-50p);
     transform: none;
 }
+
+@media (max-width: 768px) {
+    .NotUserFriend {
+        width: 95%;
+    }
+    .NotUserFriend__container {
+        padding: 0 10px;
+    }
+    .NotUserFriend__userDetails {
+        width: 70%;
+    }
+    .NUF_profilePic {
+        width: 40px;
+        height: 40px;
+    }
+    .NotUserFriend__username {
+        font-.NotUserFriend {
+    width: 48%;
+}
+.NUF_data {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    gap: 10px;
+}
+.NotUserFriendQuickMatchBtn img {
+    width: auto;
+    height: 20px;
+}
+.NotUserFriend__container {
+    width: 100%;
+    height: 80px;
+    border-radius: 10px;
+    background-color: rgba(var(--divBg));
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+.NotUserFriendQuickMatchBtn {
+    width: auto;
+    height: 30px;
+    background-color: var(--main);
+    padding: 5px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.NotUserFriend__userDetails {
+    width: 45%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.NUF_profilePic {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+    border: 3.5px solid var(--main-50p);
+}
+
+.NotUserFriend__rating {
+    font-size: 20px;
+}
+.inviteFriendBtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 1rem;
+    padding: 19px 20px;
+    color: var(--main);
+    background-color: transparent;
+}
+.inviteFriendBtn:hover{
+    background-color: var(--main-50p);
+    transform: none;
+}}
+}
+@media (max-width: 768px) {
+    .NotUserFriend {
+        width: 95%;
+    }
+    .NotUserFriend__container {
+        padding: 0 10px;
+    }
+    .NotUserFriend__userDetails {
+        width: 70%;
+    }
+    .NUF_profilePic {
+        width: 40px;
+        height: 40px;
+    }
+    .NotUserFriend__username {
+        font-size: 0.9rem;
+    }
+    .inviteFriendBtn {
+        padding: 15px 15px;
+    }
+}
+    
