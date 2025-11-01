@@ -115,3 +115,46 @@
     text-align: center;
     font-size: 2rem;
 }
+
+/* Responsive styles for Mode component */
+@media (max-width: 768px) {
+    .mode {
+        width: 95%; /* Take up more width on mobile */
+        margin: 10px 0; /* Adjust margin */
+        padding: 15px; /* Adjust padding */
+    }
+
+    .mode h2 {
+        font-size: 1.2rem; /* Smaller font size for heading */
+        padding-bottom: 10px;
+    }
+
+    .imgsDiv {
+        gap: 5px; /* Reduce gap between images */
+    }
+
+    .imgLeft,
+    .imgRight,
+    .imgCenter {
+        width: 35%; /* Adjust image width */
+    }
+
+    .imgsDiv h3 {
+        font-size: 1.5rem; /* Smaller font size for vs text */
+    }
+
+    .modeDescriptionText {
+        font-size: 0.9rem; /* Smaller font size for description */
+    }
+
+    .modeBtnsDiv {
+        flex-direction: column; /* Stack buttons vertically */
+        height: auto;
+        gap: 10px;
+    }
+
+    .modeBtns {
+        width: 80%; /* Make buttons wider */
+        font-size: small; /* Smaller font size for buttons */
+    }
+}

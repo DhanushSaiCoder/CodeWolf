@@ -141,3 +141,56 @@
         transform: rotate(360deg);
     }
 }
+
+/* Responsive styles for HomeLeaderBoard component */
+@media (max-width: 768px) {
+    .HomeLeaderBoard {
+        width: 95%; /* Take up more width on mobile */
+        margin-top: 10px; /* Adjust margin */
+        padding-bottom: 60px; /* Adjust padding for button */
+    }
+
+    .HomeLeaderBoardHeader h2 {
+        font-size: 1.2rem; /* Smaller font size for heading */
+    }
+
+    .lbUser {
+        height: auto; /* Allow height to adjust based on content */
+        padding: 10px; /* Adjust padding */
+        gap: 10px; /* Reduce gap */
+        flex-wrap: wrap; /* Allow items to wrap */
+        justify-content: space-between; /* Distribute items */
+    }
+
+    .hlbProfilePic {
+        width: 30px;
+        height: 30px;
+    }
+
+    .hlb_profile_and_username b {
+        font-size: 0.9rem;
+    }
+
+    .hlbBadge {
+        height: 25px;
+        width: 25px;
+        margin-left: 5px;
+    }
+
+    .hlbRating {
+        position: static; /* Remove absolute positioning */
+        width: auto;
+        opacity: 1;
+        text-align: right;
+    }
+
+    .starSymbol {
+        font-size: 20px;
+    }
+
+    .showMoreBtn {
+        bottom: -10px; /* Adjust button position */
+        font-size: 0.9rem;
+        padding: 8px 15px;
+    }
+}
