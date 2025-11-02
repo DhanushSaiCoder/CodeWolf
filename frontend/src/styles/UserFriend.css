@@ -48,7 +48,7 @@
     border-radius: 50%;
     object-fit: cover;
     margin-right: 10px;
-    border: 3.5px solid var(--main-50p)
+    border: 3.5px solid var(--main-50p);
 }
 
 .UserFriend__onlineBadge,
@@ -85,9 +85,6 @@
     cursor: not-allowed;
     transition: none;
     transform: none;
-}
-.offlineUF {
-    opacity: 0.5;
 }
 .userFriend__rating {
     font-size: 20px;
@@ -303,8 +300,8 @@ button[type="submit"]:hover {
 }
 
 .UFModeBtns {
-    height: auto;
-    width: auto;
+    height: 2.4rem;
+    width: 9rem;
     border-radius: 5px;
     background-color: var(--main-1);
     color: var(--darkest);
@@ -353,13 +350,13 @@ button[type="submit"]:hover {
     align-items: center;
     justify-content: center;
 }
-.UF_profile_and_rating{
+.UF_profile_and_rating {
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
     flex-direction: column;
 }
-.UF_profile_and_username_and_rating{
+.UF_profile_and_username_and_rating {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -368,7 +365,25 @@ button[type="submit"]:hover {
     transform: rotate(360deg);
     transition: transform 0.5s ease-out;
 }
-
+.offPlWaInviteBtn {
+    height: 2.4rem;
+    width: 9rem;
+    color: hsl(94, 100%, 15%);
+    background-color: hsl(94, 100%, 61%);
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border: none;
+    border-radius: 5px;
+    transition: all .23s ease-in-out;
+    font-size: medium;
+}
+.offPlWaInviteBtn:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
 
 @media (max-width: 768px) {
     .UserFriend {
@@ -379,7 +394,8 @@ button[type="submit"]:hover {
         gap: 5px;
         justify-content: space-between;
     }
-    .UserFriend__container > p { /* The index number */
+    .UserFriend__container > p {
+        /* The index number */
         display: none; /* Hide the number to save space */
     }
     .UserFriend__userDetails {
@@ -396,12 +412,14 @@ button[type="submit"]:hover {
     .userFriend__rating {
         font-size: 1rem;
     }
-    .UserFriend__onlineBadgeDiv, .UserFriend__offlineBadgeDiv {
+    .UserFriend__onlineBadgeDiv,
+    .UserFriend__offlineBadgeDiv {
         font-size: 0.8rem;
         gap: 3px;
         padding: 0;
     }
-    .UserFriend__onlineBadge, .UserFriend__offlineBadge {
+    .UserFriend__onlineBadge,
+    .UserFriend__offlineBadge {
         width: 8px;
         height: 8px;
     }
