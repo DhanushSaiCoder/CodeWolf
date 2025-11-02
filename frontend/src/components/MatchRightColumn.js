@@ -30,7 +30,7 @@ export default function MatchRightColumn(props) {
   return (
     <div className='MatchRightColumn'>
       <CodeEditor isMobile={isMobile} timeUp={timeUp} matchDoc={matchDoc} question={question} handleCodeOutput={handleCodeOutput} handleSubmitResults={handleSubmitResults} handleUserWonMatch={handleUserWonMatch}  matchLost={matchLost} userWonMatch={userWonMatch} handleGotWinnerRatingChange={handleGotWinnerRatingChange}/>
-      <HorizontalMenu toggleOpenMenu={toggleOpenMenu} isMobile={isMobile} handleToggleTab={handleToggleTab} />
+      <HorizontalMenu menuOpened={menuOpened} toggleOpenMenu={toggleOpenMenu} isMobile={isMobile} handleToggleTab={handleToggleTab} />
       <div className={`output_or_testcases_section ${menuOpened ? 'opened' : 'closed'}`}>
       {
         tabToShow == "output" ?

@@ -58,6 +58,15 @@
     align-items: center;
     justify-content: center;
 }
+.panelIcon{
+    transition: all .42s ease-in-out;
+}
+.panelIconInverted{
+    transform: rotate(0deg);
+}
+.panelIconNormal{
+    transform: rotate(180deg);
+}
 @media (max-width: 768px) {
     .HorizontalMenu {
         justify-content: space-between;

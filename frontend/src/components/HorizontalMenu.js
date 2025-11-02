@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import "../styles/HorizontalMenu.css"
 import { PanelTopOpen } from "lucide-react"
 
-const HorizontalMenu = ({ handleToggleTab, isMobile, toggleOpenMenu }) => {
+const HorizontalMenu = ({ handleToggleTab, isMobile, toggleOpenMenu, menuOpened }) => {
     const [activeTab, setActiveTab] = useState('output');
 
     const backgroundStyle = {
@@ -13,7 +13,6 @@ const HorizontalMenu = ({ handleToggleTab, isMobile, toggleOpenMenu }) => {
         setActiveTab(tabName);
         handleToggleTab(tabName);
     }
-
     return (
         <div className='HorizontalMenu'>
             <div className='horizontal_menu_button_container'>
@@ -23,7 +22,7 @@ const HorizontalMenu = ({ handleToggleTab, isMobile, toggleOpenMenu }) => {
 
             </div>
             <button onClick={toggleOpenMenu} className='horiz_menu_open_panel_btn'>
-                <PanelTopOpen color="#d5bcf5" />
+                <PanelTopOpen className={menuOpened ? "panelIcon panelIconInverted" : "panelIcon panelIconNormal"} color="#d5bcf5" />
             </button>
         </div>
     );
