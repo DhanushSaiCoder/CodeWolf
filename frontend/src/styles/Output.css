@@ -46,7 +46,7 @@
     padding: 10px;
     font-family: monospace;
     border-radius: 8px;
-    height: 200px;
+    min-height: 200px;
     overflow-y: auto;
 }
 .Output_content::-webkit-scrollbar {

@@ -1,4 +1,4 @@
-import React, { act, useState } from 'react'
+import React, { useState } from 'react'
 import "../styles/MatchRightColumn.css"
 import CodeEditor from './CodeEditor';
 import Output from './Output';
@@ -10,6 +10,7 @@ export default function MatchRightColumn(props) {
   const [output, setOutput] = useState(null)
   const [tabToShow, setTabToShow] = useState("output")
   const [submitResults, setSubmitResults] = useState(null)
+  const [menuOpened, setMenuOpened] = useState(false)
 
   const handleCodeOutput = (output) => {
     setOutput(output)
@@ -22,11 +23,15 @@ export default function MatchRightColumn(props) {
   const handleSubmitResults = (res) => {
     setSubmitResults(res)
   }
+
+  const toggleOpenMenu = () => {
+    setMenuOpened(!menuOpened)
+  }
   return (
     <div className='MatchRightColumn'>
       <CodeEditor isMobile={isMobile} timeUp={timeUp} matchDoc={matchDoc} question={question} handleCodeOutput={handleCodeOutput} handleSubmitResults={handleSubmitResults} handleUserWonMatch={handleUserWonMatch}  matchLost={matchLost} userWonMatch={userWonMatch} handleGotWinnerRatingChange={handleGotWinnerRatingChange}/>
-      <HorizontalMenu handleToggleTab={handleToggleTab} />
-      <div className='output_or_testcases_section'>
+      <HorizontalMenu toggleOpenMenu={toggleOpenMenu} isMobile={isMobile} handleToggleTab={handleToggleTab} />
+      <div className={`output_or_testcases_section ${menuOpened ? 'opened' : 'closed'}`}>
       {
         tabToShow == "output" ?
         (<Output output={output} />) :

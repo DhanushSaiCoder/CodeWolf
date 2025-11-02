@@ -169,7 +169,7 @@ export default function Match() {
   const renderMobileView = () => (
     <div className='Match'>
       <MatchInfo matchDoc={JSON.stringify(matchDoc)} />
-      {showTimer && !matchCompleted && (<Timer matchId={matchId} time={1} handleTimeUp={handleTimeUp} />)}
+      {showTimer && !matchCompleted && (<Timer matchId={matchId} time={15} handleTimeUp={handleTimeUp} />)}
       <div className="match-mobile-tabs">
         <button onClick={() => setActiveTab('Question')} className={`match-tab-button ${activeTab === 'Question' ? 'active' : ''}`}>Question</button>
         <button onClick={() => setActiveTab('Code')} className={`match-tab-button ${activeTab === 'Code' ? 'active' : ''}`}>Code</button>
