@@ -122,12 +122,18 @@ export const UserFriend = (props) => {
       return;
     }
 
+    const { programmingLanguage, difficulty, mode } = matchSettings;
+    const requesterId = jwtDecode(token)._id;
+    const receiverId = selectedFriend._id;
+
     if (selectedFriend.status === 'offline') {
-      // Handle offline invite
-      const { programmingLanguage, difficulty, mode } = matchSettings;
-      const message = `Let's have a CodeWolf match! Language: ${programmingLanguage}, Difficulty: ${difficulty}, Mode: ${mode}.`;
+      const inviteLink = `http://localhost:3000/waInviteWait?requesterId=${requesterId}&receiverId=${receiverId}&difficulty=${difficulty}&language=${programmingLanguage}&mode=${mode}`;
+      const message = `Let's have a CodeWolf match! Join me here: ${inviteLink}`;
       const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
       window.open(whatsappUrl, '_blank');
+      
+      navigate(`/waInviteWait?requesterId=${requesterId}&receiverId=${receiverId}&difficulty=${difficulty}&language=${programmingLanguage}&mode=${mode}`);
+
       setSelectedFriend(null);
       showPopup(false);
       return;

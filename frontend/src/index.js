@@ -14,6 +14,7 @@ import History from './pages/History';
 import Match from './pages/Match';
 import { SocketProvider } from './SocketContext'; // Import SocketProvider
 import { MatchWait } from './pages/MatchWait';
+import { WaInviteWait } from './pages/WaInviteWait';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -29,6 +30,7 @@ root.render(
         <Route path="/history" element={<History />} />
         <Route path="/matchwait" element={<MatchWait />} />
         <Route path="/match" element={<Match />} />
+        <Route path="/waInviteWait" element={<WaInviteWait />} />
       </Routes>
     </BrowserRouter>
   </SocketProvider>
