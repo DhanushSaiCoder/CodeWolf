@@ -16,7 +16,7 @@ export const HomeLeaderBoard = () => {
 
     // Fetch users from the backend
     useEffect(() => {
-        fetch('http://localhost:5000/auth/users')
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/users`)
             .then(response => {
                 if (!response.ok) throw new Error('Failed to fetch users');
                 return response.json();

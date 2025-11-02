@@ -37,7 +37,7 @@ export const MatchWait = () => {
     if (socket) {
       // Build the query string with requesterId and receiverId
       const queryParams = new URLSearchParams({ requesterId, receiverId }).toString();
-      const url = `http://localhost:5000/auth/user?${queryParams}`;
+      const url = `${process.env.REACT_APP_BACKEND_URL}/auth/user?${queryParams}`;
 
       fetch(url, {
         method: 'GET',

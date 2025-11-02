@@ -201,7 +201,7 @@ export default function Match() {
 
 const getMatchDoc = async (matchId) => {
   try {
-    const response = await fetch(`http://localhost:5000/matches/${matchId}`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/matches/${matchId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

@@ -35,7 +35,7 @@ export const HomeHistory = () => {
             }
 
             try {
-                const response = await fetch('http://localhost:5000/matches/history', {
+                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/matches/history`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
