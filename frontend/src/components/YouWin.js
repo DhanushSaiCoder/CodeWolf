@@ -25,7 +25,7 @@ const YouWin = ({ handleCloseYouWin, winnerRatingChange }) => {
                     </div>
                     <div className='youWin_cta_div'>
                         <button onClick={handle_goHomeClick} className='youWin_cta_btn'>Go Home</button>
-                        <button className='youWin_cta_btn youWin_cta_btn_positive'>Spectate Opponent</button>
+                        <button className='youWin_cta_btn youWin_cta_btn_positive'>Spectate Opponent <span>Coming Soon</span></button>
                     </div>
                 </div>
             </div>
