@@ -1,16 +1,17 @@
 /* MatchRequest.css */
 
-/* Theme variables: the overall page is dark pink (#C2185B), so we use that as an accent */
+/* Theme based on Header.css */
 :root {
-  --dark-pink: #C2185B;      /* Primary dark pink for header and borders */
-  --dark-pink-dark: #AD1457; /* Slightly darker for hover effects if needed */
-  --light-bg: #ffffff;      /* Light background for the card */
-  --text-dark: #333333;     /* Dark text for readability */
+  --card-bg: #300e5d;
+  --header-bg: #5519a4;
+  --text-primary: #d5bcf5;
+  --text-secondary: #a875ea;
+  --accent-color: #7b2ee0;
   --shadow-color: rgba(0, 0, 0, 0.3);
-  --button-green: #4CAF50;
-  --button-green-hover: #43A047;
-  --button-red: #E53935;
-  --button-red-hover: #D32F2F;
+  --button-accept: #4CAF50; /* Green from previous design, as there is no green in the palette */
+  --button-accept-hover: #43A047;
+  --button-reject: red; /* Red from Header.css logout button */
+  --button-reject-hover: #D32F2F;
 }
 
 .match-request-card {
@@ -19,53 +20,61 @@
   bottom: 40px;
   width: 30vw;
   min-width: 400px;
-  background: var(--light-bg);
-  border: 3.5px solid var(--main-2);
-  border-radius: 10px;
-  box-shadow: 0 4px 15px var(--shadow-color);
+  background: var(--card-bg);
+  border: 1px solid var(--main-50p);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px var(--shadow-color);
   z-index: 100;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-primary);
 }
 
-/* Header: using the dark pink to tie into the background */
+/* Header */
 .mr-header {
-  background: var(--main-2);
-  color: var(--light-bg);
-  padding: 12px;
+  background: var(--header-bg);
+  padding: 16px 24px;
   text-align: center;
 }
 
 .mr-header h1 {
   margin: 0;
-  font-size: 1.5rem;
-  letter-spacing: 1px;
+  font-size: 1.4rem;
+  font-weight: 600;
 }
 
 /* Body */
 .mr-body {
-  padding: 20px;
+  padding: 24px;
   text-align: center;
-  color: var(--text-dark);
 }
 
 .mr-username {
-  font-size: 1.3rem;
-  margin: 5px 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
 }
 
 .mr-rating {
-  font-size: 1rem;
-  color: var(--main-2);
-  margin-left: 5px;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-left: 8px;
 }
 
 .mr-invite-text {
   font-size: 1.1rem;
-  font-style: italic;
-  opacity: 0.8;
-  margin: 5px 0;
+  color: var(--text-secondary);
+  margin: 8px 0 16px;
+}
+
+.mr-details {
+  background: var(--darker);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+  border: 1px solid var(--main-50p);
 }
 
 .mr-details p {
@@ -73,46 +82,46 @@
   font-size: 1rem;
 }
 
+.mr-details p strong {
+  font-weight: 600;
+  color: var(--accent-color);
+}
+
 /* Footer / Action Buttons */
 .mr-actions {
   display: flex;
-  gap: 10px;
-  padding: 0 20px 20px;
+  gap: 16px;
+  padding: 0 24px 24px;
 }
 
 .mr-btn {
   flex: 1;
-  padding: 12px 0;
+  padding: 14px 0;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   font-size: 1.1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  color: var(--light-bg);
-}
-
-.mr-btn:focus {
-  outline: none;
+  transition: all 0.2s ease;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .accept-btn {
-  background-color: var(--button-green);
+  background-color: var(--button-accept);
 }
 
 .accept-btn:hover {
-  background-color: var(--button-green-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px var(--shadow-color);
+  background-color: var(--button-accept-hover);
 }
 
 .reject-btn {
-  background-color: var(--button-red);
+  background-color: var(--button-reject);
 }
 
 .reject-btn:hover {
-  background-color: var(--button-red-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px var(--shadow-color);
+  background-color: var(--button-reject-hover);
 }
 
 /* Slide Transition Animation */
@@ -140,11 +149,12 @@
 
 @media (max-width: 768px) {
   .match-request-card {
-    width: 90vw;
+    width: 95vw;
     min-width: unset;
     left: 50%;
     transform: translateX(-50%);
-    bottom: 20px;
+    bottom: 10px;
+    border-radius: 16px;
   }
 
   .mr-header h1 {
@@ -152,30 +162,30 @@
   }
 
   .mr-username {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
   }
 
   .mr-rating {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   .mr-invite-text,
   .mr-details p {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   .mr-btn {
     font-size: 1rem;
-    padding: 10px 0;
+    padding: 12px 0;
   }
 
   .mr-header,
   .mr-body,
   .mr-actions {
-    padding: 10px 15px;
+    padding: 16px;
   }
 
   .mr-actions {
-    gap: 5px;
+    gap: 8px;
   }
 }
