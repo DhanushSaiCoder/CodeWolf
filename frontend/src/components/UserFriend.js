@@ -2,13 +2,13 @@
 import React, { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode'; // Ensure proper import of jwt-decode
 import "../styles/UserFriend.css";
-import { NotUserFriend } from './NotUserFriend';
 import { MatchRequest } from './MatchRequest';
 import { useNavigate } from 'react-router-dom';
 import { useSocket } from '../SocketContext';
 import profileImg from '../images/profile.jpg';
 import { toLowQualityPic } from '../images/toLowQualityPic';
 import ImageWithLoader from './ImageWithLoader';
+import MatchSetupPopup from './MatchSetupPopup';
 
 export const UserFriend = (props) => {
   const navigate = useNavigate()
@@ -206,62 +206,13 @@ export const UserFriend = (props) => {
 
   return (
     <div className="UserFriend">
-      {popup && (
-        <div onClick={() => showPopup(false)} className="RPopupDivContainer">
-          <div onClick={(e) => e.stopPropagation()} className="RPopupDiv">
-            <div className="popupHeader">
-              Set Match
-              <button type="button" onClick={() => showPopup(false)} className="closeButton">
-                &times;
-              </button>
-            </div>
-            <div className="popupContent">
-              <form onSubmit={handleSubmit}>
-                <div className="formGroup">
-                  <label htmlFor="programmingLanguage">Programming Language:</label>
-                  <select
-                    id="programmingLanguage"
-                    name="programmingLanguage"
-                    value={matchSettings.programmingLanguage}
-                    onChange={handleChange}
-                    required
-                  >
-                    <option value="js">JavaScript</option>
-                    <option value="py">Python</option>
-                  </select>
-                </div>
-                <div className="formGroup">
-                  <label htmlFor="difficulty">Difficulty:</label>
-                  <select
-                    id="difficulty"
-                    name="difficulty"
-                    value={matchSettings.difficulty}
-                    onChange={handleChange}
-                    required
-                  >
-                    <option value="easy">Easy</option>
-                    <option value="medium">Medium</option>
-                    <option value="hard">Hard</option>
-                  </select>
-                </div>
-                <div className="formGroup">
-                  <label htmlFor="mode">Mode:</label>
-                  <select
-                    id="mode"
-                    name="mode"
-                    value={matchSettings.mode}
-                    onChange={handleChange}
-                    required
-                  >
-                    <option value="quick-debug">QUICK DEBUG MODE</option>
-                  </select>
-                </div>
-                <button type="submit">SEND MATCH REQUEST</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      )}
+      <MatchSetupPopup
+        show={popup}
+        onClose={() => showPopup(false)}
+        onSubmit={handleSubmit}
+        matchSettings={matchSettings}
+        onChange={handleChange}
+      />
 
       <div className="data">
         <div className="friends-header">
