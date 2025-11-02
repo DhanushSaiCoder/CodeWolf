@@ -368,8 +368,8 @@ button[type="submit"]:hover {
 .offPlWaInviteBtn {
     height: 2.4rem;
     width: 9rem;
-    color: hsl(94, 100%, 15%);
-    background-color: hsl(94, 100%, 61%);
+    color: var(--main);
+    background-color: var(--main-50p);
     padding: 8px 12px;
     display: flex;
     align-items: center;
