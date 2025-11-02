@@ -58,6 +58,9 @@
     align-items: center;
     justify-content: center;
 }
+.horiz_menu_open_panel_btn:hover{
+    cursor: pointer;
+}
 .panelIcon{
     transition: all .42s ease-in-out;
 }

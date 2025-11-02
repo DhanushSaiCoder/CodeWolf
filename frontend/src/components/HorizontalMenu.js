@@ -19,11 +19,9 @@ const HorizontalMenu = ({ handleToggleTab, isMobile, toggleOpenMenu, menuOpened,
                 <button onClick={() => handleTabClick('testcases')} className={activeTab === 'testcases' ? "horizontal_menu_button activeMenuBtn" : "horizontal_menu_button"}>Test Cases</button>
 
             </div>
-            {isMobile && (
-                <button onClick={toggleOpenMenu} className='horiz_menu_open_panel_btn'>
-                    <PanelTopOpen className={menuOpened ? "panelIcon panelIconInverted" : "panelIcon panelIconNormal"} color="#d5bcf5" />
-                </button>
-            )}
+            <button onClick={toggleOpenMenu} className='horiz_menu_open_panel_btn'>
+                <PanelTopOpen className={menuOpened ? "panelIcon panelIconInverted" : "panelIcon panelIconNormal"} color="#d5bcf5" />
+            </button>
         </div>
     );
 }
