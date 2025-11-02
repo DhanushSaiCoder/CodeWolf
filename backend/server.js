@@ -104,6 +104,25 @@ io.on('connection', (socket) => {
     });
   });
 
+  socket.on('inviteeJoined', async ({ requesterId, receiverId, difficulty, programmingLanguage, mode }) => {
+    await updateUserStatus(receiverId, 'online');
+
+    const requesterSocketId = userSocketMap.get(requesterId);
+    const receiverSocketId = userSocketMap.get(receiverId);
+
+    const players = [requesterSocketId, receiverSocketId].filter(Boolean);
+
+    if (players.length === 2) {
+      io.to(players).emit('waMatchReady', {
+        requesterId,
+        receiverId,
+        difficulty,
+        programmingLanguage,
+        mode
+      });
+    }
+  });
+
   // Handle the beginMatch event
   // At the top of your file, import the Match model
   socket.on('beginMatch', async (

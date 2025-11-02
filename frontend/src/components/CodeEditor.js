@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import "../styles/CodeEditor.css";
 import MonacoEditor from 'react-monaco-editor';
 import Loader from './Loader';
@@ -11,13 +11,30 @@ export default function CodeEditor({ question, isMobile, matchDoc: matchObj, han
   const [runningCode, setRunningCode] = useState(false)
   const [submittingCode, setSubmittingCode] = useState(false)
   const socket = useSocket();
-
+  const editorRef = useRef(null);
 
   // Update code state when editor content changes
   const onChange = (newValue) => {
     setCode(newValue);
     localStorage.setItem("code", JSON.stringify({ code, match_id: matchObj._id }))
   };
+
+  useEffect(() => {
+    if (!editorRef.current) return;
+
+    const editor = editorRef.current;
+    const container = editor.getDomNode().parentNode;
+
+    const resizeObserver = new ResizeObserver(() => {
+      editor.layout();
+    });
+
+    resizeObserver.observe(container);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     if (question == null || !JSON.parse(localStorage.getItem('code'))) return
@@ -27,6 +44,7 @@ export default function CodeEditor({ question, isMobile, matchDoc: matchObj, han
   }, [question])
 
   const editorDidMount = (editor, monaco) => {
+    editorRef.current = editor; // Store the editor instance
     // Define and register the Night Owl theme
     const nightOwlTheme = {
       base: 'vs-dark',
@@ -76,7 +94,7 @@ export default function CodeEditor({ question, isMobile, matchDoc: matchObj, han
   // Editor options
   const options = {
     selectOnLineNumbers: true,
-    automaticLayout: true,
+    automaticLayout: false, // Disable automatic layout
   };
 
   const handleRunCode = () => {
