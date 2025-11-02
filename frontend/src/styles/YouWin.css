@@ -15,13 +15,13 @@
     justify-content: center;
     align-items: center;
 }
-.youWin__container:hover{
+.youWin__container:hover {
     cursor: pointer;
 }
-.youWin{
+.youWin {
     z-index: 1000;
 }
-.youWin:hover{
+.youWin:hover {
     cursor: default;
 }
 #youWin_img {
@@ -79,6 +79,7 @@
 .youWin_cta_btn {
     all: unset;
     width: 42%;
+    height: 2rem;
     background-color: #d5bcf5;
     padding: 15px 20px;
     color: #0d0218;
@@ -92,13 +93,14 @@
     background-color: hsl(265, 18%, 52%);
     color: #d5bcf5;
 
-    display: flex;align-items: center;
+    display: flex;
+    align-items: center;
     justify-content: center;
     flex-direction: column;
 }
-.youWin_cta_btn_positive span{
+.youWin_cta_btn_positive span {
     font-size: 12px;
-    opacity: .8;
+    opacity: 0.8;
 }
 .youWin_cta_btn:hover {
     cursor: not-allowed;
@@ -126,10 +128,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all .2s ease-out;
+    transition: all 0.2s ease-out;
 }
 
-.closeYouWinBtn:hover{
+.closeYouWinBtn:hover {
     cursor: pointer;
 }
 
@@ -139,7 +141,7 @@
         padding: 15px;
         padding-top: 120px;
     }
-    .youWin_inner_div p{
+    .youWin_inner_div p {
         text-align: center;
     }
     #youWin_img {
@@ -152,5 +154,6 @@
     }
     .youWin_cta_btn {
         width: calc(100% - 40px);
+        height: 1.6rem;
     }
 }
