@@ -18,19 +18,36 @@ export const WaInviteWait = () => {
   const programmingLanguage = query.get("language");
   const mode = query.get("mode");
 
+  const location = useLocation();
   const [waiting, setWaiting] = useState(true);
-
-  let currentUserId = null;
-  if (token) {
-    try {
-      const decoded = jwtDecode(token);
-      currentUserId = decoded._id;
-    } catch (error) {
-      console.error("Failed to decode token:", error);
-    }
-  }
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!token) {
+      // Not logged in, redirect to login
+      navigate(`/auth/login?redirect=${encodeURIComponent(location.pathname + location.search)}`);
+      return;
+    }
+
+    const currentUserId = jwtDecode(token)._id;
+
+    if (currentUserId !== requesterId && currentUserId !== receiverId) {
+      setErrorMessage("You are not authorized to join this match. This invitation was intended for a different user.");
+      setWaiting(false);
+      return;
+    }
+
     if (socket && currentUserId) {
       // Both users listen for the match to be ready
       const handleMatchReady = (data) => {
@@ -55,18 +72,24 @@ export const WaInviteWait = () => {
         socket.off('waMatchReady', handleMatchReady);
       };
     }
-  }, [socket, currentUserId, requesterId, receiverId, difficulty, programmingLanguage, mode, navigate]);
+  }, [token, socket, location, navigate, requesterId, receiverId, difficulty, programmingLanguage, mode]);
 
-  useEffect(() => {
-    const handleBeforeUnload = (e) => {
-      e.preventDefault();
-      e.returnValue = "";
-    };
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, []);
+  if (!token) {
+    // Render nothing while redirecting
+    return null;
+  }
+
+
+  if (errorMessage) {
+    return (
+      <div className='WaInviteWait'>
+        <div className="error-container">
+          <p>{errorMessage}</p>
+          <button onClick={() => navigate('/')}>Go Home</button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='WaInviteWait'>

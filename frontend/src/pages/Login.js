@@ -104,7 +104,14 @@ const Login = () => {
                 localStorage.setItem('token', data.token);
 
                 // Redirect the user
-                window.location.href = '/'; // Adjust the redirect as needed
+                const queryParams = new URLSearchParams(window.location.search);
+                const redirectUrl = queryParams.get('redirect');
+
+                if (redirectUrl) {
+                    window.location.href = redirectUrl;
+                } else {
+                    window.location.href = '/';
+                }
             }
         } catch (error) {
             console.error('An error occurred:', error);
