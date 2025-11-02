@@ -9,15 +9,25 @@ import { jwtDecode } from 'jwt-decode';
 import Loader from './../components/Loader';
 import profileImg from '../images/profile.jpg';
 import { toLowQualityPic } from '../images/toLowQualityPic';
+import ImageWithLoader from '../components/ImageWithLoader';
 
 const Leaderboard = () => {
   const navigate = useNavigate();
   const socket = useSocket();
 
+  const [isNavOpen, setIsNavOpen] = useState(false);
   const [matchRequestData, setMatchRequestData] = useState(null);
   const [rejectCountdown, setRejectCountdown] = useState(10);
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const toggleNav = () => {
+    setIsNavOpen(!isNavOpen);
+  };
+
+  const closeNav = () => {
+    setIsNavOpen(false);
+  };
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
@@ -108,7 +118,7 @@ const Leaderboard = () => {
 
   return (
     <div className='Home'>
-      <Header />
+      <Header onNavToggle={toggleNav} />
       <div className='homeContent'>
         <Nav
           currPage="leaderboard"
@@ -116,6 +126,8 @@ const Leaderboard = () => {
           rejectCountdown={rejectCountdown}
           onAccept={handleAccept}
           onReject={handleReject}
+          isOpen={isNavOpen}
+          onClose={closeNav}
         />
         {/* Leaderboard-specific content can go here */}
         <div className="leaderboardContent_container">
@@ -124,26 +136,28 @@ const Leaderboard = () => {
             {loading ? (
               <Loader/>
             ) : (
-              <table>
-                <thead>
-                  <tr>
-                    <th>Rank</th>
-                    <th>Username</th>
-                    <th>Rating</th>
-                    <th>Problems Solved</th>
-                  </tr>
-                </thead>
+              <div id='table-responsive-wrapper' className="table-responsive-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Rank</th>
+                      <th>Username</th>
+                      <th>Rating</th>
+                      <th>Problems Solved</th>
+                    </tr>
+                  </thead>
                 <tbody>
                   {leaderboardData.map((user, index) => (
                     <tr key={user._id}>
                       <td>#{index + 1}</td>
-                      <td className='LB_profile_and_username'><img className='leaderboardProfilePic' src={user.profilePic ? toLowQualityPic(user.profilePic) : profileImg} alt={user.username} />{user.username}</td>
+                      <td className='LB_profile_and_username'><ImageWithLoader className='leaderboardProfilePic' src={user.profilePic ? toLowQualityPic(user.profilePic) : profileImg} alt={user.username} />{user.username}</td>
                       <td>&#8902; {user.rating}</td>
                       <td>{user.problemsSolved}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              </div>
             )}
           </div>
         </div>

@@ -10,7 +10,7 @@ import LightbulbIcon from '@mui/icons-material/Lightbulb';
  * @returns {JSX.Element} Rendered component.
  */
 
-export default function QuestionDetails({ matchDoc: matchDocStr, handleQuestionFound }) {
+export default function QuestionDetails({ matchDoc: matchDocStr, handleQuestionFound, isMobile }) {
   // Memoize parsing to avoid new object each render
   const matchDoc = useMemo(() => JSON.parse(matchDocStr), [matchDocStr]);
 
@@ -44,7 +44,7 @@ export default function QuestionDetails({ matchDoc: matchDocStr, handleQuestionF
         }
 
         // else get a random question based on mode, difficulty, and language
-        const filterStr = `mode_slug=${matchDoc.mode}&question_difficulty=${matchDoc.difficulty}&programming_language=${matchDoc.language === "js" ? "javascript" : matchDoc.language === "py" ? "python": matchDoc.language}`
+        const filterStr = `mode_slug=${matchDoc.mode}&question_difficulty=${matchDoc.difficulty}&programming_language=${matchDoc.language === "js" ? "javascript" : matchDoc.language === "py" ? "python" : matchDoc.language}`
 
         const response = await fetch(
           `${process.env.REACT_APP_BACKEND_URL}/questions?${filterStr}`,
@@ -111,11 +111,12 @@ export default function QuestionDetails({ matchDoc: matchDocStr, handleQuestionF
 
   return (
     <div className='QuestionDetails'>
-      <div className='QuestionDetailsHeader'>
+      {!isMobile && (<div className='QuestionDetailsHeader'>
         <h3>Question</h3>
 
 
-      </div>
+      </div>)
+      }
       {!isFetchingQuestion && question && (
         <div className='QuestionDetailsBody'>
 

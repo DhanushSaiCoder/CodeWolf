@@ -1,12 +1,18 @@
 .mode {
-    width: 30vw;
+    width: 28vw;
     height: auto;
     /* min-height: 350px; */
-    background-color: rgba(var(--divBg));
+    /* background:  hsla(266, 74%, 21%, 0.2); */
+    background-image: linear-gradient(
+        to bottom,
+        hsla(266, 74%, 41%, 0.2),
+        hsla(266, 74%, 21%, 0.2)
+    );
     border-radius: 15px;
     margin: 20px 0;
     padding: 20px 20px 40px 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 8px 6px -6px hsla(266, 74%, 61%, 0.12);
+    box-shadow: 0 6px 12px #00000060;
 
     display: flex;
     align-items: center;
@@ -14,7 +20,7 @@
     flex-direction: column;
     gap: 15px;
 
-    border: 2.5px solid rgba(48, 14, 93, 0.42);
+    border: 1.5px solid rgba(48, 14, 93, 0.42);
 }
 
 .mode h2 {
@@ -23,7 +29,7 @@
     color: var(--main);
     font-size: 1.5rem;
     padding-bottom: 20px;
-    border-bottom: 1px solid rgba(213, 188, 245, 0.29)
+    border-bottom: 1px solid rgba(213, 188, 245, 0.29);
 }
 
 .imgsDiv {
@@ -71,7 +77,8 @@
     transition: all 0.3s ease-in-out cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 .quickMatchBtn {
-    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out,
+        box-shadow 0.3s ease-in-out;
 }
 
 .quickMatchBtn:hover {
@@ -84,7 +91,8 @@
     background: transparent;
     border: 2px solid var(--main-1);
     color: var(--main-1);
-    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out,
+        box-shadow 0.3s ease-in-out;
 }
 
 .inviteFriendBtn:hover {
@@ -92,7 +100,6 @@
     transform: translateY(-3px); /* Move the button upwards */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-
 
 .modeDescriptionDiv {
     width: 100%;
@@ -103,8 +110,51 @@
     color: rgba(213, 188, 245, 0.9);
     font-size: 1.1rem;
 }
-.imgsDiv h3{
+.imgsDiv h3 {
     width: 30%;
     text-align: center;
     font-size: 2rem;
-}   
+}
+
+/* Responsive styles for Mode component */
+@media (max-width: 768px) {
+    .mode {
+        width: 95%; /* Take up more width on mobile */
+        margin: 10px 0; /* Adjust margin */
+        padding: 15px; /* Adjust padding */
+    }
+
+    .mode h2 {
+        font-size: 1.2rem; /* Smaller font size for heading */
+        padding-bottom: 10px;
+    }
+
+    .imgsDiv {
+        gap: 5px; /* Reduce gap between images */
+    }
+
+    .imgLeft,
+    .imgRight,
+    .imgCenter {
+        width: 35%; /* Adjust image width */
+    }
+
+    .imgsDiv h3 {
+        font-size: 1.5rem; /* Smaller font size for vs text */
+    }
+
+    .modeDescriptionText {
+        font-size: 0.9rem; /* Smaller font size for description */
+    }
+
+    .modeBtnsDiv {
+        flex-direction: column; /* Stack buttons vertically */
+        height: auto;
+        gap: 10px;
+    }
+
+    .modeBtns {
+        width: 80%; /* Make buttons wider */
+        font-size: small; /* Smaller font size for buttons */
+    }
+}

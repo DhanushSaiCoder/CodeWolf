@@ -15,8 +15,7 @@
     width: 100vw;
     height: 75px;
     padding: 10px 30px;
-    background-color: #300e5d36;
-    border-bottom: 1px solid var(--div);
+    border-bottom: 1px solid var(--main-50p);
 
     display: flex;
     align-items: center;
@@ -59,4 +58,41 @@
 }
 .logoutBtn:hover {
     background-color: rgba(93, 14, 55, 0.42);
+}
+
+.hamburger-menu {
+    display: none; /* Hidden by default, shown on mobile */
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+}
+
+.mobile-menu {
+    display: none; /* Hidden by default, controlled by JS */
+    position: absolute;
+    top: 75px; /* Below the header */
+    right: 0;
+    width: 100%;
+    background-color: var(--darker); /* Or any suitable background */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.mobile-menu .logoutBtn {
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .headerLinks {
+        display: none; /* Hide regular logout button on mobile */
+    }
+
+    .hamburger-menu {
+        display: block; /* Show hamburger on mobile */
+    }
+
+    /* The mobile-menu display is controlled by JS, so no 'display: block' here */
 }

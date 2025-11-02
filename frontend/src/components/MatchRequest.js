@@ -21,7 +21,7 @@ export const MatchRequest = ({
     >
       <div ref={requestDivRef} className="match-request-card">
         <header className="mr-header">
-          <h1>Match Invite</h1>
+          <h1>Match Invitation</h1>
         </header>
         <section className="mr-body">
           <h2 className="mr-username">
@@ -31,7 +31,7 @@ export const MatchRequest = ({
             </span>
           </h2>
           <p className="mr-invite-text">
-            <em>invited you for a match</em>
+            has challenged you to a match.
           </p>
           <div className="mr-details">
             <p>

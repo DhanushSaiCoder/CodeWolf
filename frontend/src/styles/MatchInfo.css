@@ -1,19 +1,17 @@
 .MatchInfo{
-    /* border: 1px solid rgba(255, 255, 255, 0.203); */
     border-radius: 20px; 
     height: 100px;
+    width: 100%;
 }
 .profileImgs{
-    border-radius: 37.5px;
-    border: 4px white;
-    border-style: outset;
+    border-radius: 50%;
+    border: 2px solid white;
 }
 .MIPlayerDetails{
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-
+    justify-content: space-around;
+    gap: 10px;
 }
 .bothPlayerDetails{
     display: flex;
@@ -24,12 +22,13 @@
 }
 .MIPlayerTwoDetails{
     text-align: right;
+    flex-direction: row-reverse;
 }
 .bothPlayerDetails div p{
     opacity: 0.6;
 }
 .vsDiv{
-    height: 100px;
+    height: 80px;
     width: 1px;
     background-color: rgba(255, 255, 255, 0.18);
     position: relative;
@@ -39,19 +38,78 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.851);
     color: black;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
 }
 .vsCircle p{
-    font-size: 1.35rem;
+    font-size: 1.1rem;
     font-weight: 600;
     height: max-content;
+}
+
+@media (max-width: 768px) {
+  .MatchInfo {
+    height: auto;
+    padding: 10px 8px;
+  }
+
+  .MIPlayerDetails {
+    gap: 5px;
+  }
+
+  .profileImgs {
+    width: 60px;
+    height: 60px;
+  }
+
+  .bothPlayerDetails {
+    gap: 8px;
+    padding: 5px;
+  }
+  
+  .MIPlayerTwoDetails {
+    text-align: left;
+  }
+
+  .bothPlayerDetails h2 {
+    font-size: 1rem;
+  }
+
+  .bothPlayerDetails p {
+    font-size: 0.8rem;
+  }
+
+  .vsCircle {
+    width: 30px;
+    height: 30px;
+  }
+
+  .vsCircle p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+    .profileImgs {
+        width: 50px;
+        height: 50px;
+    }
+    .bothPlayerDetails h2 {
+        font-size: 0.9rem;
+    }
+    .bothPlayerDetails p {
+        font-size: 0.7rem;
+    }
+    .vsDiv {
+        display: none;
+    }
+    .MIPlayerDetails {
+        justify-content: space-between;
+    }
 }

@@ -20,7 +20,11 @@
     padding: 20px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+}
+
+#table-responsive-wrapper{
+    width: 60vw;
 }
 
 table {
@@ -79,4 +83,21 @@ td {
     object-fit: cover;
     margin-right: 10px;
     border: 1.5px solid var(--main-50p);
+}
+
+
+@media (max-width: 768px) {
+    .leaderboardContent {
+        display: block; /* Change from flex to block */
+        padding: 10px;
+    }
+
+    #table-responsive-wrapper {
+        overflow-x: auto;
+        width: 90vw;
+    }
+
+    table {
+        min-width: 600px; /* Ensure table doesn't shrink too much */
+    }
 }

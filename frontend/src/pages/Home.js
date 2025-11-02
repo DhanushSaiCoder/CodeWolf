@@ -8,10 +8,9 @@ import { Mode } from '../components/Mode';
 import coder from '../images/coder.png';
 import coder2 from '../images/coder2.png';
 import { HomeLeaderBoard } from '../components/HomeLeaderBoard';
+import { HomeHistory } from '../components/HomeHistory';
 import { useSocket } from '../SocketContext';
 import { jwtDecode } from 'jwt-decode';
-// Removed MatchRequest import since it is no longer used here
-// import { MatchRequest } from '../components/MatchRequest';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -21,6 +20,15 @@ const Home = () => {
   const [friends, setFriends] = useState([]);
   const [matchRequestData, setMatchRequestData] = useState(false);
   const [rejectCountdown, setRejectCountdown] = useState(10);
+  const [isNavOpen, setIsNavOpen] = useState(false); // New state for Nav visibility
+
+  const toggleNav = () => {
+    setIsNavOpen(!isNavOpen);
+  };
+
+  const closeNav = () => {
+    setIsNavOpen(false);
+  };
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -133,7 +141,7 @@ const Home = () => {
 
   return (
     <div className='Home'>
-      <Header />
+      <Header onNavToggle={toggleNav} />
       <div className='homeContent'>
         <Nav
           currPage="home"
@@ -141,6 +149,8 @@ const Home = () => {
           rejectCountdown={rejectCountdown}
           onAccept={handleAccept}
           onReject={handleReject}
+          isOpen={isNavOpen}
+          onClose={closeNav}
         />
 
         <div className='modesContainer'>
@@ -150,7 +160,7 @@ const Home = () => {
             modeImg2={coder2}
             modeDescription='Resolve all errors in the provided code faster than your opponent within the allocated time.'
           />
-           <Mode
+          <Mode
             modeName='QUICK DEBUG MODE'
             modeImg={coder}
             modeImg2={coder2}
@@ -162,7 +172,7 @@ const Home = () => {
             modeImg2={coder2}
             modeDescription='Resolve all errors in the provided code faster than your opponent within the allocated time.'
           />
-           <Mode
+          <Mode
             modeName='QUICK DEBUG MODE'
             modeImg={coder}
             modeImg2={coder2}
@@ -172,8 +182,10 @@ const Home = () => {
         <div className='homeLeaderBoardContainer'>
           <HomeLeaderBoard />
         </div>
+        <div className='homeHistoryContainer'>
+          <HomeHistory />
+        </div>
       </div>
-      {/* Removed the MatchRequest component from here */}
     </div>
   );
 };

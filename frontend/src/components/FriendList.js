@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import "../styles/FriendList.css";
 import whatsappLogo from "../images/whatsapp.png"
 import { UserFriend } from './UserFriend';
@@ -24,7 +24,7 @@ export const FriendList = (props) => {
     };
 
     // Fetch non-friends data
-    const fetchNonFriendsData = () => {
+    const fetchNonFriendsData = useCallback(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/nonfriends`, {
             method: 'GET',
             headers: {
@@ -45,37 +45,10 @@ export const FriendList = (props) => {
             .catch(error => {
                 console.error('Error fetching users:', error.message);
             });
-    };
-
-    const handleAddFriend = (id) => {
-        setLoading(true);
-
-        fetch(`${process.env.REACT_APP_BACKEND_URL}/friends`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'authorization': `Bearer ${localStorage.getItem('token')}`
-            },
-            body: JSON.stringify({
-                id: id
-            })
-        })
-            .then(response => response.json())
-            .then(data => {
-                setLoading(false);
-                fetchNonFriendsData();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                setLoading(false);
-            })
-            .finally(() => {
-                fetchUserFriend()
-            })
-    };
+    }, []);
 
     // Fetch user friends data
-    const fetchUserFriend = () => {
+    const fetchUserFriend = useCallback(() => {
         setUFLoading(true);
 
         // Fetch the populated friends list
@@ -113,7 +86,34 @@ export const FriendList = (props) => {
         .catch(error => {
             console.error('Error fetching user doc:', error);
         });
-    };
+    }, []);
+
+    const handleAddFriend = useCallback((id) => {
+        setLoading(true);
+
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/friends`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+                id: id
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                setLoading(false);
+                fetchNonFriendsData();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                setLoading(false);
+            })
+            .finally(() => {
+                fetchUserFriend()
+            })
+    }, [fetchNonFriendsData, fetchUserFriend]);
 
     useEffect(() => {
         fetchUserFriend();
@@ -133,7 +133,7 @@ export const FriendList = (props) => {
                 socket.off('statusUpdate', handleStatusUpdate);
             };
         }
-    }, [socket]);
+    }, [socket, fetchUserFriend]);
 
     return (
         <div className='FriendList'>

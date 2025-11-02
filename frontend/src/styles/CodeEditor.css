@@ -4,7 +4,7 @@
     border-radius: 20px;
     display: flex;
     flex-direction: column;
-    border: 0.5px solid rgba(125, 124, 124, 0.1);
+    min-height: 0;
 }
 
 .CodeEditorHeader {
@@ -42,9 +42,9 @@
 }
 .CodeEditorContent {
     width: 100%;
-    height: calc(100% - 50px);
+    flex: 1;
 }
-.code_editor_header_buttonsDiv{
+.code_editor_header_buttonsDiv {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,4 +74,45 @@
 .runBtn:hover {
     background-color: #fff;
     color: black;
+}
+
+@media (max-width: 768px) {
+    .CodeEditor {
+        background: transparent;
+        border-radius: 0;
+    }
+    .CodeEditorHeader {
+        border-radius: 0;
+        background: rgba(48, 14, 93, 0.2) !important;
+        border-bottom: 0;
+        padding: 0 10px;
+    }
+    .CodeEditorContent {
+        border: none;
+    }
+    .code_editor_header_buttonsDiv {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+    .runBtn_mobile {
+        background-color: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: auto;
+        height: auto;
+        padding: 10px;
+    }
+
+    .runBtn:hover {
+        background-color: var(--main-50p);
+        
+    }
+}
+
+.monaco-editor .minimap {
+    z-index: 0 !important;
 }

@@ -3,27 +3,27 @@
     height: 65px;
     display: flex;
     align-items: center;
-    
-    justify-content: flex-start;
-    border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+
+    justify-content: space-between;
+
     font-size: 20px;
     font-weight: normal;
     color: #d5bcf5;
-    background: #300e5d70;
+    background-color: #1b0735;
     padding: 10px 20px;
-
-
+    position: relative;
+    z-index: 3;
 }
-.horizontal_menu_button_active_background{
+.horizontal_menu_button_active_background {
     position: absolute;
     background: #d5bcf540;
     width: 150px;
     height: 40px;
     border-radius: 5px;
     z-index: 7;
-    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.horizontal_menu_button_container{
+.horizontal_menu_button_container {
     position: relative;
     display: flex;
     align-items: center;
@@ -41,13 +41,42 @@
     width: 150px;
     height: 40px;
     z-index: 10;
-    transition: all .2s ease;
+    transition: all 0.2s ease;
 }
-.horizontal_menu_button:hover{
+.horizontal_menu_button:hover {
     background-color: #d5bcf510;
     cursor: pointer;
 }
 
-.activeMenuBtn:hover{
+.activeMenuBtn:hover {
     background-color: inherit;
+}
+.horiz_menu_open_panel_btn {
+    background-color: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.horiz_menu_open_panel_btn:hover{
+    cursor: pointer;
+}
+.panelIcon{
+    transition: all .42s ease-in-out;
+}
+.panelIconInverted{
+    transform: rotate(0deg);
+}
+.panelIconNormal{
+    transform: rotate(180deg);
+}
+@media (max-width: 768px) {
+    .HorizontalMenu {
+        justify-content: space-between;
+        padding: 10px;
+        gap: 10px;
+    }
+    .horizontal_menu_button_container {
+        max-width: 90vw;
+    }
 }

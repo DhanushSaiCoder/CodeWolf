@@ -7,6 +7,9 @@ import MatchRightColumn from '../components/MatchRightColumn';
 import YouLose from '../components/YouLose';
 import YouWin from '../components/YouWin';
 import MatchDraw from '../components/MatchDraw';
+import MatchInfo from '../components/MatchInfo';
+import Timer from '../components/Timer';
+import QuestionDetails from '../components/QuestionDetails';
 
 const useQuery = () => new URLSearchParams(useLocation().search);
 
@@ -25,10 +28,23 @@ export default function Match() {
   const [showMatchDraw, setShowMatchDraw] = useState(false)
   const [loser_rating_delta, set_loser_rating_delta] = useState(JSON.parse(localStorage.getItem(`loserRatingDelta?${matchId}`)) || 0)
   const [winnerRatingChange, setWinnerRatingChange] = useState(JSON.parse(localStorage.getItem(`winnerRatingChange?${matchId}`)) || null)
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [activeTab, setActiveTab] = useState('Question');
 
   const socket = useSocket()
 
   const matchCompleted = timeUp || matchLost || userWonMatch;
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   //useEffect with socket listener that listens to 'matchEnded' event fromt the server
   useEffect(() => {
@@ -149,15 +165,36 @@ export default function Match() {
     setWinnerRatingChange(newWinnerRatingChange);
     localStorage.setItem(`winnerRatingChange?${matchId}`, JSON.stringify(newWinnerRatingChange));
   }
+
+  const renderMobileView = () => (
+    <div className='Match'>
+      <MatchInfo matchDoc={JSON.stringify(matchDoc)} />
+      {showTimer && !matchCompleted && (<Timer matchId={matchId} time={15} handleTimeUp={handleTimeUp} />)}
+      <div className="match-mobile-tabs">
+        <button onClick={() => setActiveTab('Question')} className={`match-tab-button ${activeTab === 'Question' ? 'active' : ''}`}>Question</button>
+        <button onClick={() => setActiveTab('Code')} className={`match-tab-button ${activeTab === 'Code' ? 'active' : ''}`}>Code</button>
+      </div>
+      {activeTab === 'Question' ? (
+        <QuestionDetails isMobile={isMobile} matchDoc={JSON.stringify(matchDoc)} handleQuestionFound={handleQuestionFound} />
+      ) : (
+        <MatchRightColumn isMobile={isMobile} question={question} matchDoc={matchDoc} handleUserWonMatch={handleUserWonMatch} timeUp={timeUp} matchLost={matchLost} userWonMatch={userWonMatch} handleGotWinnerRatingChange={handleGotWinnerRatingChange}/>
+      )}
+    </div>
+  );
+
+  const renderDesktopView = () => (
+    <div className='Match'>
+      <MatchLeftColumn showTimer={showTimer} matchDoc={JSON.stringify(matchDoc)} matchId={matchId} handleTimeUp={handleTimeUp} handleQuestionFound={handleQuestionFound} matchCompleted={matchCompleted} />
+      <MatchRightColumn question={question} matchDoc={matchDoc} handleUserWonMatch={handleUserWonMatch} timeUp={timeUp} matchLost={matchLost} userWonMatch={userWonMatch} handleGotWinnerRatingChange={handleGotWinnerRatingChange}/>
+    </div>
+  );
+
   return (
     <> 
       {showYouLose && (<YouLose matchDoc={matchDoc} loser_rating_delta={loser_rating_delta} handleCloseYouLose={handleCloseYouLose} handle_continueSolvingClick={handle_continueSolvingClick} handle_goHomeClick={handle_goHomeClick} />)}
       {showYouWin && (<YouWin winnerRatingChange={winnerRatingChange || [0,0]} handleCloseYouWin={handleCloseYouWin} />)}
       {showMatchDraw && (<MatchDraw handleClick_matchDraw_continueSolving={handleClick_matchDraw_continueSolving} handleClick_matchDraw_goHome={handleClick_matchDraw_goHome}/>)}
-      <div className='Match'>
-        <MatchLeftColumn showTimer={showTimer} matchDoc={JSON.stringify(matchDoc)} matchId={matchId} handleTimeUp={handleTimeUp} handleQuestionFound={handleQuestionFound} matchCompleted={matchCompleted} />
-        <MatchRightColumn question={question} matchDoc={matchDoc} handleUserWonMatch={handleUserWonMatch} timeUp={timeUp} matchLost={matchLost} userWonMatch={userWonMatch} handleGotWinnerRatingChange={handleGotWinnerRatingChange}/>
-      </div>
+      {isMobile ? renderMobileView() : renderDesktopView()}
     </>
   );
 }

@@ -10,7 +10,7 @@
 }
 .slider {
     /* Remove the static width if it's defined here since it's now set inline */
-    height: 23px;
+    height: 20px;
     background: linear-gradient(90deg, #691dcd, #b035ff);
     border-radius: 13px;
     margin-top: 20px;
@@ -25,4 +25,20 @@
     right: 20px;
     transform: translateY(-50%);
     color: #D5BCF5;
+    font-size: smaller;
+}
+
+.time-outside {
+    
+    right: -50px;
+    color: var(--main);
+}
+@media (max-width: 768px) {
+    .Timer{
+        padding: 0 10px;
+    }
+    .sliderBackground, .slider{
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
 }

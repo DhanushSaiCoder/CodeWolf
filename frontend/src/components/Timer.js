@@ -93,13 +93,13 @@ export default function Timer({ matchId, time = 1, handleTimeUp }) {
     const formattedTime = `${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
 
   
-
+    
     const sliderWidth = (timeLeft / totalTime) * 100;
   return (
     <div className='Timer'>
       <div className='sliderBackground'>
         <div className='slider' style={{ width: `${sliderWidth}%` }}>
-          <p className='time'>{formattedTime}</p>
+          <p className={`time ${sliderWidth < 15 ? 'time-outside' : ''}`}>{formattedTime}</p>
         </div>
       </div>
     </div>

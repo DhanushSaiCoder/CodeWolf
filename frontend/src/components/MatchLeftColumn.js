@@ -11,7 +11,7 @@ export default function MatchLeftColumn(props) {
     <div className='MatchLeftColumn'>
       <MatchInfo matchDoc={matchDoc} />
       {/* Pass the current matchId to Timer */}
-      {showTimer && !matchCompleted && (<Timer matchId={matchId} time={1} handleTimeUp={handleTimeUp} />)}
+      {showTimer && !matchCompleted && (<Timer matchId={matchId} time={15} handleTimeUp={handleTimeUp} />)}
       <QuestionDetails matchDoc={matchDoc} handleQuestionFound={handleQuestionFound} />
     </div>
   );

@@ -26,18 +26,73 @@
     flex-grow: 1;
     position: relative;
 }
-.pagination-controls{
+.pagination-controls {
     position: absolute;
     left: 50%;
     bottom: 0;
     transform: translateX(-50%);
 }
 
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .historyContent_container {
+        min-width: 90vw;
+        margin-top: 10px;
+    }
+
+    .historyContent {
+        padding: 10px;
+        height: auto; /* Allow content to dictate height on smaller screens */
+    }
+
+    .pagination-controls {
+        position: static; /* Remove absolute positioning */
+        transform: none;
+        flex-direction: row; /* Display in a row */
+        justify-content: center; /* Center items horizontally */
+        align-items: center;
+        margin-top: 20px;
+        padding-bottom: 10px;
+        width: 100%; /* Take full width */
+    }
+
+    .pagination-controls button {
+        width: auto; /* Adjust width based on content */
+        padding: 8px 15px; /* Smaller padding */
+        margin: 0 5px; /* Smaller margin between buttons */
+        font-size: 0.9rem; /* Smaller font size */
+    }
+
+    .pagination-controls span {
+        margin: 0 10px; /* Adjust margin for page number */
+        font-size: 1rem; /* Slightly smaller font size */
+    }
+}
+
+@media (max-width: 480px) {
+    .historyContent_container {
+        min-width: 95vw;
+    }
+
+    td {
+        padding-left: 40%;
+    }
+
+    td:before {
+        width: 35%;
+    }
+
+    .history_page_table_wrapper {
+        width: 90vw;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
+    }
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
     color: var(--main);
-    font-family: "Arial", sans-serif;
     font-size: 1rem;
 }
 

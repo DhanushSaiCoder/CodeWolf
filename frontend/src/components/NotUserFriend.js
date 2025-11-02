@@ -4,6 +4,7 @@ import "../styles/NotUserFriend.css";
 import profileImg from '../images/profile.jpg';
 import { toLowQualityPic } from '../images/toLowQualityPic';
 import {UserPlus} from "lucide-react"
+import ImageWithLoader from './ImageWithLoader';
 
 export const NotUserFriend = (props) => {
     const { loading, handleAddFriend, notUserFriendsData, setLoading, fetchNonFriendsData } = props;
@@ -34,7 +35,7 @@ export const NotUserFriend = (props) => {
                 {notUserFriendsData.map((notUserFriend, index) => (
                     <div className="NotUserFriend__container" key={notUserFriend._id}>
                         <div className='NotUserFriend__userDetails'>
-                            <img className='NUF_profilePic' src={notUserFriend.profilePic ? toLowQualityPic(notUserFriend.profilePic) : profileImg} alt={notUserFriend.username} />
+                            <ImageWithLoader className='NUF_profilePic' src={notUserFriend.profilePic ? toLowQualityPic(notUserFriend.profilePic) : profileImg} alt={notUserFriend.username} />
                             <div>
                                 <h3 className='NotUserFriend__username'>{notUserFriend.username}</h3>
                                 <p><span className='NotUserFriend__rating'>&#8902; </span>{notUserFriend.rating}</p>

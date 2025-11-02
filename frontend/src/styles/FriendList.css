@@ -161,3 +161,40 @@
 /* .friendListContent *{
     border: 1px solid #d5bcf535;
 } */
+
+@media (max-width: 768px) {
+    .FriendList {
+        width: 100%;
+        margin-top: 20px;
+        height: 100%;
+    }
+    .friendListHeader {
+        flex-direction: column;
+        height: auto;
+        gap: 15px;
+        padding: 15px;
+        justify-content: center;
+    }
+    .inputDiv {
+        width: 100%;
+        height: 45px;
+    }
+    .searchInp {
+        font-size: small;
+    }
+    .checkBoxLabel {
+        font-size: 0.7rem;
+    }
+    .inviteBtn {
+        width: 100%;
+        height: 45px;
+        font-size: medium;
+    }
+    .friendListContent {
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 15px 10px;
+        scrollbar-width: none;
+    }
+}

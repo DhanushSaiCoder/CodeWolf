@@ -17,8 +17,11 @@ body {
     font-family: "Poppins", serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: url("./images/neon.jpg")  center center/cover;
+    background-color: hsl(270, 85%, 1%);
     color: #d5bcf5;
+}
+a, button, input, select, textarea {
+  -webkit-tap-highlight-color: transparent !important;
 }
 
 code {
