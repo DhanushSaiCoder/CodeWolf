@@ -121,6 +121,18 @@ export const UserFriend = (props) => {
       console.error('No friend selected!');
       return;
     }
+
+    if (selectedFriend.status === 'offline') {
+      // Handle offline invite
+      const { programmingLanguage, difficulty, mode } = matchSettings;
+      const message = `Let's have a CodeWolf match! Language: ${programmingLanguage}, Difficulty: ${difficulty}, Mode: ${mode}.`;
+      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
+      setSelectedFriend(null);
+      showPopup(false);
+      return;
+    }
+
     const newMatchDetails = {
       userId: selectedFriend._id,
       ...matchSettings,
@@ -151,40 +163,6 @@ export const UserFriend = (props) => {
     showPopup(false);
   };
 
-  // (Optional) For a quick match method without a popup
-  const sendQuickMatch = (user) => {
-    // Clear previous rejection for this opponent when sending a new match request
-    setRejectedOpponents(prev => {
-      const newObj = { ...prev };
-      delete newObj[user._id];
-      return newObj;
-    });
-    // Mark that a request is sent
-    setSentRequests(prev => ({ ...prev, [user._id]: true }));
-    const quickMatchDetails = {
-      userId: user._id,
-      programmingLanguage: 'js',
-      difficulty: 'easy',
-      mode: 'quick-debug',
-    };
-    if (socket) {
-      socket.emit('requestMatch', {
-        ...quickMatchDetails,
-        message: 'You have a match request!',
-        requesterId: jwtDecode(token)._id,
-        requesterUsername: userDoc.username,
-        requesterRating: userDoc.rating,
-      });
-    }
-    // Reset the button text after 10 seconds
-    setTimeout(() => {
-      setSentRequests(prev => {
-        const newState = { ...prev };
-        delete newState[user._id];
-        return newState;
-      });
-    }, 10000);
-  };
 
   // Handler functions for the match request component
   const handleAccept = () => {
@@ -274,6 +252,7 @@ export const UserFriend = (props) => {
                   {userFriend.status == "offline" ? (
                     <button
                       className="offPlWaInviteBtn"
+                      onClick={() => configureMatch(userFriend)}
                     >
                       <b>
                         INVITE
