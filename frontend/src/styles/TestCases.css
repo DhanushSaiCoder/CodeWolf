@@ -2,7 +2,7 @@
     background: #1b0735;
     height: 100%;
     padding: 10px 20px;
-
+    border-top: 1px solid var(--main-50p);
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
