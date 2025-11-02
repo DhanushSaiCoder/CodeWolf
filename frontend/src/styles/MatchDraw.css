@@ -1,4 +1,4 @@
-.MatchDraw__container{
+.MatchDraw__container {
     width: 100vw;
     height: 100vh;
     position: fixed;
@@ -23,7 +23,7 @@
     flex-direction: column;
     gap: 20px;
 }
-.MatchDraw_inner_div h2{
+.MatchDraw_inner_div h2 {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -75,4 +75,25 @@
 .MatchDraw_cta_btn:hover {
     transform: scale(0.98);
     cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .MatchDraw__container{
+        padding: 0 20px;
+    }
+    .MatchDraw_inner_div h2 svg {
+        width: 24px;
+        height: 24px;
+    }
+    .MatchDraw_inner_div h2 {
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+    }
+    .MatchDraw_cta_btn {
+        padding: 10px 8px;
+        font-size: smaller;
+    }
 }
