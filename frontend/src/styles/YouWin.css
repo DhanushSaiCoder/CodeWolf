@@ -125,3 +125,25 @@
 .closeYouWinBtn:hover{
     cursor: pointer;
 }
+
+@media (max-width: 768px) {
+    .youWin_inner_div {
+        width: 90vw;
+        padding: 15px;
+        padding-top: 120px;
+    }
+    .youWin_inner_div p{
+        text-align: center;
+    }
+    #youWin_img {
+        width: 180px;
+        top: -80px;
+    }
+    .youWin_cta_div {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .youWin_cta_btn {
+        width: calc(100% - 40px);
+    }
+}

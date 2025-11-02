@@ -108,3 +108,22 @@
         filter: drop-shadow(0 0 15px #a855f760);
     }
 }
+
+@media (max-width: 768px) {
+    .youlose_inner_div {
+        width: 90vw;
+        padding: 15px;
+        padding-top: 120px;
+    }
+    #youlose_img {
+        width: 180px;
+        top: -80px;
+    }
+    .youlose_cta_div {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .youlose_cta_btn {
+        width: calc(100% - 40px);
+    }
+}
