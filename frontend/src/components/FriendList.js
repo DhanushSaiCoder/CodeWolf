@@ -19,7 +19,7 @@ export const FriendList = (props) => {
     const socket = useSocket();
 
     const handleInviteClick = () => {
-        const message = `Hey! I'd love for you to join me on this cool new web app where we can challenge each other in coding 1v1 debug matches! Test your skills and have some fun! Check it out: https://www.placeholderlink.com`;
+        const message = `Hey! I'd love for you to join me on this cool new web app where we can challenge each other in coding 1v1 debug matches! Test your skills and have some fun! Check it out: ${process.env.REACT_APP_FRONTEND_URL}`;
         window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
     };
 
