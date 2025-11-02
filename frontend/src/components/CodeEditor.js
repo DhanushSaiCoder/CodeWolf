@@ -6,7 +6,7 @@ import { useSocket } from '../SocketContext';
 import { jwtDecode } from 'jwt-decode';
 import { SquarePen } from 'lucide-react';
 
-export default function CodeEditor({ question, isMobile, matchDoc: matchObj, handleCodeOutput, handleSubmitResults, handleUserWonMatch, timeUp, matchLost, userWonMatch, handleGotWinnerRatingChange }) {
+export default function CodeEditor({ question, isMobile, matchDoc: matchObj, handleCodeOutput, handleSubmitResults, handleUserWonMatch, timeUp, matchLost, userWonMatch, handleGotWinnerRatingChange, openMenu, handleToggleTab }) {
   const [code, setCode] = useState("");
   const [runningCode, setRunningCode] = useState(false)
   const [submittingCode, setSubmittingCode] = useState(false)
@@ -110,6 +110,8 @@ export default function CodeEditor({ question, isMobile, matchDoc: matchObj, han
         setRunningCode(false)
         console.log("run output: ", data)
         handleCodeOutput(data)
+        openMenu() // Open the menu
+        handleToggleTab("output") // Display output tab
 
       })
       .catch(error => {
@@ -150,6 +152,8 @@ export default function CodeEditor({ question, isMobile, matchDoc: matchObj, han
         if (data.all_PASS) {
           handleMatchFinish()
         }
+        openMenu() // Open the menu
+        handleToggleTab("testcases") // Display testcases tab
       })
       .catch(error => {
         console.error('Error running code:', error);
