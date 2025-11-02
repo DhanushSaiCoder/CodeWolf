@@ -137,3 +137,45 @@
   opacity: 0;
   transition: transform 300ms ease-in, opacity 300ms ease-in;
 }
+
+@media (max-width: 768px) {
+  .match-request-card {
+    width: 90vw;
+    min-width: unset;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 20px;
+  }
+
+  .mr-header h1 {
+    font-size: 1.2rem;
+  }
+
+  .mr-username {
+    font-size: 1.1rem;
+  }
+
+  .mr-rating {
+    font-size: 0.9rem;
+  }
+
+  .mr-invite-text,
+  .mr-details p {
+    font-size: 0.9rem;
+  }
+
+  .mr-btn {
+    font-size: 1rem;
+    padding: 10px 0;
+  }
+
+  .mr-header,
+  .mr-body,
+  .mr-actions {
+    padding: 10px 15px;
+  }
+
+  .mr-actions {
+    gap: 5px;
+  }
+}
