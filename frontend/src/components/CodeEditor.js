@@ -5,7 +5,7 @@ import Loader from './Loader';
 import { useSocket } from '../SocketContext';
 import { jwtDecode } from 'jwt-decode';
 
-export default function CodeEditor({ question,isMobile , matchDoc: matchObj, handleCodeOutput, handleSubmitResults, handleUserWonMatch, timeUp, matchLost, userWonMatch, handleGotWinnerRatingChange }) {
+export default function CodeEditor({ question, isMobile, matchDoc: matchObj, handleCodeOutput, handleSubmitResults, handleUserWonMatch, timeUp, matchLost, userWonMatch, handleGotWinnerRatingChange }) {
   const [code, setCode] = useState("");
   const [runningCode, setRunningCode] = useState(false)
   const [submittingCode, setSubmittingCode] = useState(false)
@@ -178,7 +178,7 @@ export default function CodeEditor({ question,isMobile , matchDoc: matchObj, han
       winner_id: _id,
       solveTime
     }, (response) => {
-      const {winner_rating, winner_rating_delta} = response
+      const { winner_rating, winner_rating_delta } = response
       handleGotWinnerRatingChange(winner_rating, winner_rating_delta)
     })
 
@@ -188,13 +188,21 @@ export default function CodeEditor({ question,isMobile , matchDoc: matchObj, han
   return (
     <div className='CodeEditor'>
       <div className='CodeEditorHeader'>
-        <h3>
-          <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code-xml-icon lucide-code-xml"><path d="m18 16 4-4-4-4" /><path d="m6 8-4 4 4 4" /><path d="m14.5 4-5 16" /></svg></span> Code
-        </h3>
+        {!isMobile && (
+          <h3>
+            <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code-xml-icon lucide-code-xml"><path d="m18 16 4-4-4-4" /><path d="m6 8-4 4 4 4" /><path d="m14.5 4-5 16" /></svg></span> Code
+          </h3>
+        )}
         <div className='code_editor_header_buttonsDiv'>
-          <button onClick={handleRunCode} className='runBtn'>
-            {!runningCode ? "Run" : <Loader />}
-          </button>
+          {isMobile ? (
+            <button onClick={handleRunCode} className='runBtn runBtn_mobile'>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#d5bcf5" stroke="#d5bcf52e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play-icon lucide-play"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></svg>
+            </button>
+          ) : (
+            <button onClick={handleRunCode} className='runBtn'>
+              {!runningCode ? "Run" : <Loader />}
+            </button>
+          )}
           {!timeUp && !userWonMatch && !matchLost && (
             <button onClick={handleSubmitCode} className='submitBtn'>
               {!submittingCode ? "Submit" : <Loader />}
@@ -218,6 +226,6 @@ export default function CodeEditor({ question,isMobile , matchDoc: matchObj, han
         /> : <p>Loading...</p>}
       </div>
 
-    </div>
+    </div >
   );
 }

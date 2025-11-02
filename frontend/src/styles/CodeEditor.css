@@ -78,6 +78,37 @@
 
 @media (max-width: 768px) {
     .CodeEditor {
-        background: rgba(48, 14, 93, 0.2);
+        background: transparent;
+        border-radius: 0;
+    }
+    .CodeEditorHeader {
+        border-radius: 0;
+        background: rgba(48, 14, 93, 0.2) !important;
+        border-bottom: 0;
+        padding: 0 10px;
+    }
+    .CodeEditorContent {
+        border: none;
+    }
+    .code_editor_header_buttonsDiv {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+    .runBtn_mobile {
+        background-color: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: auto;
+        height: auto;
+        padding: 10px;
+    }
+
+    .runBtn:hover {
+        background-color: var(--main-50p);
+        
     }
 }
