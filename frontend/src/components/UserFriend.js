@@ -128,7 +128,7 @@ export const UserFriend = (props) => {
 
     if (selectedFriend.status === 'offline') {
       const inviteLink = `http://localhost:3000/waInviteWait?requesterId=${requesterId}&receiverId=${receiverId}&difficulty=${difficulty}&language=${programmingLanguage}&mode=${mode}`;
-      const message = `Let's have a CodeWolf match! Join me here: ${inviteLink}`;
+      const message = `Let's have a CodeWolf match!\n\nLanguage: ${programmingLanguage}\nDifficulty: ${difficulty}\nMode: ${mode}\n\nJoin me here:\n${inviteLink}`;
       const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
       window.open(whatsappUrl, '_blank');
       

@@ -35,7 +35,7 @@ export const WaInviteWait = () => {
       // Both users listen for the match to be ready
       const handleMatchReady = (data) => {
         setWaiting(false);
-        navigate(`/matchwait/?requesterId=${data.requesterId}&receiverId=${data.receiverId}&mode=${encodeURI(data.mode)}&difficulty=${data.difficulty}&language=${data.programmingLanguage}`);
+        navigate(`/matchwait/?requesterId=${data.requesterId}&receiverId=${data.receiverId}&mode=${encodeURI(data.mode)}&difficulty=${data.difficulty}&language=${data.programmingLanguage}`, { replace: true });
       };
       socket.on('waMatchReady', handleMatchReady);
 
