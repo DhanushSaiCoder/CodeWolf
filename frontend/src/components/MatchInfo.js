@@ -4,19 +4,11 @@ import Profile from "../images/profile.jpg";
 import { jwtDecode } from 'jwt-decode';
 
 export default function MatchInfo({ matchDoc }) {
-    if (matchDoc == "null") return <div className='MatchInfo'>Loading...</div>;
-
-    let matchData;
-    try {
-        matchData = JSON.parse(matchDoc);
-    } catch (error) {
-        console.error("Error parsing matchDoc:", error);
-        return <div className='MatchInfo'>Invalid Match Data</div>;
-    }
+    if (!matchDoc) return <div className='MatchInfo'>Loading...</div>;
 
     const { _id } = jwtDecode(localStorage.getItem('token'))
-    const player = matchData.players[0].id == _id ? matchData.players[0] : matchData.players[1]
-    const opponent = matchData.players[0].id == _id ? matchData.players[1] : matchData.players[0]
+    const player = matchDoc.players[0].id == _id ? matchDoc.players[0] : matchDoc.players[1]
+    const opponent = matchDoc.players[0].id == _id ? matchDoc.players[1] : matchDoc.players[0]
 
     const player_lowQualityPic = player.profilePic?.replace(
         "/upload/",

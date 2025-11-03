@@ -11,6 +11,7 @@ import { HomeLeaderBoard } from '../components/HomeLeaderBoard';
 import { HomeHistory } from '../components/HomeHistory';
 import { useSocket } from '../SocketContext';
 import { jwtDecode } from 'jwt-decode';
+import MatchSetupPopup from '../components/MatchSetupPopup';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -21,6 +22,33 @@ const Home = () => {
   const [matchRequestData, setMatchRequestData] = useState(false);
   const [rejectCountdown, setRejectCountdown] = useState(10);
   const [isNavOpen, setIsNavOpen] = useState(false); // New state for Nav visibility
+  const [showMatchSetup, setShowMatchSetup] = useState(false);
+  const [matchSettings, setMatchSettings] = useState({
+    programmingLanguage: 'js',
+    difficulty: 'easy',
+    mode: ''
+  });
+
+  const handleQuickMatchClick = (modeValue) => {
+    setMatchSettings(prev => ({ ...prev, mode: modeValue }));
+    setShowMatchSetup(true);
+  };
+
+  const handleCloseMatchSetup = () => {
+    setShowMatchSetup(false);
+  };
+
+  const handleMatchSettingsChange = (e) => {
+    const { name, value } = e.target;
+    setMatchSettings(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleMatchSetupSubmit = (e) => {
+    e.preventDefault();
+    setShowMatchSetup(false);
+    navigate(`/findMatch?mode=${matchSettings.mode}&difficulty=${matchSettings.difficulty}&language=${matchSettings.programmingLanguage}`);
+  };
+
 
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
@@ -156,27 +184,35 @@ const Home = () => {
         <div className='modesContainer'>
           <Mode
             modeName='QUICK DEBUG MODE'
+            modeValue='quick-debug'
             modeImg={coder}
             modeImg2={coder2}
             modeDescription='Resolve all errors in the provided code faster than your opponent within the allocated time.'
+            onQuickMatch={handleQuickMatchClick}
           />
           <Mode
             modeName='QUICK DEBUG MODE'
+            modeValue='quick-debug'
             modeImg={coder}
             modeImg2={coder2}
             modeDescription='Resolve all errors in the provided code faster than your opponent within the allocated time.'
+            onQuickMatch={handleQuickMatchClick}
           />
           <Mode
             modeName='QUICK DEBUG MODE'
+            modeValue='quick-debug'
             modeImg={coder}
             modeImg2={coder2}
             modeDescription='Resolve all errors in the provided code faster than your opponent within the allocated time.'
+            onQuickMatch={handleQuickMatchClick}
           />
           <Mode
             modeName='QUICK DEBUG MODE'
+            modeValue='quick-debug'
             modeImg={coder}
             modeImg2={coder2}
             modeDescription='Resolve all errors in the provided code faster than your opponent within the allocated time.'
+            onQuickMatch={handleQuickMatchClick}
           />
         </div>
         <div className='homeLeaderBoardContainer'>
@@ -186,6 +222,13 @@ const Home = () => {
           <HomeHistory />
         </div>
       </div>
+      <MatchSetupPopup
+        show={showMatchSetup}
+        onClose={handleCloseMatchSetup}
+        onSubmit={handleMatchSetupSubmit}
+        matchSettings={matchSettings}
+        onChange={handleMatchSettingsChange}
+      />
     </div>
   );
 };

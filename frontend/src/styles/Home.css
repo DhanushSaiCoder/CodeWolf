@@ -76,3 +76,12 @@
         display: none; /* Nav is now an overlay, hidden by default */
     }
 }
+
+.finding-match-indicator {
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    font-size: 1.2em;
+    color: white;
+    background-color: #282c34;
+}

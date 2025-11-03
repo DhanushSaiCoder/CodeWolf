@@ -7,7 +7,7 @@ import { jwtDecode } from 'jwt-decode';
 import { SquarePen } from 'lucide-react';
 
 export default function CodeEditor({ question, isMobile, matchDoc: matchObj, handleCodeOutput, handleSubmitResults, handleUserWonMatch, timeUp, matchLost, userWonMatch, handleGotWinnerRatingChange, openMenu, handleToggleTab }) {
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState(question?.default_code || "");
   const [runningCode, setRunningCode] = useState(false)
   const [submittingCode, setSubmittingCode] = useState(false)
   const socket = useSocket();
