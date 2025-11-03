@@ -273,7 +273,7 @@ export const UserFriend = (props) => {
                       disabled={userFriend.status !== "online" || sentRequests[userFriend._id]}
                       onClick={() => configureMatch(userFriend)}
                     >
-                      <b>{sentRequests[userFriend._id] ? "REQUEST SENT" : "QUICK MATCH"}</b>
+                      <b>{sentRequests[userFriend._id] ? "REQUEST SENT" : "CHALLENGE"}</b>
                     </button>
 
                   )}
