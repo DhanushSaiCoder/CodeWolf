@@ -10,7 +10,7 @@ const { Match } = require('./models/Match')
 const jwt = require('jsonwebtoken');
 
 const computeDelta = require("./computeDelta")
-
+ 
 dotenv.config();
 
 const port = process.env.PORT || 3001;
@@ -54,6 +54,7 @@ const io = new Server(server, {
 
 // Map to store userId and their socket IDs
 const userSocketMap = new Map();
+let matchmakingQueue = [];
 
 io.on('connection', (socket) => {
   let userId; // Will store the user's ID
@@ -120,6 +121,70 @@ io.on('connection', (socket) => {
         programmingLanguage,
         mode
       });
+    }
+  });
+
+  socket.on('cancelFindMatch', () => {
+    if (userId) {
+      matchmakingQueue = matchmakingQueue.filter(p => p.userId !== userId);
+    }
+  });
+
+  socket.on('getQueueStatus', (matchSettings) => {
+    const waitingPlayers = matchmakingQueue.filter(p =>
+        p.matchSettings.language === matchSettings.language &&
+        p.matchSettings.mode === matchSettings.mode &&
+        p.matchSettings.difficulty === matchSettings.difficulty
+    ).length;
+    socket.emit('queueStatus', { count: waitingPlayers });
+  });
+
+  socket.on('findMatch', async (matchSettings) => {
+    const user = await User.findById(userId).select('username rating profilePic');
+    if (!user) return;
+
+    const matchedPlayerIndex = matchmakingQueue.findIndex(p =>
+        p.matchSettings.language === matchSettings.language &&
+        p.matchSettings.mode === matchSettings.mode &&
+        p.matchSettings.difficulty === matchSettings.difficulty &&
+        p.userId !== userId
+    );
+
+    if (matchedPlayerIndex !== -1) {
+        const matchedPlayer = matchmakingQueue.splice(matchedPlayerIndex, 1)[0];
+
+        const player1 = {
+            id: user._id.toString(),
+            username: user.username,
+            rating: user.rating,
+            profilePic: user.profilePic,
+        };
+
+        const player2 = {
+            id: matchedPlayer.user._id.toString(),
+            username: matchedPlayer.user.username,
+            rating: matchedPlayer.user.rating,
+            profilePic: matchedPlayer.user.profilePic,
+        };
+
+        const payload = {
+            player1,
+            player2,
+            matchSettings,
+        };
+
+        const player1SocketId = userSocketMap.get(player1.id);
+        const player2SocketId = userSocketMap.get(player2.id);
+
+        if (player1SocketId) {
+            io.to(player1SocketId).emit('playersFound', payload);
+        }
+        if (player2SocketId) {
+            io.to(player2SocketId).emit('playersFound', payload);
+        }
+
+    } else {
+        matchmakingQueue.push({ userId, socketId: socket.id, matchSettings, user });
     }
   });
 
@@ -254,6 +319,9 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', async () => {
     if (userId) {
+      // Remove user from matchmaking queue
+      matchmakingQueue = matchmakingQueue.filter(p => p.userId !== userId);
+
       await updateUserStatus(userId, 'offline');
       userSocketMap.delete(userId);
       socket.leave(userId);

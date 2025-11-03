@@ -10,16 +10,14 @@ import LightbulbIcon from '@mui/icons-material/Lightbulb';
  * @returns {JSX.Element} Rendered component.
  */
 
-export default function QuestionDetails({ matchDoc: matchDocStr, handleQuestionFound, isMobile }) {
-  // Memoize parsing to avoid new object each render
-  const matchDoc = useMemo(() => JSON.parse(matchDocStr), [matchDocStr]);
-
+export default function QuestionDetails({ matchDoc, handleQuestionFound, isMobile }) {
   // states
   const [question, setQuestion] = useState(null);
   const [isFetchingQuestion, setIsFetchingQuestion] = useState(true);
 
 
   useEffect(() => {
+    if (!matchDoc) return;
     const fetchQuestionDetails = async () => {
       try {
         // if matchDoc has questionId, get it from database
@@ -80,7 +78,7 @@ export default function QuestionDetails({ matchDoc: matchDocStr, handleQuestionF
 
     if (matchDoc) fetchQuestionDetails();
 
-  }, [matchDocStr]); // depend on the string, not the parsed object
+  }, [matchDoc]); // depend on the parsed object
 
 
   // Function to update questionId in the match document in the database

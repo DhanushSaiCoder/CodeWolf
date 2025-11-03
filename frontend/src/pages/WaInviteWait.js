@@ -35,36 +35,33 @@ export const WaInviteWait = () => {
 
   useEffect(() => {
     if (!token) {
-      // Not logged in, redirect to login
       navigate(`/auth/login?redirect=${encodeURIComponent(location.pathname + location.search)}`);
       return;
     }
 
     const currentUserId = jwtDecode(token)._id;
 
-    if (currentUserId !== requesterId && currentUserId !== receiverId) {
+    if (receiverId && currentUserId !== requesterId && currentUserId !== receiverId) {
       setErrorMessage("You are not authorized to join this match. This invitation was intended for a different user.");
       setWaiting(false);
       return;
     }
 
     if (socket && currentUserId) {
-      // Both users listen for the match to be ready
       const handleMatchReady = (data) => {
         setWaiting(false);
         navigate(`/matchwait/?requesterId=${data.requesterId}&receiverId=${data.receiverId}&mode=${encodeURI(data.mode)}&difficulty=${data.difficulty}&language=${data.programmingLanguage}`, { replace: true });
       };
       socket.on('waMatchReady', handleMatchReady);
 
-      // If the current user is the receiver, they should announce they've joined.
-      if (currentUserId === receiverId) {
-        const joinDetails = {
-          requesterId,
-          receiverId,
-          difficulty,
-          programmingLanguage,
-          mode,
-        };
+      // If it's a private invite and the user is the receiver
+      if (receiverId && currentUserId === receiverId) {
+        const joinDetails = { requesterId, receiverId, difficulty, programmingLanguage, mode };
+        socket.emit('inviteeJoined', joinDetails);
+      }
+      // If it's a public invite and the user is not the requester
+      else if (!receiverId && currentUserId !== requesterId) {
+        const joinDetails = { requesterId, receiverId: currentUserId, difficulty, programmingLanguage, mode };
         socket.emit('inviteeJoined', joinDetails);
       }
 

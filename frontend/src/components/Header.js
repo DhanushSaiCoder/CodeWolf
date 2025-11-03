@@ -21,6 +21,12 @@ const Header = ({ onNavToggle }) => {
         toggleMobileMenu();
     };
 
+    const handleLogOut = () => {
+        if (!window.confirm("Are you sure?")) return
+        window.localStorage.removeItem('token')
+        navigate('/auth/login')
+    }
+
     return (
         <div className="header">
             <img
@@ -31,20 +37,14 @@ const Header = ({ onNavToggle }) => {
             />
             <h1 className='headerH1' onClick={handleNavigation}>Code Wolf</h1>
             <div className='headerLinks'>
-                <button className='logoutBtn' onClick={() => {
-                    window.localStorage.removeItem('token')
-                    navigate('/auth/login')
-                }}>LOG OUT</button>
+                <button className='logoutBtn' onClick={handleLogOut}>LOG OUT</button>
             </div>
             <div className="hamburger-menu" onClick={handleHamburgerClick}>
                 <Menu />
             </div>
             {isMobileMenuOpen && (
                 <div className="mobile-menu">
-                    <button className='logoutBtn' onClick={() => {
-                        window.localStorage.removeItem('token')
-                        navigate('/auth/login')
-                    }}>LOG OUT</button>
+                    <button className='logoutBtn' onClick={handleLogOut}>LOG OUT</button>
                 </div>
             )}
         </div>

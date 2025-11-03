@@ -168,14 +168,14 @@ export default function Match() {
 
   const renderMobileView = () => (
     <div className='Match'>
-      <MatchInfo matchDoc={JSON.stringify(matchDoc)} />
+      <MatchInfo matchDoc={matchDoc} />
       {showTimer && !matchCompleted && matchDoc && (<Timer matchId={matchId} time={matchDoc.duration / 60} handleTimeUp={handleTimeUp} />)}
       <div className="match-mobile-tabs">
         <button onClick={() => setActiveTab('Question')} className={`match-tab-button ${activeTab === 'Question' ? 'active' : ''}`}>Question</button>
         <button onClick={() => setActiveTab('Code')} className={`match-tab-button ${activeTab === 'Code' ? 'active' : ''}`}>Code</button>
       </div>
       {activeTab === 'Question' ? (
-        <QuestionDetails isMobile={isMobile} matchDoc={JSON.stringify(matchDoc)} handleQuestionFound={handleQuestionFound} />
+        <QuestionDetails isMobile={isMobile} matchDoc={matchDoc} handleQuestionFound={handleQuestionFound} />
       ) : (
         <MatchRightColumn isMobile={isMobile} question={question} matchDoc={matchDoc} handleUserWonMatch={handleUserWonMatch} timeUp={timeUp} matchLost={matchLost} userWonMatch={userWonMatch} handleGotWinnerRatingChange={handleGotWinnerRatingChange}/>
       )}
