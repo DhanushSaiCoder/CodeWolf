@@ -74,22 +74,22 @@
     background-color: #dc3545;
 }
 
-.profileSettings_profileImage{
+.profileSettings_profileImage {
     width: 350px;
     height: 350px;
     border-radius: 50%;
     border: 8px solid var(--main-50p);
 }
-.profile-settings_profileImageDiv{
+.profile-settings_profileImageDiv {
     position: relative;
 }
-.profile-settings{
+.profile-settings {
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
     gap: 40px;
 }
-.profile-settings_editProfileBtn{
+.profile-settings_editProfileBtn {
     position: absolute;
     bottom: 40px;
     right: 10px;
@@ -103,13 +103,13 @@
     border: 1px solid var(--main-50p);
     color: var(--main);
     font-weight: bold;
-    transition: all .13s ease-out;
+    transition: all 0.13s ease-out;
 }
-.profile-settings_editProfileBtn:hover{
+.profile-settings_editProfileBtn:hover {
     cursor: pointer;
     background-color: var(--dark);
-}/* Container label styling */
-label[for='profile-settings_usernameInp'] {
+} /* Container label styling */
+label[for="profile-settings_usernameInp"] {
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -128,7 +128,8 @@ label[for='profile-settings_usernameInp'] {
     border-radius: 8px; /* slight modern curvature */
     color: var(--main);
     font-size: 1rem;
-    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.15s ease;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease,
+        transform 0.15s ease;
 }
 
 .profile-settings_usernameInp:hover {
@@ -161,10 +162,19 @@ label[for='profile-settings_usernameInp'] {
     .profile-settings_usernameInp {
         width: 100%;
     }
-    .profile-settings_editProfileBtn{
+    .profile-settings_editProfileBtn {
+        padding: 4px 16px;
+        font-size: 1rem;
         position: static;
         bottom: unset;
         right: unset;
+    }
 
+    .profile-settings_profileImageDiv {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        flex-direction: column;
     }
 }
