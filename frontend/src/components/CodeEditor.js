@@ -37,11 +37,15 @@ export default function CodeEditor({ question, isMobile, matchDoc: matchObj, han
   }, []);
 
   useEffect(() => {
-    if (question == null || !JSON.parse(localStorage.getItem('code'))) return
-
-    const codeLs = JSON.parse(localStorage.getItem('code'))
-    if (codeLs.match_id == matchObj._id) setCode(codeLs.code)
-  }, [question])
+    if (question && matchObj?._id) {
+      const savedCodeData = JSON.parse(localStorage.getItem('code'));
+      if (savedCodeData && savedCodeData.match_id === matchObj._id) {
+        setCode(savedCodeData.code);
+      } else {
+        setCode(question.default_code || "");
+      }
+    }
+  }, [question, matchObj?._id]);
 
   const editorDidMount = (editor, monaco) => {
     editorRef.current = editor; // Store the editor instance
