@@ -3,7 +3,7 @@ const joi = require("joi");
 
 // Updated match schema with a status field
 const matchSchema = new mongoose.Schema({
-    questionId:{
+    questionId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Question',
         optional: true
@@ -33,8 +33,8 @@ const matchSchema = new mongoose.Schema({
         default: null
     },
     winner_rating_delta: {
-        type: Number, 
-        default: 0 
+        type: Number,
+        default: 0
     },
     loser: {
         type: mongoose.Schema.Types.ObjectId,
@@ -42,8 +42,8 @@ const matchSchema = new mongoose.Schema({
         default: null
     },
     loser_rating_delta: {
-        type: Number, 
-        default: 0 
+        type: Number,
+        default: 0
     },
     mode: {
         type: String,
@@ -61,7 +61,21 @@ const matchSchema = new mongoose.Schema({
         type: String,
         required: true,
         default: 'pending'  // Default status set to "pending"
+    },
+    duration: {
+        type: Number,
+        default: function () {
+            switch (this.mode) {
+                case "quick-debug":
+                    return 15 * 60;
+                case "standard":
+                    return 60 * 60;
+                default:
+                    return 30 * 60; // fallback if mode not matched
+            }
+        }
     }
+
 }, { timestamps: true });
 
 const Match = mongoose.model("Match", matchSchema);
@@ -83,7 +97,8 @@ function validateMatch(match) {
         mode: joi.string().required(),
         language: joi.string().required(),
         difficulty: joi.string().required(),
-        status: joi.string().default('pending')
+        status: joi.string().default('pending'),
+        duration: joi.number().optional()
     });
     return schema.validate(match);
 }

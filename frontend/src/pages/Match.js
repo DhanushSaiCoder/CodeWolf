@@ -169,7 +169,7 @@ export default function Match() {
   const renderMobileView = () => (
     <div className='Match'>
       <MatchInfo matchDoc={JSON.stringify(matchDoc)} />
-      {showTimer && !matchCompleted && (<Timer matchId={matchId} time={15} handleTimeUp={handleTimeUp} />)}
+      {showTimer && !matchCompleted && matchDoc && (<Timer matchId={matchId} time={matchDoc.duration / 60} handleTimeUp={handleTimeUp} />)}
       <div className="match-mobile-tabs">
         <button onClick={() => setActiveTab('Question')} className={`match-tab-button ${activeTab === 'Question' ? 'active' : ''}`}>Question</button>
         <button onClick={() => setActiveTab('Code')} className={`match-tab-button ${activeTab === 'Code' ? 'active' : ''}`}>Code</button>
@@ -184,7 +184,7 @@ export default function Match() {
 
   const renderDesktopView = () => (
     <div className='Match'>
-      <MatchLeftColumn showTimer={showTimer} matchDoc={JSON.stringify(matchDoc)} matchId={matchId} handleTimeUp={handleTimeUp} handleQuestionFound={handleQuestionFound} matchCompleted={matchCompleted} />
+      <MatchLeftColumn showTimer={showTimer} matchDoc={matchDoc} matchId={matchId} handleTimeUp={handleTimeUp} handleQuestionFound={handleQuestionFound} matchCompleted={matchCompleted} />
       <MatchRightColumn question={question} matchDoc={matchDoc} handleUserWonMatch={handleUserWonMatch} timeUp={timeUp} matchLost={matchLost} userWonMatch={userWonMatch} handleGotWinnerRatingChange={handleGotWinnerRatingChange}/>
     </div>
   );

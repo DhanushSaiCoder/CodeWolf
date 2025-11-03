@@ -161,4 +161,10 @@ label[for='profile-settings_usernameInp'] {
     .profile-settings_usernameInp {
         width: 100%;
     }
+    .profile-settings_editProfileBtn{
+        position: static;
+        bottom: unset;
+        right: unset;
+
+    }
 }
