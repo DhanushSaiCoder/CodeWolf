@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSocket } from '../SocketContext';
 import '../styles/FindMatch.css';
@@ -10,6 +10,7 @@ const FindMatch = () => {
     const query = useQuery();
     const navigate = useNavigate();
     const socket = useSocket();
+    const [showInviteHint, setShowInviteHint] = useState(false);
 
     const matchSettings = {
         mode: query.get('mode'),
@@ -18,6 +19,10 @@ const FindMatch = () => {
     };
 
     useEffect(() => {
+        const timer = setTimeout(() => {
+            setShowInviteHint(true);
+        }, 20000); // 20 seconds
+
         if (socket) {
             socket.emit('findMatch', matchSettings);
 
@@ -33,9 +38,28 @@ const FindMatch = () => {
 
             return () => {
                 socket.off('playersFound', handlePlayersFound);
+                clearTimeout(timer);
             };
         }
+
+        return () => clearTimeout(timer);
+        return () => clearTimeout(timer);
     }, [socket, navigate, matchSettings]);
+
+    const handleWhatsAppInvite = () => {
+        const token = localStorage.getItem('token');
+        const requesterId = jwtDecode(token)._id;
+
+        const inviteLink = `${process.env.REACT_APP_FRONTEND_URL}/waInviteWait?requesterId=${requesterId}&difficulty=${matchSettings.difficulty}&language=${matchSettings.language}&mode=${matchSettings.mode}`;
+        const message = `Let's have a CodeWolf match!\n\nLanguage: ${matchSettings.language}\nDifficulty: ${matchSettings.difficulty}\nMode: ${matchSettings.mode}\n\nJoin me here:\n${inviteLink}`;
+        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+        
+        // First, navigate the inviter to the waiting page
+        navigate(`/waInviteWait?requesterId=${requesterId}&difficulty=${matchSettings.difficulty}&language=${matchSettings.language}&mode=${matchSettings.mode}`);
+
+        // Then, open the WhatsApp share link
+        window.open(whatsappUrl, '_blank');
+    };
 
     const handleCancel = () => {
         if (socket) {
@@ -52,6 +76,12 @@ const FindMatch = () => {
                 <p>Difficulty: {matchSettings.difficulty}</p>
                 <p>Language: {matchSettings.language}</p>
                 <div className="spinner"></div>
+                {showInviteHint && (
+                    <div className="invite-hint">
+                        <p>No players seem to be available right now.</p>
+                        <button onClick={handleWhatsAppInvite} className="whatsapp-btn">Invite a Friend</button>
+                    </div>
+                )}
                 <button onClick={handleCancel} className="cancel-btn">Cancel</button>
             </div>
         </div>

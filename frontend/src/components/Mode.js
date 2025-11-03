@@ -19,12 +19,6 @@ export const Mode = (props) => {
             </div>
             <div className='modeBtnsDiv'>
                 <button onClick={() => onQuickMatch(modeValue)} className='modeBtns quickMatchBtn'><b>QUICK MATCH</b></button>
-                <button
-                    onClick={() => navigate('/friends')}
-                    className='modeBtns inviteFriendBtn'
-                >
-                    <b>INVITE FRIEND</b>
-                </button>
             </div>
         </div>
     );

@@ -130,6 +130,15 @@ io.on('connection', (socket) => {
     }
   });
 
+  socket.on('getQueueStatus', (matchSettings) => {
+    const waitingPlayers = matchmakingQueue.filter(p =>
+        p.matchSettings.language === matchSettings.language &&
+        p.matchSettings.mode === matchSettings.mode &&
+        p.matchSettings.difficulty === matchSettings.difficulty
+    ).length;
+    socket.emit('queueStatus', { count: waitingPlayers });
+  });
+
   socket.on('findMatch', async (matchSettings) => {
     const user = await User.findById(userId).select('username rating profilePic');
     if (!user) return;
