@@ -1,100 +1,113 @@
-.MatchInfo{
-    border-radius: 20px; 
-    height: 100px;
+/* General Styles (for larger screens) */
+.MatchInfo {
     width: 100%;
+    border-radius: 15px;
+    padding: 1rem;
+    box-sizing: border-box;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
-.profileImgs{
-    border-radius: 50%;
-    border: 2px solid white;
-}
-.MIPlayerDetails{
+
+.MIPlayerDetails {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    gap: 10px;
+    gap: 1rem;
 }
-.bothPlayerDetails{
+
+.bothPlayerDetails {
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 10px;
-    gap: 10px;
+    gap: 1rem;
+    flex: 1;
 }
-.MIPlayerTwoDetails{
-    text-align: right;
+
+.MIPlayerTwoDetails {
     flex-direction: row-reverse;
+    text-align: left;
 }
-.bothPlayerDetails div p{
-    opacity: 0.6;
+
+.profileImgs {
+    border-radius: 50%;
+    width: 65px;
+    height: 65px;
+    object-fit: cover;
+    border: 4px solid var(--main-50p);
 }
-.vsDiv{
-    height: 80px;
-    width: 1px;
-    background-color: rgba(255, 255, 255, 0.18);
-    position: relative;
+
+.bothPlayerDetails h2 {
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    margin: 0;
+    font-weight: 600;
+    color: #f3e8ff;
+}
+
+.bothPlayerDetails p {
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    opacity: 0.8;
+    margin: 0.25rem 0 0;
+    color: #d8b4fe;
+}
+
+/* A more elegant 'VS' separator */
+.vsDiv {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+    padding: 0 1rem;
+}
+
+/* Original Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .MatchInfo {
+        height: auto;
+        padding: 10px 8px;
+    }
+
+    .MIPlayerDetails {
+        gap: 5px;
+    }
+
+    .profileImgs {
+        width: 60px;
+        height: 60px;
+    }
+
+    .bothPlayerDetails {
+        gap: 8px;
+        padding: 5px;
+    }
+
+    .MIPlayerTwoDetails {
+        text-align: left;
+        flex-direction: row; /* Revert to row for mobile */
+    }
+
+    .bothPlayerDetails h2 {
+        font-size: 1rem;
+    }
+
+    .bothPlayerDetails p {
+        font-size: 0.8rem;
+    }
+
+    .vsCircle {
+        width: 30px;
+        height: 30px;
+    }
+
+    .vsCircle p {
+        font-size: 0.9rem;
+    }
+}
+.MIPlayerTwoDetails_details {
+    text-align: right;
 }
 .vsCircle{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.851);
-    color: black;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.vsCircle p{
-    font-size: 1.1rem;
-    font-weight: 600;
-    height: max-content;
-}
-
-@media (max-width: 768px) {
-  .MatchInfo {
-    height: auto;
-    padding: 10px 8px;
-  }
-
-  .MIPlayerDetails {
-    gap: 5px;
-  }
-
-  .profileImgs {
-    width: 60px;
-    height: 60px;
-  }
-
-  .bothPlayerDetails {
-    gap: 8px;
-    padding: 5px;
-  }
-  
-  .MIPlayerTwoDetails {
-    text-align: left;
-  }
-
-  .bothPlayerDetails h2 {
-    font-size: 1rem;
-  }
-
-  .bothPlayerDetails p {
-    font-size: 0.8rem;
-  }
-
-  .vsCircle {
-    width: 30px;
-    height: 30px;
-  }
-
-  .vsCircle p {
-    font-size: 0.9rem;
-  }
-}
-
 @media (max-width: 480px) {
     .profileImgs {
         width: 50px;
@@ -106,10 +119,12 @@
     .bothPlayerDetails p {
         font-size: 0.7rem;
     }
-    .vsDiv {
-        display: none;
-    }
     .MIPlayerDetails {
         justify-content: space-between;
+    }
+
+    .MIPlayerTwoDetails {
+        flex-direction: row-reverse;
+        text-align: right;
     }
 }
