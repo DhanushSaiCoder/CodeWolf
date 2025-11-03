@@ -31,7 +31,7 @@ const FindMatch = () => {
                 const requesterId = player1.id === _id ? player1.id : player2.id;
                 const receiverId = player1.id === _id ? player2.id : player1.id;
 
-                navigate(`/matchwait?requesterId=${requesterId}&receiverId=${receiverId}&mode=${matchSettings.mode}&difficulty=${matchSettings.difficulty}&language=${matchSettings.language}`);
+                navigate(`/matchwait?requesterId=${requesterId}&receiverId=${receiverId}&mode=${matchSettings.mode}&difficulty=${matchSettings.difficulty}&language=${matchSettings.language}`, { replace: true });
             };
 
             socket.on('playersFound', handlePlayersFound);
@@ -55,7 +55,7 @@ const FindMatch = () => {
         const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
         
         // First, navigate the inviter to the waiting page
-        navigate(`/waInviteWait?requesterId=${requesterId}&difficulty=${matchSettings.difficulty}&language=${matchSettings.language}&mode=${matchSettings.mode}`);
+        navigate(`/waInviteWait?requesterId=${requesterId}&difficulty=${matchSettings.difficulty}&language=${matchSettings.language}&mode=${matchSettings.mode}`, { replace: true });
 
         // Then, open the WhatsApp share link
         window.open(whatsappUrl, '_blank');
@@ -65,7 +65,7 @@ const FindMatch = () => {
         if (socket) {
             socket.emit('cancelFindMatch');
         }
-        navigate('/');
+        navigate('/', { replace: true });
     };
 
     return (

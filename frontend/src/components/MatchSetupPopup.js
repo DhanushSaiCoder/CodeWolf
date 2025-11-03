@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/MatchSetupPopup.css';
 
-const MatchSetupPopup = ({ show, onClose, onSubmit, matchSettings, onChange, buttonText }) => {
+const MatchSetupPopup = ({ show, onClose, onSubmit, matchSettings, onChange, buttonText, disableModeSelect }) => {
   if (!show) {
     return null;
   }
@@ -52,10 +52,9 @@ const MatchSetupPopup = ({ show, onClose, onSubmit, matchSettings, onChange, but
                 value={matchSettings.mode}
                 onChange={onChange}
                 required
-                disabled
+                disabled={disableModeSelect}
               >
                 <option value="quick-debug">QUICK DEBUG MODE</option>
-                <option value="standard">STANDARD</option>
               </select>
             </div>
             <button type="submit">{buttonText || 'FIND MATCH'}</button>

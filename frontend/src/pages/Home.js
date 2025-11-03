@@ -228,6 +228,7 @@ const Home = () => {
         onSubmit={handleMatchSetupSubmit}
         matchSettings={matchSettings}
         onChange={handleMatchSettingsChange}
+        disableModeSelect={true}
       />
     </div>
   );

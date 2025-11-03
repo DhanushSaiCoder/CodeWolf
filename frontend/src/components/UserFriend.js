@@ -196,6 +196,7 @@ export const UserFriend = (props) => {
         onSubmit={handleSubmit}
         matchSettings={matchSettings}
         onChange={handleChange}
+        disableModeSelect={false}
       />
 
       <div className="data">
