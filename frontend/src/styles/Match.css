@@ -11,6 +11,7 @@
     transition: all 0.3s;
     padding: 20px;
     gap: 20px;
+    background-color: var(--bg);
 }
 
 .match-mobile-tabs {
