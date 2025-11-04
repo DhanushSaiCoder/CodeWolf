@@ -35,7 +35,7 @@ export const HomeHistory = () => {
             }
 
             try {
-                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/matches/history`, {
+                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/matches/history?limit=10`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -64,14 +64,14 @@ export const HomeHistory = () => {
 
     const getMatchResult = (match) => {
         if (match.winner === null) return 'draw';
-        return match.winner === currentUser.userId ? 'win' : 'loss';
+        return match.winner === currentUser._id ? 'win' : 'loss';
     };
 
     const getOpponent = (match) => {
         if (!currentUser || !match.players || match.players.length < 2) {
             return null;
         }
-        const opponent = match.players.find(p => p.id && p.id._id !== currentUser.userId);
+        const opponent = match.players.find(p => p.id && p.id._id !== currentUser._id);
         return opponent;
     };
 
@@ -89,7 +89,7 @@ export const HomeHistory = () => {
                     <p>{error}</p>
                 ) : (
                     <ul className='homeHistoryContent' style={{ listStyleType: 'none', padding: 0 }}>
-                        {matches && matches.length > 0 ? matches.slice(0, 10).map((match) => {
+                        {matches && matches.length > 0 ? matches.map((match) => {
                             const opponent = getOpponent(match);
                             if (!opponent) return <li key={match._id}>Invalid match data</li>;
                             
@@ -98,8 +98,8 @@ export const HomeHistory = () => {
                             return (
                                 <li className='historyItem' key={match._id}>
                                     <p className='h_profile_and_username'>
-                                        <ImageWithLoader className='h-profile-pic' src={opponent.profilePic ? toLowQualityPic(opponent.profilePic) : profileImg} alt={opponent.username} />
-                                        <b>{opponent.username}</b>
+                                        <ImageWithLoader className='h-profile-pic' src={opponent.id.profilePic ? toLowQualityPic(opponent.id.profilePic) : profileImg} alt={opponent.id.username} />
+                                        <b>{opponent.id.username}</b>
                                     </p>
                                     <div className={`historyResult ${result}`}>
                                         {result}
