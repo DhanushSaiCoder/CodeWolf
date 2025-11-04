@@ -4,6 +4,8 @@
     justify-content: flex-start;
     flex-wrap: nowrap;
     gap: 20px;
+    background-color: var(--bg);
+
 
 
 }

@@ -57,7 +57,7 @@ const MatchSetupPopup = ({ show, onClose, onSubmit, matchSettings, onChange, but
                 <option value="quick-debug">QUICK DEBUG MODE</option>
               </select>
             </div>
-            <button type="submit">{buttonText || 'FIND MATCH'}</button>
+            <button className='matchSetupPopup_submitBtn' type="submit">{buttonText || 'FIND MATCH'}</button>
           </form>
         </div>
       </div>

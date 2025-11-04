@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import "../styles/SignUp.css";
+import { Link, useNavigate } from 'react-router-dom';
+import "../styles/Auth.css";
 import codeWolf from '../images/codeWolf.jpg';
 
 const SignUp = () => {
@@ -13,6 +14,7 @@ const SignUp = () => {
     const [errors, setErrors] = useState({});
     const [serverError, setServerError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -111,7 +113,7 @@ const SignUp = () => {
                 // **Successful Registration**
                 console.log(data);
                 localStorage.setItem('token', data.token)
-                window.location.href = '/';
+                navigate('/');
             }
         } catch (error) {
             console.error('An error occurred:', error);
@@ -121,24 +123,24 @@ const SignUp = () => {
     };
 
     return (
-        <div className='SignUp'>
-            <div className='brandingDiv'>
-                <img className='signupLogo' src={codeWolf} alt="logo" />
-                <h1 className='signUpH1'>Code Wolf</h1>
-                <p className='motto'><i>Every skilled coder must master fixing mistakes!</i></p>
+        <div className='auth-page'>
+            <div className='branding-div'>
+                <img className='auth-logo' src={codeWolf} alt="logo" />
+                <h1 className='auth-title'>Code Wolf</h1>
+                <p className='motto'><i>Sharpen your claws. Challenge your pack.</i></p>
             </div>
 
-            <div className='signupFormDiv'>
+            <div className='auth-form-div'>
                 <h2>SIGN UP</h2>
                 <form onSubmit={handleSignUp}>
                     {serverError && <div className="error server-error">{serverError}</div>}
 
                     {/* Username Field */}
-                    <div className="inputGroup">
+                    <div className="input-group">
                         <input
                             autoComplete='off'
                             name="username"
-                            className={`inputEle ${errors.username ? 'inputError' : ''}`}
+                            className={`input-ele ${errors.username ? 'input-error' : ''}`}
                             type="text"
                             placeholder=" "
                             value={formData.username}
@@ -149,11 +151,11 @@ const SignUp = () => {
                     </div>
 
                     {/* Email Field */}
-                    <div className="inputGroup">
+                    <div className="input-group">
                         <input
                             autoComplete='off'
                             name="email"
-                            className={`inputEle ${errors.email ? 'inputError' : ''}`}
+                            className={`input-ele ${errors.email ? 'input-error' : ''}`}
                             type="email"
                             placeholder=" "
                             value={formData.email}
@@ -164,11 +166,11 @@ const SignUp = () => {
                     </div>
 
                     {/* Password Field */}
-                    <div className="inputGroup">
+                    <div className="input-group">
                         <input
                             autoComplete='off'
                             name="password"
-                            className={`inputEle ${errors.password ? 'inputError' : ''}`}
+                            className={`input-ele ${errors.password ? 'input-error' : ''}`}
                             type="password"
                             placeholder=" "
                             value={formData.password}
@@ -179,11 +181,11 @@ const SignUp = () => {
                     </div>
 
                     {/* Confirm Password Field */}
-                    <div className="inputGroup">
+                    <div className="input-group">
                         <input
                             autoComplete='off'
                             name="confirmPassword"
-                            className={`inputEle ${errors.confirmPassword ? 'inputError' : ''}`}
+                            className={`input-ele ${errors.confirmPassword ? 'input-error' : ''}`}
                             type="password"
                             placeholder=" "
                             value={formData.confirmPassword}
@@ -193,12 +195,10 @@ const SignUp = () => {
                         {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
                     </div>
 
-                    <i>
-                        <p className='loginText'>
-                            Already have an account? <a className="loginLink" href="/auth/login">Login</a>
-                        </p>
-                    </i>
-                    <button className='signUpBtn' type="submit" disabled={isLoading}>
+                    <p className='switch-auth-text'>
+                        Already have an account? <Link className="switch-auth-link" to="/auth/login">Login</Link>
+                    </p>
+                    <button className='auth-button' type="submit" disabled={isLoading}>
                         {isLoading ? (
                             "Signing Up..."
                         ) : (

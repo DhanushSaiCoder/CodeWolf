@@ -5,11 +5,12 @@
 
 .homeContent {
     width: 100%;
-    height: calc(100vh - 75px);
+    height: 100vh;
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
     gap: 20px;
+    background-color: var(--bg);
     flex-wrap: nowrap;
 }
 

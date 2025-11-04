@@ -1,7 +1,8 @@
 // Login.js
 
 import React, { useState } from 'react';
-import "../styles/Login.css";
+import { Link, useNavigate } from 'react-router-dom';
+import "../styles/Auth.css";
 import codeWolf from '../images/codeWolf.jpg';
 
 const Login = () => {
@@ -13,6 +14,7 @@ const Login = () => {
     const [errors, setErrors] = useState({});
     const [serverError, setServerError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -108,9 +110,9 @@ const Login = () => {
                 const redirectUrl = queryParams.get('redirect');
 
                 if (redirectUrl) {
-                    window.location.href = redirectUrl;
+                    navigate(redirectUrl);
                 } else {
-                    window.location.href = '/';
+                    navigate('/');
                 }
             }
         } catch (error) {
@@ -121,24 +123,24 @@ const Login = () => {
     };
 
     return (
-        <div className='Login'>
-            <div className='brandingDiv'>
-                <img className='loginLogo' src={codeWolf} alt="logo" />
-                <h1 className='loginH1'>Code Wolf</h1>
-                <p className='motto'><i>Every skilled coder must master fixing mistakes!</i></p>
+        <div className='auth-page'>
+            <div className='branding-div'>
+                <img className='auth-logo' src={codeWolf} alt="logo" />
+                <h1 className='auth-title'>Code Wolf</h1>
+                <p className='motto'><i>Sharpen your claws. Challenge your pack.</i></p>
             </div>
 
-            <div className='loginFormDiv'>
+            <div className='auth-form-div'>
                 <h2>LOGIN</h2>
                 <form onSubmit={handleLogin}>
                     {serverError && <div className="error server-error">{serverError}</div>}
 
                     {/* Email Field */}
-                    <div className="inputGroup">
+                    <div className="input-group">
                         <input
                             autoComplete='off'
                             name="email"
-                            className={`inputEle ${errors.email ? 'inputError' : ''}`}
+                            className={`input-ele ${errors.email ? 'input-error' : ''}`}
                             type="email"
                             placeholder=" "
                             value={formData.email}
@@ -149,11 +151,11 @@ const Login = () => {
                     </div>
 
                     {/* Password Field */}
-                    <div className="inputGroup">
+                    <div className="input-group">
                         <input
                             autoComplete='off'
                             name="password"
-                            className={`inputEle ${errors.password ? 'inputError' : ''}`}
+                            className={`input-ele ${errors.password ? 'input-error' : ''}`}
                             type="password"
                             placeholder=" "
                             value={formData.password}
@@ -163,12 +165,10 @@ const Login = () => {
                         {errors.password && <span className="error">{errors.password}</span>}
                     </div>
 
-                    <i>
-                        <p className='signupText'>
-                            Don't have an account? <a className="signupLink" href="/auth/signup">Sign Up</a>
-                        </p>
-                    </i>
-                    <button className='logInBtn' type="submit" disabled={isLoading}>
+                    <p className='switch-auth-text'>
+                        Don't have an account? <Link className="switch-auth-link" to="/auth/signup">Sign Up</Link>
+                    </p>
+                    <button className='auth-button' type="submit" disabled={isLoading}>
                         {isLoading ? (
                             "Logging In..."
                         ) : (

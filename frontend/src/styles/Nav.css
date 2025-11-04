@@ -3,7 +3,7 @@
     width: 16vw;
     padding: 30px 20px;
     height: 100%;
-    background: rgba(48, 14, 93, 0.2);
+    background: var(--darkest);
 }
 
 .firstBtn{

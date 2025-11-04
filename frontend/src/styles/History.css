@@ -1,7 +1,7 @@
 .historyContent_container {
     min-width: 60vw;
     min-height: 200px;
-    background-color: rgba(var(--divBg));
+    background-color: rgba(var(--bg));
     margin-top: 20px;
     border-radius: 10px;
     display: flex;

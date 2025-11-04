@@ -1,12 +1,14 @@
-/* Login.css */
+/* Auth.css */
 
-/* === Login Container === */
+/* === Selection Highlighting === */
 ::selection {
     background: var(--main);
     color: var(--darkest);
 }
-.Login {
-    width: 100%;
+
+/* === Auth Page Container === */
+.auth-page {
+    width: 100vw;
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -14,31 +16,33 @@
     gap: 6%;
     flex-wrap: wrap;
     padding: 5vw;
+    background: linear-gradient(135deg, #1a0c2e 0%, #0d0218 100%);
 }
 
 /* === Branding Section === */
-.brandingDiv {
+.branding-div {
     text-align: center;
     color: var(--light);
     max-width: 400px;
 }
 
-.loginLogo {
+.auth-logo {
     width: 140px;
     height: 140px;
     border-radius: 50%;
-    margin-bottom: 1.5rem;
+    margin-bottom: .5rem;
     box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
-    transition: transform 0.4s ease-in-out, box-shadow 0.3s ease, border 0.3s ease;
+    transition: transform 0.4s ease-in-out, box-shadow 0.3s ease,
+        border 0.3s ease;
 }
 
-.loginLogo:hover {
+.auth-logo:hover {
     transform: scale(1.08) rotate(-5deg);
     box-shadow: 0 0 0;
     border: 2px solid var(--main);
 }
 
-.loginH1 {
+.auth-title {
     font-size: 2.8rem;
     font-weight: 700;
     color: var(--main);
@@ -50,30 +54,29 @@
 
 .motto {
     font-size: 1.2rem;
-    color: var(--main-1);
+    color: hsla(266, 74%, 85%, 0.58);
     line-height: 1.6;
-    font-weight: 500;
 }
 
 /* === Form Section === */
-.loginFormDiv {
-    background-color: #1f053a27;
-    
-    border: 2px solid var(--main-50p);
+.auth-form-div {
+    background-color: #1e053a66;
+    border: 1px solid var(--main-50p);
     border-radius: 20px;
     padding: 3rem;
     width: 35%;
     min-width: 360px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
     transition: all 0.3s ease-in-out;
+    backdrop-filter: blur(10px);
 }
 
-.loginFormDiv:hover {
+.auth-form-div:hover {
     border-color: var(--main);
-    transform: translateY(-3px);
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
 }
 
-.loginFormDiv h2 {
+.auth-form-div h2 {
     color: var(--light);
     font-size: 2.2rem;
     margin-bottom: 2rem;
@@ -83,8 +86,8 @@
     font-weight: 600;
 }
 
-.loginFormDiv h2::after {
-    content: '';
+.auth-form-div h2::after {
+    content: "";
     display: block;
     width: 70px;
     height: 3px;
@@ -94,13 +97,13 @@
 }
 
 /* === Input Fields === */
-.inputGroup {
+.input-group {
     width: 100%;
     position: relative;
     margin-bottom: 1.8rem;
 }
 
-.inputEle {
+.input-ele {
     height: 50px;
     width: 100%;
     padding: 1rem;
@@ -112,12 +115,12 @@
     transition: all 0.3s ease-in-out;
 }
 
-.inputEle:focus {
+.input-ele:focus {
     outline: none;
     border-bottom-color: var(--main);
 }
 
-.loginFormDiv label {
+.auth-form-div label {
     color: var(--main-1);
     position: absolute;
     left: 1rem;
@@ -126,15 +129,15 @@
     transition: all 0.3s ease-in-out;
 }
 
-.inputEle:focus + label,
-.inputEle:not(:placeholder-shown) + label {
+.input-ele:focus + label,
+.input-ele:not(:placeholder-shown) + label {
     transform: translateY(-28px);
     font-size: 0.85rem;
     color: var(--main);
 }
 
-/* === Submit .logInBtn === */
-.logInBtn {
+/* === Submit Button === */
+.auth-button {
     width: 100%;
     padding: 1rem;
     font-size: 1.1rem;
@@ -148,53 +151,74 @@
     margin-top: 1rem;
     text-transform: uppercase;
     letter-spacing: 0.8px;
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(138, 43, 226, 0.3);
 }
 
-.logInBtn:hover {
+.auth-button:hover {
     background-color: var(--main-1);
     transform: translateY(-3px);
     box-shadow: 0 5px 20px var(--main-50p);
 }
 
-.signupText {
-    opacity: 0.8;
+.auth-button:disabled {
+    background-color: #5a4e6e;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
-.signupLink {
+/* === Switch Form Text & Link === */
+.switch-auth-text {
+    opacity: 0.8;
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.switch-auth-link {
     color: var(--main-1);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.switch-auth-link:hover {
+    color: var(--main);
+    text-decoration: underline;
 }
 
 /* === Error Messages === */
 .error {
-    color: red;
+    color: #ff7675;
     font-size: 0.9em;
     margin-top: 5px;
+    display: block; /* Ensure error message takes its own line */
 }
 
-.inputError {
-    border-color: red;
+.input-error {
+    border-bottom-color: #ff7675;
 }
-
 .server-error {
-    background-color: #ffe6e6;
+    position: static;
+    background-color: #ff767533;
+    color: #ff7675;
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 15px;
+    text-align: center;
 }
 
 /* === Responsive Design === */
 @media (max-width: 768px) {
-    .Login {
+    .auth-page {
         flex-direction: column;
         gap: 35px;
         padding: 50px 20px;
     }
-    .loginFormDiv {
-        width: 85%;
+    .auth-form-div {
+        width: calc(100% - 40px); /* Adjust width to account for parent padding */
         padding: 2.5rem;
     }
-    .loginH1 {
+    .auth-title {
         font-size: 2.2rem;
     }
     .motto {
@@ -203,14 +227,14 @@
 }
 
 @media (max-width: 480px) {
-    .loginLogo {
+    .auth-logo {
         width: 100px;
         height: 100px;
     }
-    .loginFormDiv h2 {
+    .auth-form-div h2 {
         font-size: 1.8rem;
     }
-    .logInBtn {
+    .auth-button {
         padding: 0.875rem;
     }
 }
