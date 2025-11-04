@@ -20,6 +20,9 @@ const Leaderboard = () => {
   const [rejectCountdown, setRejectCountdown] = useState(10);
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const limit = 10;
 
   const { _id: userId } = jwtDecode(localStorage.getItem('token'))
 
@@ -33,10 +36,12 @@ const Leaderboard = () => {
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
+      setLoading(true);
       try {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/leaderboard`);
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/leaderboard?page=${page}&limit=${limit}`);
         const data = await response.json();
-        setLeaderboardData(data);
+        setLeaderboardData(data.leaderboard);
+        setTotalPages(data.totalPages);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching leaderboard:', error);
@@ -45,7 +50,7 @@ const Leaderboard = () => {
     };
 
     fetchLeaderboard();
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -151,7 +156,7 @@ const Leaderboard = () => {
                   <tbody>
                     {leaderboardData.map((user, index) => (
                       <tr className={userId == user._id && "LB_user_row"} key={user._id}>
-                        <td className={userId != user._id ? "LB_rank" : "LB_rank LB_user_row_rank"}>#{index + 1}</td>
+                        <td className={userId != user._id ? "LB_rank" : "LB_rank LB_user_row_rank"}>#{(page - 1) * limit + index + 1}</td>
                         <td className={userId == user._id ? "LB_profile_and_username LB_user_row_username" : 'LB_profile_and_username'} ><ImageWithLoader className='leaderboardProfilePic' src={user.profilePic ? toLowQualityPic(user.profilePic) : profileImg} alt={user.username} />{user.username}</td>
                         <td className={userId == user._id && "LB_user_row_rating"}>&#8902; {user.rating}</td>
                         <td className={userId == user._id && "LB_user_row_quesionSolved"}>{user.problemsSolved}</td>
@@ -159,6 +164,15 @@ const Leaderboard = () => {
                     ))}
                   </tbody>
                 </table>
+                <div className="pagination-controls">
+                  <button onClick={() => setPage(page - 1)} disabled={page === 1}>
+                    &lt; Previous
+                  </button>
+                  <span>{page} / {totalPages}</span>
+                  <button onClick={() => setPage(page + 1)} disabled={page === totalPages}>
+                    Next &gt;
+                  </button>
+                </div>
               </div>
             )}
           </div>
