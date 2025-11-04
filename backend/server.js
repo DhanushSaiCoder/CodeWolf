@@ -197,6 +197,7 @@ io.on('connection', (socket) => {
       mode,
       programmingLanguage,
       difficulty,
+      questionId, // ADDED: questionId from frontend
     }) => {
     // Log the match start
 
@@ -228,25 +229,13 @@ io.on('connection', (socket) => {
       mode,
       language: programmingLanguage,
       status: 'pending',
+      questionId, // ADDED: Include questionId in the match object
     };
 
     // Create a new match
     let createdMatch;
     try {
-      const response = await fetch(`${process.env.BACKEND_URL}/matches`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(matchObj),
-      });
-
-      if (!response.ok) {
-        const errorDetails = await response.text();
-        throw new Error(
-          `HTTP error! Status: ${response.status}. Details: ${errorDetails}`
-        );
-      }
-
-      createdMatch = await response.json();
+      createdMatch = await Match.create(matchObj);
     } catch (error) {
       console.error('Error creating match:', error);
     }
