@@ -191,24 +191,8 @@ const Home = () => {
             onQuickMatch={handleQuickMatchClick}
           />
           <Mode
-            modeName='QUICK DEBUG MODE'
-            modeValue='quick-debug'
-            modeImg={coder}
-            modeImg2={coder2}
-            modeDescription='Resolve all errors in the provided code faster than your opponent within the allocated time.'
-            onQuickMatch={handleQuickMatchClick}
-          />
-          <Mode
-            modeName='QUICK DEBUG MODE'
-            modeValue='quick-debug'
-            modeImg={coder}
-            modeImg2={coder2}
-            modeDescription='Resolve all errors in the provided code faster than your opponent within the allocated time.'
-            onQuickMatch={handleQuickMatchClick}
-          />
-          <Mode
-            modeName='QUICK DEBUG MODE'
-            modeValue='quick-debug'
+            modeName='STANDARD DUEL'
+            modeValue='standard-duel'
             modeImg={coder}
             modeImg2={coder2}
             modeDescription='Resolve all errors in the provided code faster than your opponent within the allocated time.'

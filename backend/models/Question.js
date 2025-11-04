@@ -69,7 +69,7 @@ const validateQuestion = (question) => {
             .items(
                 Joi.object({
                     input: Joi.any().required(),
-                    expected_output: Joi.any().required(),
+                    expected_output: Joi.any().required().allow(null),
                 })
             )
             .required(),
