@@ -21,6 +21,8 @@ const Leaderboard = () => {
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const { _id: userId } = jwtDecode(localStorage.getItem('token'))
+
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
   };
@@ -131,10 +133,10 @@ const Leaderboard = () => {
         />
         {/* Leaderboard-specific content can go here */}
         <div className="leaderboardContent_container">
-          
+
           <div className='leaderboardContent'>
             {loading ? (
-              <Loader/>
+              <Loader />
             ) : (
               <div id='table-responsive-wrapper' className="table-responsive-wrapper">
                 <table>
@@ -146,17 +148,17 @@ const Leaderboard = () => {
                       <th>Problems Solved</th>
                     </tr>
                   </thead>
-                <tbody>
-                  {leaderboardData.map((user, index) => (
-                    <tr key={user._id}>
-                      <td>#{index + 1}</td>
-                      <td className='LB_profile_and_username'><ImageWithLoader className='leaderboardProfilePic' src={user.profilePic ? toLowQualityPic(user.profilePic) : profileImg} alt={user.username} />{user.username}</td>
-                      <td>&#8902; {user.rating}</td>
-                      <td>{user.problemsSolved}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                  <tbody>
+                    {leaderboardData.map((user, index) => (
+                      <tr className={userId == user._id && "LB_user_row"} key={user._id}>
+                        <td className={userId != user._id ? "LB_rank" : "LB_rank LB_user_row_rank"}>#{index + 1}</td>
+                        <td className={userId == user._id ? "LB_profile_and_username LB_user_row_username" : 'LB_profile_and_username'} ><ImageWithLoader className='leaderboardProfilePic' src={user.profilePic ? toLowQualityPic(user.profilePic) : profileImg} alt={user.username} />{user.username}</td>
+                        <td className={userId == user._id && "LB_user_row_rating"}>&#8902; {user.rating}</td>
+                        <td className={userId == user._id && "LB_user_row_quesionSolved"}>{user.problemsSolved}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             )}
           </div>

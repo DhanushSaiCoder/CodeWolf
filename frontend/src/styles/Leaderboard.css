@@ -86,7 +86,17 @@ td {
     border: 1.5px solid var(--main-50p);
 }
 
-
+.LB_user_row{
+    background-color: var(--div) !important;
+}
+.LB_user_row_rank, .LB_user_row_username, .LB_user_row_rating, .LB_user_row_quesionSolved{
+    font-weight: bold;
+    font-size: 1.1rem;
+    font-style: italic;
+}
+.LB_rank{
+    font-style: italic;
+}
 @media (max-width: 768px) {
     .leaderboardContent {
         display: block; /* Change from flex to block */
