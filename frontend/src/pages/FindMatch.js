@@ -21,7 +21,7 @@ const FindMatch = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
             setShowInviteHint(true);
-        }, 20000); // 20 seconds
+        }, 15000); // 15 seconds
 
         if (socket) {
             socket.emit('findMatch', matchSettings);
@@ -43,8 +43,7 @@ const FindMatch = () => {
         }
 
         return () => clearTimeout(timer);
-        return () => clearTimeout(timer);
-    }, [socket, navigate, matchSettings]);
+    }, [socket, navigate, matchSettings.mode, matchSettings.difficulty, matchSettings.language]); // More stable dependencies
 
     const handleWhatsAppInvite = () => {
         const token = localStorage.getItem('token');
@@ -53,11 +52,9 @@ const FindMatch = () => {
         const inviteLink = `${process.env.REACT_APP_FRONTEND_URL}/waInviteWait?requesterId=${requesterId}&difficulty=${matchSettings.difficulty}&language=${matchSettings.language}&mode=${matchSettings.mode}`;
         const message = `Let's have a CodeWolf match!\n\nLanguage: ${matchSettings.language}\nDifficulty: ${matchSettings.difficulty}\nMode: ${matchSettings.mode}\n\nJoin me here:\n${inviteLink}`;
         const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
-        
-        // First, navigate the inviter to the waiting page
+
         navigate(`/waInviteWait?requesterId=${requesterId}&difficulty=${matchSettings.difficulty}&language=${matchSettings.language}&mode=${matchSettings.mode}`, { replace: true });
 
-        // Then, open the WhatsApp share link
         window.open(whatsappUrl, '_blank');
     };
 
@@ -69,20 +66,23 @@ const FindMatch = () => {
     };
 
     return (
-        <div className="find-match-container">
-            <div className="find-match-box">
-                <h2>Finding Match...</h2>
-                <p>Mode: {matchSettings.mode}</p>
-                <p>Difficulty: {matchSettings.difficulty}</p>
-                <p>Language: {matchSettings.language}</p>
-                <div className="spinner"></div>
+        <div className='FindMatch'>
+            <div className="FM-content-container">
+                {!showInviteHint && <>
+                    <div>Finding Match...</div>
+                    <div className="FM-spinner"></div>
+                </>}
+
                 {showInviteHint && (
-                    <div className="invite-hint">
+                    <div className="FM-invite-hint">
                         <p>No players seem to be available right now.</p>
-                        <button onClick={handleWhatsAppInvite} className="whatsapp-btn">Invite a Friend</button>
+                        <button onClick={handleWhatsAppInvite} className="FM-whatsapp-btn">
+                            Invite a Friend
+                        </button>
                     </div>
                 )}
-                <button onClick={handleCancel} className="cancel-btn">Cancel</button>
+
+                <button onClick={handleCancel} className="FM-cancel-btn">Cancel</button>
             </div>
         </div>
     );

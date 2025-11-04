@@ -7,6 +7,8 @@ import Nav from '../components/Nav';
 import { Mode } from '../components/Mode';
 import coder from '../images/coder.png';
 import coder2 from '../images/coder2.png';
+import coder3 from '../images/coder3.png'
+import coder4 from '../images/coder4.png'
 import { HomeLeaderBoard } from '../components/HomeLeaderBoard';
 import { HomeHistory } from '../components/HomeHistory';
 import { useSocket } from '../SocketContext';
@@ -191,27 +193,11 @@ const Home = () => {
             onQuickMatch={handleQuickMatchClick}
           />
           <Mode
-            modeName='QUICK DEBUG MODE'
-            modeValue='quick-debug'
-            modeImg={coder}
-            modeImg2={coder2}
-            modeDescription='Resolve all errors in the provided code faster than your opponent within the allocated time.'
-            onQuickMatch={handleQuickMatchClick}
-          />
-          <Mode
-            modeName='QUICK DEBUG MODE'
-            modeValue='quick-debug'
-            modeImg={coder}
-            modeImg2={coder2}
-            modeDescription='Resolve all errors in the provided code faster than your opponent within the allocated time.'
-            onQuickMatch={handleQuickMatchClick}
-          />
-          <Mode
-            modeName='QUICK DEBUG MODE'
-            modeValue='quick-debug'
-            modeImg={coder}
-            modeImg2={coder2}
-            modeDescription='Resolve all errors in the provided code faster than your opponent within the allocated time.'
+            modeName='STANDARD DUEL'
+            modeValue='standard-duel'
+            modeImg={coder3}
+            modeImg2={coder4}
+            modeDescription='A real-time 1v1 coding battle where the first player to submit a fully correct solution wins the match.'
             onQuickMatch={handleQuickMatchClick}
           />
         </div>

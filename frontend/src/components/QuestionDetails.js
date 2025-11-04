@@ -10,6 +10,7 @@ import LightbulbIcon from '@mui/icons-material/Lightbulb';
  * @returns {JSX.Element} Rendered component.
  */
 
+
 export default function QuestionDetails({ matchDoc, handleQuestionFound, isMobile }) {
   // states
   const [question, setQuestion] = useState(null);
@@ -40,37 +41,9 @@ export default function QuestionDetails({ matchDoc, handleQuestionFound, isMobil
           setIsFetchingQuestion(false);
           return;
         }
-
-        // else get a random question based on mode, difficulty, and language
-        const filterStr = `mode_slug=${matchDoc.mode}&question_difficulty=${matchDoc.difficulty}&programming_language=${matchDoc.language === "js" ? "javascript" : matchDoc.language === "py" ? "python" : matchDoc.language}`
-
-        const response = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/questions?${filterStr}`,
-          {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`Error fetching question: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        const randomIndex = Math.floor(Math.random() * data.data.length);
-
-        setQuestion(data.data[randomIndex]); // Assuming the first question is the one we want
-        handleQuestionFound(data.data[randomIndex])
-        setIsFetchingQuestion(false);
-
-        // Update the match document with the fetched questionId
-        if (data.data[randomIndex]) {
-          const questionId = data.data[randomIndex]._id;
-          await updateQuestionIdInDatabase(questionId);
-        }
+        // If matchDoc.questionId is not present, do nothing. MatchWait component is responsible for setting the questionId.
+        // This component will remain in a loading state until matchDoc is updated with a questionId.
+        setIsFetchingQuestion(false); // Ensure loading state is cleared if no questionId and no fetch
       } catch (err) {
         console.error("Fetch error:", err);
       }
@@ -107,6 +80,16 @@ export default function QuestionDetails({ matchDoc, handleQuestionFound, isMobil
     }
   }
 
+  const renderDisplayValue = (value) => {
+    if (typeof value === 'object' && value !== null) {
+      return JSON.stringify(value);
+    }
+    if (typeof value === 'string') {
+      return `"${value}"`;
+    }
+    return String(value);
+  };
+
   return (
     <div className='QuestionDetails'>
       {!isMobile && (<div className='QuestionDetailsHeader'>
@@ -137,10 +120,10 @@ export default function QuestionDetails({ matchDoc, handleQuestionFound, isMobil
             {question.examples.map((example, index) => (
               <div className='exampleSet' key={index}>
                 <p>
-                  <strong>Input:</strong> {example.input}
+                  <strong>Input:</strong> {renderDisplayValue(example.input)}
                 </p>
                 <p>
-                  <strong>Output:</strong> {example.output}
+                  <strong>Output:</strong> {renderDisplayValue(example.output)}
                 </p>
               </div>
             ))}
@@ -156,10 +139,10 @@ export default function QuestionDetails({ matchDoc, handleQuestionFound, isMobil
                 question.test_cases.map((testCase, index) => (
                   <div key={index} className='testcase'>
                     <p>
-                      <strong>Input:</strong> {testCase.input}
+                      <strong>Input:</strong> {renderDisplayValue(testCase.input)}
                     </p>
                     <p>
-                      <strong>Output:</strong> {testCase.expected_output}
+                      <strong>Output:</strong> {renderDisplayValue(testCase.expected_output)}
                     </p>
                   </div>
                 ))

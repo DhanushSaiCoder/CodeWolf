@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode'; // adjust the import if necessary
 import "../styles/MatchWait.css";
@@ -16,6 +16,7 @@ export const MatchWait = () => {
   const mode = query.get("mode");
 
   const [matchId, setMatchId] = useState(null);
+  const matchInitiated = useRef(false);
 
   const [matchCreating, setMatchCreating] = useState(true);
   const [counter, setCounter] = useState(10);
@@ -50,18 +51,46 @@ export const MatchWait = () => {
         .then((data) => {
           const playersDocs = data;
 
-          // Only emit beginMatch if:
-          // 1. The current user is the requester,
-          // 2. requesterId and receiverId are provided,
-          // 3. And no match has been initiated already.
-          if (currentUserId === requesterId && requesterId && receiverId) {
-            socket.emit('beginMatch', {
-              requesterId,
-              receiverId,
-              playersDocs,
-              difficulty,
-              mode,
-              programmingLanguage,
+          // Only emit beginMatch if the current user is the requester and it hasn't been initiated yet.
+          if (currentUserId === requesterId && requesterId && receiverId && !matchInitiated.current) {
+            matchInitiated.current = true; // Prevent re-emitting on re-renders
+            // The requester is responsible for fetching the question.
+            const lang = programmingLanguage === "js" ? "javascript" : programmingLanguage === "py" ? "python" : programmingLanguage;
+            const filterStr = `mode_slug=${mode}&question_difficulty=${difficulty}&programming_language=${lang}`;
+            
+            fetch(`${process.env.REACT_APP_BACKEND_URL}/questions?${filterStr}`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Failed to fetch question');
+                return res.json();
+            })
+            .then(questionData => {
+                if (questionData.data && questionData.data.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * questionData.data.length);
+                    const questionId = questionData.data[randomIndex]._id;
+
+                    // Emit beginMatch with the questionId
+                    socket.emit('beginMatch', {
+                      requesterId,
+                      receiverId,
+                      difficulty,
+                      mode,
+                      programmingLanguage,
+                      questionId,
+                    });
+                } else {
+                    throw new Error('No questions found for the selected criteria.');
+                }
+            })
+            .catch(error => {
+                console.error('Error setting up match:', error);
+                // alert('Failed to set up the match. Please try again.');
+                // navigate('/', { replace: true });
             });
           }
         })
