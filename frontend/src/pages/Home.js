@@ -195,7 +195,7 @@ const Home = () => {
             modeValue='standard-duel'
             modeImg={coder}
             modeImg2={coder2}
-            modeDescription='Resolve all errors in the provided code faster than your opponent within the allocated time.'
+            modeDescription='A real-time 1v1 coding battle where the first player to submit a fully correct solution wins the match.'
             onQuickMatch={handleQuickMatchClick}
           />
         </div>
