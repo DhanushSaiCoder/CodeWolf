@@ -7,6 +7,8 @@ import Nav from '../components/Nav';
 import { Mode } from '../components/Mode';
 import coder from '../images/coder.png';
 import coder2 from '../images/coder2.png';
+import coder3 from '../images/coder3.png'
+import coder4 from '../images/coder4.png'
 import { HomeLeaderBoard } from '../components/HomeLeaderBoard';
 import { HomeHistory } from '../components/HomeHistory';
 import { useSocket } from '../SocketContext';
@@ -193,8 +195,8 @@ const Home = () => {
           <Mode
             modeName='STANDARD DUEL'
             modeValue='standard-duel'
-            modeImg={coder}
-            modeImg2={coder2}
+            modeImg={coder3}
+            modeImg2={coder4}
             modeDescription='A real-time 1v1 coding battle where the first player to submit a fully correct solution wins the match.'
             onQuickMatch={handleQuickMatchClick}
           />
