@@ -107,6 +107,16 @@ export default function QuestionDetails({ matchDoc, handleQuestionFound, isMobil
     }
   }
 
+  const renderDisplayValue = (value) => {
+    if (typeof value === 'object' && value !== null) {
+      return JSON.stringify(value);
+    }
+    if (typeof value === 'string') {
+      return `"${value}"`;
+    }
+    return String(value);
+  };
+
   return (
     <div className='QuestionDetails'>
       {!isMobile && (<div className='QuestionDetailsHeader'>
@@ -137,10 +147,10 @@ export default function QuestionDetails({ matchDoc, handleQuestionFound, isMobil
             {question.examples.map((example, index) => (
               <div className='exampleSet' key={index}>
                 <p>
-                  <strong>Input:</strong> {example.input}
+                  <strong>Input:</strong> {renderDisplayValue(example.input)}
                 </p>
                 <p>
-                  <strong>Output:</strong> {example.output}
+                  <strong>Output:</strong> {renderDisplayValue(example.output)}
                 </p>
               </div>
             ))}
@@ -156,10 +166,10 @@ export default function QuestionDetails({ matchDoc, handleQuestionFound, isMobil
                 question.test_cases.map((testCase, index) => (
                   <div key={index} className='testcase'>
                     <p>
-                      <strong>Input:</strong> {testCase.input}
+                      <strong>Input:</strong> {renderDisplayValue(testCase.input)}
                     </p>
                     <p>
-                      <strong>Output:</strong> {testCase.expected_output}
+                      <strong>Output:</strong> {renderDisplayValue(testCase.expected_output)}
                     </p>
                   </div>
                 ))
