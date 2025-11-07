@@ -14,7 +14,14 @@ router.post('/js', async (req, res) => {
     let index = 1;
     for (const testcase of testcases) {
       try {
-        const result = ${question.function_name}(...testcase.input);
+        let result;
+if (Array.isArray(testcase.input)) {
+  result = ${question.function_name}(...testcase.input);
+} else if (typeof testcase.input === "object" && testcase.input !== null) {
+  result = ${question.function_name}(...Object.values(testcase.input));
+} else {
+  result = ${question.function_name}(testcase.input);
+}
         const pass = JSON.stringify(result) === JSON.stringify(testcase.expected_output);
         results.push({ test_case_number: index, result: pass ? "PASS" : "FAIL", output: result });
       } catch (err) {
